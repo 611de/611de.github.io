@@ -43,15 +43,16 @@ author: Liu Yiyi
 copyright: "Unpublished Work (cleft) 2023-{currentYear} {author}"
 
 description: >- # this means to ignore newlines until "baseurl:"
-  # Write an awesome description for your new site here. You can edit this
-  # line in _config.yml. It will appear in your document head meta (for
-  # Google search results) and in your feed.xml site description.
   Liu Yiyi 的个人博客，一个励志成为AI工程师的开发者，分享个人开发方法和经验
   博客持续完善中，欢迎访问...
 
+# Write an awesome description for your new site here. You can edit this
+# line in _config.yml. It will appear in your document head meta (for
+# Google search results) and in your feed.xml site description.
+
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "" # the base hostname & protocol for your site, e.g. https://example.com
-favicon: "assets/images/ico/bitbug_favicon.ico" # the favicon for your site
+favicon: "https://github.com/611de/611de.github.io/blob/a5d93feab45aced6b08a98fe932390833055d696/assets/images/ico/bitbug_favicon.ico" # the favicon for your site
 
 # Yat date format
 # refer to https://shopify.github.io/liquid/filters/date/ if you want to customize this
