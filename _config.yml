@@ -24,9 +24,9 @@
 # You can create any custom variable you would like, and they will be accessible
 # in the templates via {{ site.myvariable }}.
 
-title: Liu Yiyi's Blog
+title: Liu Yiyi ' s Blog
 email: liuyiyi-611@qq.com
-author: GitHub User
+author: Liu Yiyi
 
 # Copyright setting
 # You can use any html code, currently below placeholders are available:
@@ -43,13 +43,15 @@ author: GitHub User
 copyright: "Unpublished Work (cleft) 2023-{currentYear} {author}"
 
 description: >- # this means to ignore newlines until "baseurl:"
-  Write an awesome description for your new site here. You can edit this
-  line in _config.yml. It will appear in your document head meta (for
-  Google search results) and in your feed.xml site description.
+  # Write an awesome description for your new site here. You can edit this
+  # line in _config.yml. It will appear in your document head meta (for
+  # Google search results) and in your feed.xml site description.
+  Liu Yiyi 的个人博客，一个励志成为AI工程师的开发者，分享个人开发方法和经验
+  博客持续完善中，欢迎访问...
 
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "" # the base hostname & protocol for your site, e.g. https://example.com
-favicon: "assets/images/bitbug_favicon.ico" # the favicon for your site
+favicon: "assets/images/ico/bitbug_favicon.ico" # the favicon for your site
 
 # Yat date format
 # refer to https://shopify.github.io/liquid/filters/date/ if you want to customize this
