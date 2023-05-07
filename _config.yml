@@ -52,7 +52,7 @@ description: >- # this means to ignore newlines until "baseurl:"
 
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "" # the base hostname & protocol for your site, e.g. https://example.com
-favicon: "https://github.com/611de/611de.github.io/blob/a5d93feab45aced6b08a98fe932390833055d696/assets/images/ico/bitbug_favicon.ico" # the favicon for your site
+favicon: "https://611de.github.io/assets/images/ico/bitbug_favicon.ico" # the favicon for your site
 
 # Yat date format
 # refer to https://shopify.github.io/liquid/filters/date/ if you want to customize this
