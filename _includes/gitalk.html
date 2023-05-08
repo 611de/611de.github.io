@@ -1,0 +1,28 @@
+<!--
+ * @Description: file content
+ * @Author: Liuyiyi
+ * @Date: 2023-05-08 22:11:05
+ * @LastEditTime: 2023-05-08 22:13:52
+ * @LastEditors: Liuyiyi
+ * @Reference: 
+-->
+<!-- Link Gitalk 的支持文件  -->
+<link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+<script src="https://unpkg.com/gitalk@latest/dist/gitalk.min.js"></script> 
+<script type="text/javascript" src="/assets/js/md5.min.js"></script>
+<div id="gitalk-container"></div>     
+<script type="text/javascript">
+    var gitalk = new Gitalk({
+ 
+    // gitalk的主要参数
+        clientID: '0886544178ba497c2749',
+        clientSecret: '0682bd75e236974b3bbdf2dbc6c0880115d7342e',
+        repo: 'https://611de.github.io',
+        owner: '611de',
+        admin: ['611de'],
+        id: md5(location.pathname),
+        
+    });
+    gitalk.render('gitalk-container');
+</script> 
+<!-- Gitalk end -->
