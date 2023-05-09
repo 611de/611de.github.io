@@ -202,7 +202,7 @@ yat:
 # set follow_site_theme true to make utterances' theme follow the site's
 
 utterances:
-  repo: "https://github.com/611de/611de.github.io"
+  repo: "611de/611de.github.io"
   issue_term: "title"
   label: "utterances comment"
   theme: "github-light"
