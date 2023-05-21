@@ -18,6 +18,7 @@ tags: [blog, gradio]
 - 思路二：使用iframe
 
 ## 实现思路一：
+以插入一段文本转视频的demo [Text2Video-Zero](https://huggingface.co/spaces/PAIR/Text2Video-Zero)为例,
 在markdown中插入下面这段代码即可：
 ```html
 <script type="module" src="https://gradio.s3-us-west-2.amazonaws.com/3.23.0/gradio.js"></script>
@@ -36,21 +37,25 @@ https://huggingface.co/blog/text-to-video -->
 <!-- 如何在markdown中放gradio的demo？ -->
 
 ## 实现思路二：
-也可以使用iframe，markdown中插入如下代码即可，其中src参数填写想要展示的页面的url即可
+也可以使用iframe，markdown中插入如下代码即可，其中src参数填写想要展示的页面的url即可。
+
+以机器翻译[marian-finetuned-kde4-en-to-fr](https://huggingface.co/spaces/course-demos/marian-finetuned-kde4-en-to-fr)为例
 ```html
- <iframe  
- height=850 
- width=90% 
- src="https://course-demos-marian-finetuned-kde4-en-to-fr.hf.space/"  
- frameborder=0  
- allowfullscreen>
- </iframe>
+<iframe  
+height=850 
+width=90% 
+src="https://course-demos-marian-finetuned-kde4-en-to-fr.hf.space/"  
+frameborder=0  
+allowfullscreen>
+</iframe>
  ```
  效果如下：
- <iframe  
- height=850 
- width=90% 
- src="https://course-demos-marian-finetuned-kde4-en-to-fr.hf.space/"  
- frameborder=0  
- allowfullscreen>
- </iframe>
+<div>
+<iframe  
+height=850 
+width=90% 
+src="https://course-demos-marian-finetuned-kde4-en-to-fr.hf.space/"  
+frameborder=0  
+allowfullscreen>
+</iframe>
+</div>
