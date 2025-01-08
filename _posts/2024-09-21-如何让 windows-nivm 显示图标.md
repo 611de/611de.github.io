@@ -1,14 +1,12 @@
 ---
 layout: post
-title: how to show UI icon in windows-nvim
-subtitle: nerd forts install in windows
-categories: nvim, vim
+title: How to Show UI Icon in Windows-nvim
+subtitle: Nerd Forts Install in Windows
+categories: Nvim, Vim
 tags: [vim, nerd fonts, icon]
 ---
 
-<!-- how to show image in terminnal? -->
-
-1. download nerd forts
+1. Download Nerd Forts
 get a list of possible font names
 ```bash
 # get a list of possible font names
@@ -20,3 +18,9 @@ get a list of possible font names
 2. change default fonts in terminnal
 - open terminnal
 - `<Ctrl> + ,` go to settings -> 默认值 -> 外观 -> 字体 —> 选 cascadia -> save
+
+
+Link:
+
+- nerd-fonts-github: https://github.com/ryanoasis/nerd-fonts?tab=readme-ov-file#option-3-unofficial-chocolatey-or-scoop-repositories
+- nerd-fonts: https://www.nerdfonts.com/
