@@ -119,7 +119,7 @@ def _convert_links_in_markdown(markdown: str) -> str:
 ### 5. 具体的被调用的过程
 
 首先是在 MkDocs 的配置文件 `mkdocs.yaml` 中，使用了 hooks 配置如下：
-```
+```yaml
 hooks:
   - _scripts/notebook_hooks.py
 ```
