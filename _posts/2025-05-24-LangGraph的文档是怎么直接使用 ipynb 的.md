@@ -116,6 +116,22 @@ def _convert_links_in_markdown(markdown: str) -> str:
 综上所述，`langgraph` 的 `mkdocs` 文档通过将 `.ipynb` 文件转换为 Markdown 格式，再使用 `MkDocs` 构建文档的方式来显示 `.ipynb` 文件内容。 
 
 
+### 5. 具体的被调用的过程
+
+首先是在 MkDocs 的配置文件 `mkdocs.yaml` 中，使用了 hooks 配置如下：
+```
+hooks:
+  - _scripts/notebook_hooks.py
+```
+hooks 允许你在 MkDocs 构建过程的特定阶段执行自定义 Python 代码，以实现一些定制化的功能, MkDocs 有一些预定义的钩子函数名，如 on_page_markdown、on_files 等。在自定义钩子脚本中，你可以定义这些函数，MkDocs 会在相应的阶段调用它们。
+在 `notebook_hooks.py` 文件中直接使用了 `convert_notebook` 方法如下:
+```python
+if page.file.src_path.endswith(".ipynb"):
+    # logger.info("Processing Jupyter notebook: %s", page.file.src_path)
+    markdown = convert_notebook(page.file.abs_src_path)
+```
+至此可知，LangGraph 配置了 MkDocs 的 hook，使得在打包阶段会自动的调用已经配置好的 hook 来完成从 `.ipynb` 文件到 `.md` 文件的转换。
+
 ---
 [豆包](https://www.doubao.com/)
 ![1748065850876](image/2025-05-24-LangGraph的文档是怎么直接使用ipynb的/1748065850876.png)
