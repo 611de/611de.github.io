@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>Windows 系统 AutoHotkey 脚本开机自启动</title>
+    <style>
+        body {
+            font-family: "Segoe UI", sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        h1, h2 {
+            color: #2c3e50;
+            border-bottom: 2px solid #e0e0e0;
+            padding-bottom: 8px;
+        }
+        h2 {
+            font-size: 1.3em;
+            margin-top: 25px;
+        }
+        .step {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 6px;
+            margin: 15px 0;
+        }
+        .code {
+            background: #2d2d2d;
+            color: #fff;
+            padding: 8px 12px;
+            border-radius: 4px;
+            font-family: "Courier New", monospace;
+        }
+        .tip {
+            color: #7f8c8d;
+            font-size: 0.9em;
+        }
+        ul {
+            list-style: none;
+            padding-left: 20px;
+        }
+        ul li::before {
+            content: "→";
+            color: #3498db;
+            display: inline-block;
+            width: 1em;
+            margin-left: -1em;
+        }
+    </style>
+</head>
+<body>
+    <h1>Windows系统AutoHotkey脚本开机自启动</h1>
+
+    <h2>一、为什么要设置AutoHotkey开机自启动？</h2>
+    <p>AutoHotkey是一款强大的自动化工具，可通过脚本自定义快捷键、自动输入文本或执行复杂操作。设置开机自启动后，系统启动时将自动加载脚本，无需手动干预即可立即使用自动化功能，大幅提升效率。</p>
+
+    <h2>二、快速定位启动文件夹</h2>
+    <h3>方法1：通过"运行"对话框（推荐）</h3>
+    <div class="step">
+        <ul>
+            <li>按下组合键 <span class="code">Win + R</span> 打开"运行"窗口</li>
+            <li>输入命令：<span class="code">shell:startup</span></li>
+            <li>按下回车键，系统将自动打开"启动"文件夹</li>
+        </ul>
+    </div>
+
+    <h3>方法2：手动导航</h3>
+    <p>路径：<span class="code">C:\Users\你的用户名\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup</span></p>
+    <p class="tip">注：需显示隐藏文件夹才能访问 <span class="code">AppData</span> 目录</p>
+
+    <h2>三、添加脚本到启动文件夹</h2>
+    <h3>方式1：复制快捷方式（推荐）</h3>
+    <div class="step">
+        <ul>
+            <li>右键点击你的 <span class="code">.ahk</span> 脚本文件</li>
+            <li>选择 <span class="code">发送到 > 桌面快捷方式</span></li>
+            <li>将桌面上生成的快捷方式拖入"启动"文件夹</li>
+        </ul>
+    </div>
+
+    <h3>方式2：直接复制脚本文件</h3>
+    <div class="step">
+        <ul>
+            <li>复制你的 <span class="code">.ahk</span> 脚本文件</li>
+            <li>粘贴到"启动"文件夹中</li>
+        </ul>
+    </div>
+
+    <h3>验证方法</h3>
+    <ul>
+        <li>重启电脑，检查任务栏是否出现AutoHotkey图标</li>
+        <li>尝试执行脚本中的快捷键操作，验证是否生效</li>
+    </ul>
+
+    <h2>四、常见问题解决方案</h2>
+    <h3>问题1：脚本无法启动</h3>
+    <div class="step">
+        <ul>
+            <li>手动双击脚本，确认是否能正常运行</li>
+            <li>检查"启动"文件夹中的文件是否被删除或移动</li>
+            <li>确保AutoHotkey已正确安装并添加到系统路径</li>
+        </ul>
+    </div>
+
+    <h3>问题2：脚本启动延迟</h3>
+    <div class="step">
+        <ul>
+            <li>在脚本开头添加 <span class="code">#SingleInstance Force</span> 指令</li>
+            <li>减少脚本初始化时执行的操作</li>
+            <li>通过任务管理器调整AutoHotkey启动优先级</li>
+        </ul>
+    </div>
+
+    <h2>五、进阶技巧</h2>
+    <h3>管理多个脚本</h3>
+    <p>创建一个主脚本，使用 <span class="code">#Include</span> 指令引用其他脚本，将主脚本添加到启动文件夹，实现批量加载</p>
+
+    <h3>带参数启动脚本</h3>
+    <div class="step">
+        <ul>
+            <li>右键点击快捷方式 > 属性</li>
+            <li>在"目标"字段中添加参数，例如：</li>
+            <p class="code">C:\Program Files\AutoHotkey\AutoHotkeyU64.exe "C:\Scripts\MyScript.ahk" 参数1 参数2</p>
+        </ul>
+    </div>
+
+    <p style="margin-top: 30px; color: #7f8c8d; font-size: 0.9em;">通过以上步骤，你可以轻松实现AutoHotkey脚本的开机自启动。合理利用这一功能，让你的Windows使用体验更加高效便捷！</p>
+</body>
+</html>
