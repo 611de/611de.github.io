@@ -199,15 +199,9 @@
                     <p class="text-xs opacity-80">I'm here to help!</p>
                 </div>
             </div>
-            <div class="flex items-center space-x-3">
-                <button id="theme-toggle" class="text-dark hover:text-accent transition-colors">
-                    <i class="fa fa-moon-o light-only"></i>
-                    <i class="fa fa-sun-o dark-only"></i>
-                </button>
-                <button id="close-chatbot" class="text-dark hover:text-accent transition-colors">
-                    <i class="fa fa-times"></i>
-                </button>
-            </div>
+            <button id="close-chatbot" class="text-dark hover:text-accent transition-colors">
+                <i class="fa fa-times"></i>
+            </button>
         </div>
         
         <!-- 聊天消息区域 -->
@@ -428,8 +422,6 @@
             });
         });
         
-        // 主题切换按钮
-        themeToggle.addEventListener('click', toggleTheme);
         
         // 添加动画样式
         const style = document.createElement('style');
