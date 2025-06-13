@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jekyll ChatBot</title>
+    <!-- Tailwind CSS v3 -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome -->
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    
+    <!-- 配置Tailwind自定义主题 -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#165DFF',
+                        secondary: '#4080FF',
+                        accent: '#6AA1FF',
+                        light: '#F2F3F5',
+                        dark: '#1F2329',
+                    },
+                    fontFamily: {
+                        inter: ['Inter', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .content-auto {
+                content-visibility: auto;
+            }
+            .chat-shadow {
+                box-shadow: 0 4px 24px rgba(0, 0, 0, 0.12);
+            }
+            .slide-up {
+                animation: slideUp 0.3s ease forwards;
+            }
+            .slide-down {
+                animation: slideDown 0.3s ease forwards;
+            }
+            .fade-in {
+                animation: fadeIn 0.3s ease forwards;
+            }
+            .pulse-effect {
+                animation: pulse 2s infinite;
+            }
+            @keyframes slideUp {
+                from { transform: translateY(20px); opacity: 0; }
+                to { transform: translateY(0); opacity: 1; }
+            }
+            @keyframes slideDown {
+                from { transform: translateY(0); opacity: 1; }
+                to { transform: translateY(20px); opacity: 0; }
+            }
+            @keyframes fadeIn {
+                from { opacity: 0; }
+                to { opacity: 1; }
+            }
+            @keyframes pulse {
+                0% { transform: scale(1); }
+                50% { transform: scale(1.05); }
+                100% { transform: scale(1); }
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 聊天机器人图标按钮 -->
+    <button id="chatbot-toggle" class="fixed bottom-6 right-6 z-50 bg-primary text-white w-14 h-14 rounded-full flex items-center justify-center shadow-lg hover:bg-secondary transition-all duration-300 focus:outline-none">
+        <i class="fa fa-comments text-xl"></i>
+    </button>
+    
+    <!-- 聊天机器人容器 -->
+    <div id="chatbot-container" class="fixed bottom-24 right-6 z-50 w-80 max-w-xs hidden slide-up bg-white dark:bg-dark rounded-xl shadow-xl overflow-hidden chat-shadow">
+        <!-- 聊天机器人头部 -->
+        <div class="bg-primary text-white p-4 flex items-center justify-between">
+            <div class="flex items-center">
+                <img src="https://picsum.photos/200" alt="ChatBot Avatar" class="w-10 h-10 rounded-full mr-3">
+                <div>
+                    <h3 class="font-bold">Blog Assistant</h3>
+                    <p class="text-xs opacity-80">I'm here to help!</p>
+                </div>
+            </div>
+            <button id="close-chatbot" class="text-white hover:text-light transition-colors">
+                <i class="fa fa-times"></i>
+            </button>
+        </div>
+        
+        <!-- 聊天消息区域 -->
+        <div id="chat-messages" class="h-80 overflow-y-auto p-4 space-y-4 bg-light dark:bg-gray-900">
+            <!-- 欢迎消息 -->
+            <div class="flex items-start">
+                <img src="https://picsum.photos/200" alt="Bot Avatar" class="w-8 h-8 rounded-full mr-2 mt-1">
+                <div class="bg-white dark:bg-gray-800 p-3 rounded-lg shadow-sm max-w-[80%]">
+                    <p class="text-sm">👋 Hello! I'm your blog assistant. How can I help you today?</p>
+                </div>
+            </div>
+            
+            <!-- 建议问题 -->
+            <div class="flex items-start">
+                <img src="https://picsum.photos/200" alt="Bot Avatar" class="w-8 h-8 rounded-full mr-2 mt-1">
+                <div class="bg-white dark:bg-gray-800 p-3 rounded-lg shadow-sm max-w-[80%]">
+                    <p class="text-sm text-gray-500 dark:text-gray-400 mb-2">Try these questions:</p>
+                    <div class="flex flex-wrap gap-2">
+                        <button class="quick-reply bg-primary/10 hover:bg-primary/20 text-primary text-xs px-3 py-1 rounded-full transition-colors" data-question="About the blog">About the blog</button>
+                        <button class="quick-reply bg-primary/10 hover:bg-primary/20 text-primary text-xs px-3 py-1 rounded-full transition-colors" data-question="Recent posts">Recent posts</button>
+                        <button class="quick-reply bg-primary/10 hover:bg-primary/20 text-primary text-xs px-3 py-1 rounded-full transition-colors" data-question="Contact">Contact</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 输入区域 -->
+        <div class="p-3 bg-white dark:bg-dark border-t border-gray-200 dark:border-gray-800">
+            <div class="flex items-center">
+                <input id="user-input" type="text" placeholder="Type a message..." class="flex-1 px-4 py-2 rounded-full bg-light dark:bg-gray-800 border border-gray-200 dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-primary/50">
+                <button id="send-message" class="ml-2 bg-primary text-white w-9 h-9 rounded-full flex items-center justify-center hover:bg-secondary transition-colors">
+                    <i class="fa fa-paper-plane"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // DOM元素
+        const chatbotToggle = document.getElementById('chatbot-toggle');
+        const chatbotContainer = document.getElementById('chatbot-container');
+        const closeChatbot = document.getElementById('close-chatbot');
+        const chatMessages = document.getElementById('chat-messages');
+        const userInput = document.getElementById('user-input');
+        const sendMessage = document.getElementById('send-message');
+        const quickReplies = document.querySelectorAll('.quick-reply');
+        
+        // 聊天机器人回复
+        const botResponses = {
+            "about the blog": "This blog is all about technology, programming, and web development. I share tips, tutorials, and insights to help you grow your skills!",
+            "recent posts": "You can find my latest posts on the homepage. Just scroll down to see the most recent articles.",
+            "contact": "You can reach me through the contact form on the 'About' page or via email at contact@example.com.",
+            "hello": "Hello! How can I assist you today?",
+            "hi": "Hi there! I'm your blog assistant. What would you like to know?",
+            "help": "I can help answer questions about the blog, recent posts, or how to contact the author. Just ask!",
+            "default": "I'm still learning! Try asking about the blog, recent posts, or how to contact the author."
+        };
+        
+        // 切换聊天机器人显示/隐藏
+        chatbotToggle.addEventListener('click', () => {
+            if (chatbotContainer.classList.contains('hidden')) {
+                chatbotContainer.classList.remove('hidden');
+                chatbotToggle.innerHTML = '<i class="fa fa-times text-xl"></i>';
+                chatbotToggle.classList.add('pulse-effect');
+                setTimeout(() => {
+                    chatbotToggle.classList.remove('pulse-effect');
+                }, 2000);
+            } else {
+                chatbotContainer.classList.add('hidden');
+                chatbotToggle.innerHTML = '<i class="fa fa-comments text-xl"></i>';
+            }
+        });
+        
+        // 关闭聊天机器人
+        closeChatbot.addEventListener('click', () => {
+            chatbotContainer.classList.add('hidden');
+            chatbotToggle.innerHTML = '<i class="fa fa-comments text-xl"></i>';
+        });
+        
+        // 添加消息到聊天窗口
+        function addMessage(text, isUser = false) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = isUser ? 'flex items-end justify-end' : 'flex items-start';
+            
+            const avatarImg = document.createElement('img');
+            avatarImg.alt = isUser ? 'User Avatar' : 'Bot Avatar';
+            avatarImg.className = 'w-8 h-8 rounded-full mr-2 mt-1';
+            avatarImg.src = isUser ? 'https://picsum.photos/seed/user/200' : 'https://picsum.photos/200';
+            
+            const bubbleDiv = document.createElement('div');
+            bubbleDiv.className = isUser 
+                ? 'bg-primary text-white p-3 rounded-lg shadow-sm max-w-[80%] ml-2 fade-in' 
+                : 'bg-white dark:bg-gray-800 p-3 rounded-lg shadow-sm max-w-[80%] fade-in';
+            
+            const messageText = document.createElement('p');
+            messageText.className = 'text-sm';
+            messageText.textContent = text;
+            
+            bubbleDiv.appendChild(messageText);
+            messageDiv.appendChild(isUser ? bubbleDiv : avatarImg);
+            messageDiv.appendChild(isUser ? avatarImg : bubbleDiv);
+            
+            chatMessages.appendChild(messageDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+        
+        // 显示打字指示器
+        function showTypingIndicator() {
+            const typingDiv = document.createElement('div');
+            typingDiv.className = 'flex items-start';
+            
+            const avatarImg = document.createElement('img');
+            avatarImg.alt = 'Bot Avatar';
+            avatarImg.className = 'w-8 h-8 rounded-full mr-2 mt-1';
+            avatarImg.src = 'https://picsum.photos/200';
+            
+            const bubbleDiv = document.createElement('div');
+            bubbleDiv.className = 'bg-white dark:bg-gray-800 p-3 rounded-lg shadow-sm max-w-[80%]';
+            
+            const typingIndicator = document.createElement('div');
+            typingIndicator.className = 'flex space-x-1';
+            
+            for (let i = 0; i < 3; i++) {
+                const dot = document.createElement('div');
+                dot.className = 'w-2 h-2 bg-gray-400 dark:bg-gray-300 rounded-full';
+                dot.style.animation = `pulse 1.4s infinite ease-in-out both`;
+                dot.style.animationDelay = `${i * 0.2}s`;
+                typingIndicator.appendChild(dot);
+            }
+            
+            bubbleDiv.appendChild(typingIndicator);
+            typingDiv.appendChild(avatarImg);
+            typingDiv.appendChild(bubbleDiv);
+            
+            chatMessages.appendChild(typingDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+            
+            return typingDiv;
+        }
+        
+        // 处理用户输入
+        function handleUserInput() {
+            const userText = userInput.value.trim();
+            if (userText === '') return;
+            
+            // 添加用户消息
+            addMessage(userText, true);
+            
+            // 清空输入框
+            userInput.value = '';
+            
+            // 显示打字指示器
+            const typingIndicator = showTypingIndicator();
+            
+            // 模拟思考时间
+            setTimeout(() => {
+                // 移除打字指示器
+                chatMessages.removeChild(typingIndicator);
+                
+                // 获取并添加机器人回复
+                const botResponse = getBotResponse(userText);
+                addMessage(botResponse);
+            }, 800);
+        }
+        
+        // 获取机器人回复
+        function getBotResponse(userText) {
+            const lowerText = userText.toLowerCase();
+            
+            // 检查精确匹配
+            if (botResponses[lowerText]) {
+                return botResponses[lowerText];
+            }
+            
+            // 检查部分匹配
+            for (const key in botResponses) {
+                if (lowerText.includes(key)) {
+                    return botResponses[key];
+                }
+            }
+            
+            // 默认回复
+            return botResponses.default;
+        }
+        
+        // 事件监听器
+        sendMessage.addEventListener('click', handleUserInput);
+        
+        userInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                handleUserInput();
+            }
+        });
+        
+        // 快速回复按钮
+        quickReplies.forEach(reply => {
+            reply.addEventListener('click', () => {
+                const question = reply.getAttribute('data-question');
+                userInput.value = question;
+                handleUserInput();
+            });
+        });
+        
+        // 添加动画样式
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes pulse {
+                0%, 80%, 100% { transform: scale(0); }
+                40% { transform: scale(1); }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>
