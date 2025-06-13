@@ -64,19 +64,6 @@ async function getBotResponse(userText) {
     }
 }
 
-// // 初始化消息历史
-// function initializeMessageHistory() {
-//     // 添加系统消息，设置机器人行为
-//     messageHistory.push({
-//         role: 'system',
-//         content: '你是一个友好的博客助手，帮助用户了解博客内容、最新文章和联系方式。保持简洁明了的回答。'
-//     });
-// }
-
-// // 页面加载时初始化
-// window.addEventListener('DOMContentLoaded', () => {
-//     initializeMessageHistory();
-// });
 
 // 等待元素出现的辅助函数
 function waitForElement(selector, timeout = 5000) {
@@ -108,7 +95,7 @@ function waitForElement(selector, timeout = 5000) {
 // 修改后的初始化函数
 async function initializeMessageHistory() {
     try {
-        // 根据您的博客结构选择合适的内容容器
+        // 选择合适的内容容器
         const mainContent = document.querySelector('.post-content') || 
                             document.querySelector('.article-content') || 
                             document.querySelector('main') || 
