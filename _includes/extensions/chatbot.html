@@ -3,9 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="dashscope-api-key" content="sk-24780afef09c4df19270bc68f334">
     <title>Jekyll ChatBot</title>
     <!-- Tailwind CSS v3 -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="chatbot_llm.js"></script>
     <!-- Font Awesome -->
     <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
     
@@ -360,7 +362,7 @@
         }
         
         // 处理用户输入
-        function handleUserInput() {
+        async function handleUserInput() {
             const userText = userInput.value.trim();
             if (userText === '') return;
             
@@ -374,18 +376,18 @@
             const typingIndicator = showTypingIndicator();
             
             // 模拟思考时间
-            setTimeout(() => {
+            setTimeout(async () => {
                 // 移除打字指示器
                 chatMessages.removeChild(typingIndicator);
                 
                 // 获取并添加机器人回复
-                const botResponse = getBotResponse(userText);
+                const botResponse = await getResponse(userText);
                 addMessage(botResponse);
             }, 800);
         }
         
         // 获取机器人回复
-        function getBotResponse(userText) {
+        async function getResponse(userText) {
             const lowerText = userText.toLowerCase();
             
             // 检查精确匹配
@@ -401,24 +403,27 @@
             }
             
             // 默认回复
-            return botResponses.default;
+            return await getBotResponse(lowerText);
         }
         
         // 事件监听器
-        sendMessage.addEventListener('click', handleUserInput);
+        sendMessage.addEventListener('click', async () => {
+            await handleUserInput();
+        });
+
         
-        userInput.addEventListener('keypress', (e) => {
+        userInput.addEventListener('keypress', async (e) => {
             if (e.key === 'Enter') {
-                handleUserInput();
+                await handleUserInput();
             }
         });
         
         // 快速回复按钮
         quickReplies.forEach(reply => {
-            reply.addEventListener('click', () => {
+            reply.addEventListener('click', async () => {
                 const question = reply.getAttribute('data-question');
                 userInput.value = question;
-                handleUserInput();
+                await handleUserInput();
             });
         });
         
