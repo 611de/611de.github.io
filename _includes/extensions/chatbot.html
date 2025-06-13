@@ -15,11 +15,12 @@
             theme: {
                 extend: {
                     colors: {
-                        primary: '#165DFF',
-                        secondary: '#4080FF',
-                        accent: '#6AA1FF',
-                        light: '#F2F3F5',
-                        dark: '#1F2329',
+                        primary: '#e5e7eb', // 灰白色主题色
+                        secondary: '#d1d5db', // 深一点的灰白色
+                        accent: '#9ca3af', // 灰黑色作为强调色
+                        light: '#f9fafb', // 超浅灰色背景
+                        dark: '#1f2937', // 深色文本
+                        darker: '#111827', // 更深的深色背景
                     },
                     fontFamily: {
                         inter: ['Inter', 'sans-serif'],
@@ -68,27 +69,145 @@
             }
         }
     </style>
+    
+    <!-- 自定义CSS：根据data-theme属性控制主题 -->
+    <style>
+        html[data-theme="light"] .dark-only {
+            display: none !important;
+        }
+        
+        html[data-theme="dark"] .light-only {
+            display: none !important;
+        }
+        
+        /* 主题特定样式 */
+        html[data-theme="light"] .theme-bg {
+            background-color: #ffffff;
+            color: #1f2937;
+        }
+        
+        html[data-theme="dark"] .theme-bg {
+            background-color: #111827;
+            color: #f9fafb;
+        }
+        
+        html[data-theme="light"] .theme-border {
+            border-color: #e5e7eb;
+        }
+        
+        html[data-theme="dark"] .theme-border {
+            border-color: #374151;
+        }
+        
+        html[data-theme="light"] .theme-hover {
+            background-color: #f3f4f6;
+        }
+        
+        html[data-theme="dark"] .theme-hover {
+            background-color: #1f2937;
+        }
+        
+        html[data-theme="light"] .theme-input {
+            background-color: #f9fafb;
+            border-color: #e5e7eb;
+            color: #1f2937;
+        }
+        
+        html[data-theme="dark"] .theme-input {
+            background-color: #1f2937;
+            border-color: #374151;
+            color: #f9fafb;
+        }
+        
+        html[data-theme="light"] .theme-btn {
+            background-color: #e5e7eb;
+            color: #1f2937;
+        }
+        
+        html[data-theme="dark"] .theme-btn {
+            background-color: #1f2937;
+            color: #f9fafb;
+        }
+        
+        html[data-theme="light"] .theme-btn:hover {
+            background-color: #d1d5db;
+        }
+        
+        html[data-theme="dark"] .theme-btn:hover {
+            background-color: #374151;
+        }
+        
+        html[data-theme="light"] .theme-bubble {
+            background-color: #ffffff;
+            color: #1f2937;
+            border-color: #e5e7eb;
+        }
+        
+        html[data-theme="dark"] .theme-bubble {
+            background-color: #1f2937;
+            color: #f9fafb;
+            border-color: #374151;
+        }
+        
+        html[data-theme="light"] .theme-user-bubble {
+            background-color: #e5e7eb;
+            color: #1f2937;
+            border-color: #d1d5db;
+        }
+        
+        html[data-theme="dark"] .theme-user-bubble {
+            background-color: #374151;
+            color: #f9fafb;
+            border-color: #4b5563;
+        }
+        
+        html[data-theme="light"] .theme-quick-reply {
+            background-color: #e5e7eb;
+            color: #1f2937;
+            border-color: #d1d5db;
+        }
+        
+        html[data-theme="dark"] .theme-quick-reply {
+            background-color: #1f2937;
+            color: #f9fafb;
+            border-color: #374151;
+        }
+        
+        html[data-theme="light"] .theme-quick-reply:hover {
+            background-color: #d1d5db;
+        }
+        
+        html[data-theme="dark"] .theme-quick-reply:hover {
+            background-color: #374151;
+        }
+    </style>
 </head>
 <body>
     <!-- 聊天机器人图标按钮 -->
-    <button id="chatbot-toggle" class="fixed bottom-6 right-6 z-50 bg-primary text-white w-14 h-14 rounded-full flex items-center justify-center shadow-lg hover:bg-secondary transition-all duration-300 focus:outline-none">
+    <button id="chatbot-toggle" class="fixed bottom-6 right-6 z-50 theme-btn w-14 h-14 rounded-full flex items-center justify-center shadow-lg hover:theme-hover transition-all duration-300 focus:outline-none border theme-border">
         <i class="fa fa-comments text-xl"></i>
     </button>
     
     <!-- 聊天机器人容器 -->
-    <div id="chatbot-container" class="fixed bottom-24 right-6 z-50 w-80 max-w-xs hidden slide-up bg-white dark:bg-dark rounded-xl shadow-xl overflow-hidden chat-shadow">
+    <div id="chatbot-container" class="fixed bottom-24 right-6 z-50 w-80 max-w-xs hidden slide-up theme-bg rounded-xl shadow-xl overflow-hidden chat-shadow">
         <!-- 聊天机器人头部 -->
-        <div class="bg-primary text-white p-4 flex items-center justify-between">
+        <div class="p-4 flex items-center justify-between border-b theme-border">
             <div class="flex items-center">
-                <img src="https://picsum.photos/200" alt="ChatBot Avatar" class="w-10 h-10 rounded-full mr-3">
+                <img src="https://picsum.photos/200" alt="ChatBot Avatar" class="w-10 h-10 rounded-full mr-3 border theme-border">
                 <div>
                     <h3 class="font-bold">Blog Assistant</h3>
                     <p class="text-xs opacity-80">I'm here to help!</p>
                 </div>
             </div>
-            <button id="close-chatbot" class="text-white hover:text-light transition-colors">
-                <i class="fa fa-times"></i>
-            </button>
+            <div class="flex items-center space-x-3">
+                <button id="theme-toggle" class="text-dark hover:text-accent transition-colors">
+                    <i class="fa fa-moon-o light-only"></i>
+                    <i class="fa fa-sun-o dark-only"></i>
+                </button>
+                <button id="close-chatbot" class="text-dark hover:text-accent transition-colors">
+                    <i class="fa fa-times"></i>
+                </button>
+            </div>
         </div>
         
         <!-- 聊天消息区域 -->
@@ -96,7 +215,7 @@
             <!-- 欢迎消息 -->
             <div class="flex items-start">
                 <img src="https://picsum.photos/200" alt="Bot Avatar" class="w-8 h-8 rounded-full mr-2 mt-1">
-                <div class="bg-white dark:bg-gray-800 p-3 rounded-lg shadow-sm max-w-[80%]">
+                <div class="theme-bubble p-3 rounded-lg shadow-sm max-w-[80%] fade-in">
                     <p class="text-sm">👋 Hello! I'm your blog assistant. How can I help you today?</p>
                 </div>
             </div>
@@ -104,22 +223,22 @@
             <!-- 建议问题 -->
             <div class="flex items-start">
                 <img src="https://picsum.photos/200" alt="Bot Avatar" class="w-8 h-8 rounded-full mr-2 mt-1">
-                <div class="bg-white dark:bg-gray-800 p-3 rounded-lg shadow-sm max-w-[80%]">
+                <div class="theme-bubble p-3 rounded-lg shadow-sm max-w-[80%]">
                     <p class="text-sm text-gray-500 dark:text-gray-400 mb-2">Try these questions:</p>
                     <div class="flex flex-wrap gap-2">
-                        <button class="quick-reply bg-primary/10 hover:bg-primary/20 text-primary text-xs px-3 py-1 rounded-full transition-colors" data-question="About the blog">About the blog</button>
-                        <button class="quick-reply bg-primary/10 hover:bg-primary/20 text-primary text-xs px-3 py-1 rounded-full transition-colors" data-question="Recent posts">Recent posts</button>
-                        <button class="quick-reply bg-primary/10 hover:bg-primary/20 text-primary text-xs px-3 py-1 rounded-full transition-colors" data-question="Contact">Contact</button>
+                        <button class="theme-quick-reply text-xs px-3 py-1 rounded-full transition-colors" data-question="About the blog">About the blog</button>
+                        <button class="theme-quick-reply text-xs px-3 py-1 rounded-full transition-colors" data-question="Recent posts">Recent posts</button>
+                        <button class="theme-quick-reply text-xs px-3 py-1 rounded-full transition-colors" data-question="Contact">Contact</button>
                     </div>
                 </div>
             </div>
         </div>
         
         <!-- 输入区域 -->
-        <div class="p-3 bg-white dark:bg-dark border-t border-gray-200 dark:border-gray-800">
+        <div class="p-3 border-t theme-border">
             <div class="flex items-center">
-                <input id="user-input" type="text" placeholder="Type a message..." class="flex-1 px-4 py-2 rounded-full bg-light dark:bg-gray-800 border border-gray-200 dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-primary/50">
-                <button id="send-message" class="ml-2 bg-primary text-white w-9 h-9 rounded-full flex items-center justify-center hover:bg-secondary transition-colors">
+                <input id="user-input" type="text" placeholder="Type a message..." class="flex-1 px-4 py-2 rounded-full theme-input focus:outline-none focus:ring-2 focus:ring-accent/50">
+                <button id="send-message" class="ml-2 theme-btn w-9 h-9 rounded-full flex items-center justify-center hover:theme-hover transition-colors">
                     <i class="fa fa-paper-plane"></i>
                 </button>
             </div>
@@ -131,10 +250,11 @@
         const chatbotToggle = document.getElementById('chatbot-toggle');
         const chatbotContainer = document.getElementById('chatbot-container');
         const closeChatbot = document.getElementById('close-chatbot');
+        const themeToggle = document.getElementById('theme-toggle');
         const chatMessages = document.getElementById('chat-messages');
         const userInput = document.getElementById('user-input');
         const sendMessage = document.getElementById('send-message');
-        const quickReplies = document.querySelectorAll('.quick-reply');
+        const quickReplies = document.querySelectorAll('.theme-quick-reply');
         
         // 聊天机器人回复
         const botResponses = {
@@ -146,6 +266,22 @@
             "help": "I can help answer questions about the blog, recent posts, or how to contact the author. Just ask!",
             "default": "I'm still learning! Try asking about the blog, recent posts, or how to contact the author."
         };
+        
+        // 切换主题（与现有主题系统保持一致）
+        function toggleTheme() {
+            const html = document.documentElement;
+            const currentTheme = html.dataset.theme || 'light';
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+            
+            html.dataset.theme = newTheme;
+            
+            // 保存主题偏好到localStorage
+            if (newTheme === 'dark') {
+                localStorage.setItem('theme', 'dark');
+            } else {
+                localStorage.setItem('theme', 'light');
+            }
+        }
         
         // 切换聊天机器人显示/隐藏
         chatbotToggle.addEventListener('click', () => {
@@ -180,8 +316,8 @@
             
             const bubbleDiv = document.createElement('div');
             bubbleDiv.className = isUser 
-                ? 'bg-primary text-white p-3 rounded-lg shadow-sm max-w-[80%] ml-2 fade-in' 
-                : 'bg-white dark:bg-gray-800 p-3 rounded-lg shadow-sm max-w-[80%] fade-in';
+                ? 'theme-user-bubble p-3 rounded-lg shadow-sm max-w-[80%] ml-2 fade-in' 
+                : 'theme-bubble p-3 rounded-lg shadow-sm max-w-[80%] fade-in';
             
             const messageText = document.createElement('p');
             messageText.className = 'text-sm';
@@ -206,7 +342,7 @@
             avatarImg.src = 'https://picsum.photos/200';
             
             const bubbleDiv = document.createElement('div');
-            bubbleDiv.className = 'bg-white dark:bg-gray-800 p-3 rounded-lg shadow-sm max-w-[80%]';
+            bubbleDiv.className = 'theme-bubble p-3 rounded-lg shadow-sm max-w-[80%]';
             
             const typingIndicator = document.createElement('div');
             typingIndicator.className = 'flex space-x-1';
@@ -292,6 +428,9 @@
             });
         });
         
+        // 主题切换按钮
+        themeToggle.addEventListener('click', toggleTheme);
+        
         // 添加动画样式
         const style = document.createElement('style');
         style.textContent = `
@@ -301,6 +440,29 @@
             }
         `;
         document.head.appendChild(style);
+        
+        // 检查并应用保存的主题偏好
+        function applySavedTheme() {
+            const savedTheme = localStorage.getItem('theme');
+            const html = document.documentElement;
+            
+            if (savedTheme === 'dark') {
+                html.dataset.theme = 'dark';
+            } else if (savedTheme === 'light') {
+                html.dataset.theme = 'light';
+            } else {
+                // 默认使用浅色主题
+                html.dataset.theme = 'light';
+            }
+        }
+        
+        // 页面加载时应用保存的主题
+        window.addEventListener('DOMContentLoaded', applySavedTheme);
+        
+        // 监听主题变化事件（与现有主题系统保持一致）
+        window.addEventListener('themeChanged', function() {
+            // 主题已由现有系统切换，无需额外操作
+        });
     </script>
 </body>
 </html>
