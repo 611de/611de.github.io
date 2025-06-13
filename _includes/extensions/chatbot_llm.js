@@ -1,6 +1,6 @@
 // 引入 fetch API（大多数现代浏览器已内置）
 // 确保在 HTML 中添加了相应的 API 密钥
-const apiKey = document.querySelector('meta[name="dashscope-api-key"]')?.content;
+const apiKey = document.querySelector('meta[name="unsecurity"]')?.content;
 
 // 历史消息数组，用于维护对话上下文
 const messageHistory = [];
