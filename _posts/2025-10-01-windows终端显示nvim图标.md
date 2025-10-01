@@ -2,8 +2,8 @@
 layout: post
 title: windows 终端显示 nvim 图标
 subtitle: 终端设置字体
-categories: Blog
-tags: [blog, jekyll]
+categories: nvim
+tags: [nvim, wsl]
 ---
 在 Windows 终端中安装 Nerd Font 字体并解决图标乱码问题，可按以下步骤操作：
 
