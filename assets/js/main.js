@@ -66,8 +66,9 @@ document.addEventListener("DOMContentLoaded", function() {
     var button = document.createElement("button");
     button.className = "code-copy-button";
     button.type = "button";
-    button.textContent = "复制";
+    button.innerHTML = '<i class="fa fa-copy" aria-hidden="true"></i>';
     button.setAttribute("aria-label", "复制代码");
+    button.setAttribute("title", "复制代码");
 
     var code = block.querySelector("code");
     if (code) {
@@ -75,20 +76,35 @@ document.addEventListener("DOMContentLoaded", function() {
         return name.indexOf("language-") === 0;
       });
 
-      if (languageClass) {
-        var label = document.createElement("span");
-        label.className = "code-language";
-        label.textContent = languageClass.replace("language-", "").toUpperCase();
-        block.appendChild(label);
+      if (!languageClass) {
+        var languageContainer = block.closest('[class*="language-"]');
+        if (languageContainer) {
+          languageClass = Array.prototype.find.call(languageContainer.classList, function(name) {
+            return name.indexOf("language-") === 0;
+          });
+        }
       }
+
+      var label = document.createElement("span");
+      label.className = "code-language";
+      label.textContent = languageClass
+        ? languageClass.replace("language-", "").toUpperCase()
+        : "CODE";
+      block.appendChild(label);
     }
 
     button.addEventListener("click", function() {
       var value = code ? code.innerText : block.innerText;
 
       navigator.clipboard.writeText(value).then(function() {
-        button.textContent = "已复制";
-        window.setTimeout(function() { button.textContent = "复制"; }, 1600);
+        button.innerHTML = '<i class="fa fa-check" aria-hidden="true"></i>';
+        button.setAttribute("aria-label", "已复制");
+        button.setAttribute("title", "已复制");
+        window.setTimeout(function() {
+          button.innerHTML = '<i class="fa fa-copy" aria-hidden="true"></i>';
+          button.setAttribute("aria-label", "复制代码");
+          button.setAttribute("title", "复制代码");
+        }, 1600);
       });
     });
 

@@ -58,13 +58,6 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-// Keep navigation available on listing pages, but let it scroll away while reading.
-.layout-post .site-header {
-  position: relative !important;
-  top: auto !important;
-  align-self: auto;
-}
-
 .post-content h2,
 .post-content h3,
 .post-content h4 {
@@ -498,6 +491,12 @@ input:focus-visible {
   color: #0f172a !important;
 }
 
+// The theme's legacy badge also occupies the top-right corner and overlaps
+// the copy button. Language is already displayed by .code-language on the left.
+.post-content pre.badge::before {
+  display: none !important;
+}
+
 // Rouge and Highlight.js token colours for fenced code blocks.
 .post-content .highlight,
 .post-content .highlighter-rouge {
@@ -565,14 +564,25 @@ input:focus-visible {
   position: absolute;
   top: 10px;
   right: 10px;
-  padding: 4px 9px;
+  width: 32px;
+  height: 32px;
+  padding: 0;
   border: 1px solid #cbd5e1;
   border-radius: 6px;
   background: #e2e8f0;
   color: #334155;
   cursor: pointer;
   font: inherit;
-  font-size: 0.75rem;
+  font-size: 0.86rem;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.16s ease, visibility 0.16s ease, background 0.16s ease;
+}
+
+.post-content pre:hover .code-copy-button,
+.post-content pre:focus-within .code-copy-button {
+  opacity: 1;
+  visibility: visible;
 }
 
 .code-language {
@@ -770,6 +780,13 @@ html[data-theme="dark"] {
 
   .series-nav > span:last-child {
     text-align: left;
+  }
+}
+
+@media (hover: none) {
+  .post-content pre .code-copy-button {
+    opacity: 1;
+    visibility: visible;
   }
 }
 
