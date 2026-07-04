@@ -3,7 +3,7 @@
 
   {%- include head.html -%}
 
-  <body>
+  <body class="layout-{{ page.layout | default: layout.layout | default: 'default' }}">
 
     {%- include views/header.html -%}
 

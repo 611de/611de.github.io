@@ -51,10 +51,24 @@ $content-width: {{ site.content_width | default: '920px' }};
 
 html {
   scroll-behavior: smooth;
+  scroll-padding-top: 100px;
 }
 
 body {
   -webkit-font-smoothing: antialiased;
+}
+
+// Keep navigation available on listing pages, but let it scroll away while reading.
+.layout-post .site-header {
+  position: relative !important;
+  top: auto !important;
+  align-self: auto;
+}
+
+.post-content h2,
+.post-content h3,
+.post-content h4 {
+  scroll-margin-top: 28px;
 }
 
 a:focus-visible,
@@ -471,15 +485,80 @@ input:focus-visible {
 }
 
 .post-content pre {
-  border: 1px solid #1e293b;
+  border: 1px solid #dbe4f0;
   border-radius: 10px;
-  background: #0f172a;
-  color: #e2e8f0;
+  background: #f8fafc !important;
+  color: #0f172a !important;
 }
 
-.post-content pre code {
+.post-content pre code,
+.post-content pre .hljs {
   padding-top: 48px !important;
-  color: inherit;
+  background: #f8fafc !important;
+  color: #0f172a !important;
+}
+
+// Rouge and Highlight.js token colours for fenced code blocks.
+.post-content .highlight,
+.post-content .highlighter-rouge {
+  background: transparent;
+}
+
+.post-content .hljs-comment,
+.post-content .hljs-quote,
+.post-content .c,
+.post-content .c1,
+.post-content .cm {
+  color: #64748b;
+}
+
+.post-content .hljs-keyword,
+.post-content .hljs-selector-tag,
+.post-content .hljs-literal,
+.post-content .k,
+.post-content .kd,
+.post-content .kn {
+  color: #7c3aed;
+}
+
+.post-content .hljs-string,
+.post-content .hljs-attr,
+.post-content .s,
+.post-content .s1,
+.post-content .s2 {
+  color: #15803d;
+}
+
+.post-content .hljs-number,
+.post-content .hljs-built_in,
+.post-content .mi,
+.post-content .mf {
+  color: #b45309;
+}
+
+.post-content .hljs-title,
+.post-content .hljs-function,
+.post-content .nf,
+.post-content .nc {
+  color: #0369a1;
+}
+
+.post-content .hljs-variable,
+.post-content .hljs-template-variable,
+.post-content .nv {
+  color: #be123c;
+}
+
+// Inline code created with single backticks.
+.post-content :not(pre) > code {
+  margin: 0 0.15em;
+  padding: 0.16em 0.42em;
+  border: 1px solid #dbe4f0;
+  border-radius: 5px;
+  background: #f1f5f9;
+  color: #be123c;
+  font-size: 0.9em;
+  overflow-wrap: anywhere;
 }
 
 .code-copy-button {
@@ -487,10 +566,10 @@ input:focus-visible {
   top: 10px;
   right: 10px;
   padding: 4px 9px;
-  border: 1px solid #475569;
+  border: 1px solid #cbd5e1;
   border-radius: 6px;
-  background: #1e293b;
-  color: #e2e8f0;
+  background: #e2e8f0;
+  color: #334155;
   cursor: pointer;
   font: inherit;
   font-size: 0.75rem;
@@ -500,14 +579,14 @@ input:focus-visible {
   position: absolute;
   top: 13px;
   left: 16px;
-  color: #94a3b8;
+  color: #64748b;
   font-size: 0.7rem;
   font-weight: 700;
   letter-spacing: 0.08em;
 }
 
 .code-copy-button:hover {
-  background: #334155;
+  background: #cbd5e1;
 }
 
 html[data-theme="dark"] {
@@ -535,6 +614,79 @@ html[data-theme="dark"] {
   .pagination .post-tags .post-tag,
   .post .post-tags .post-tag {
     color: #cbd5e1;
+  }
+
+  .post-content :not(pre) > code {
+    border-color: #334155;
+    background: #1e293b;
+    color: #fda4af;
+  }
+
+  .post-content pre,
+  .post-content pre code,
+  .post-content pre .hljs {
+    border-color: #1e293b;
+    background: #0b1220 !important;
+    color: #f8fafc !important;
+  }
+
+  .post-content .hljs-comment,
+  .post-content .hljs-quote,
+  .post-content .c,
+  .post-content .c1,
+  .post-content .cm {
+    color: #94a3b8;
+  }
+
+  .post-content .hljs-keyword,
+  .post-content .hljs-selector-tag,
+  .post-content .hljs-literal,
+  .post-content .k,
+  .post-content .kd,
+  .post-content .kn {
+    color: #c4b5fd;
+  }
+
+  .post-content .hljs-string,
+  .post-content .hljs-attr,
+  .post-content .s,
+  .post-content .s1,
+  .post-content .s2 {
+    color: #86efac;
+  }
+
+  .post-content .hljs-number,
+  .post-content .hljs-built_in,
+  .post-content .mi,
+  .post-content .mf {
+    color: #fbbf24;
+  }
+
+  .post-content .hljs-title,
+  .post-content .hljs-function,
+  .post-content .nf,
+  .post-content .nc {
+    color: #7dd3fc;
+  }
+
+  .post-content .hljs-variable,
+  .post-content .hljs-template-variable,
+  .post-content .nv {
+    color: #fda4af;
+  }
+
+  .code-copy-button {
+    border-color: #475569;
+    background: #1e293b;
+    color: #e2e8f0;
+  }
+
+  .code-copy-button:hover {
+    background: #334155;
+  }
+
+  .code-language {
+    color: #94a3b8;
   }
 }
 
