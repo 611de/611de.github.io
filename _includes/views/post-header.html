@@ -5,20 +5,35 @@
   <p class="post-meta">
     <time class="dt-published" datetime="{{ page.date | date_to_xmlschema }}" itemprop="datePublished">
       {%- assign date_format = site.yat.date_format | default: "%b %-d, %Y" -%}
-      <i class="fa fa-calendar"></i> {{ page.date | date: date_format }}
+      <i class="fa fa-calendar" aria-hidden="true"></i> 发布于 {{ page.date | date: date_format }}
     </time>
 
     {% assign article = page.content %}
     {% assign lang = page.lang %}
     {%- include functions.html func='get_reading_time' -%}
     {% assign reading_time = return %}
-    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> {{ reading_time }}</span>
+    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o" aria-hidden="true"></i> {{ reading_time }}</span>
+    {%- if page.updated -%}
+    <span class="post-updated left-vsplit"><i class="fa fa-refresh" aria-hidden="true"></i> 更新于 {{ page.updated | date: date_format }}</span>
+    {%- endif -%}
   </p>
+
+  {%- if page.categories.size > 0 -%}
+  <div class="post-categories" aria-label="文章分类">
+    {%- for category in page.categories -%}
+    <a href="{{ '/categories.html' | relative_url }}#{{ category | uri_escape }}">{{ category }}</a>
+    {%- endfor -%}
+  </div>
+  {%- endif -%}
+
+  {%- if page.series -%}
+  <p class="post-series"><i class="fa fa-folder-open-o" aria-hidden="true"></i> 专题：{{ page.series }}</p>
+  {%- endif -%}
 
   {%- if page.tags.size > 0 -%}
   <div class="post-tags">
     {%- for tag in page.tags -%}
-    <a class="post-tag" href="{{ '/tags.html ' | relative_url }}#{{tag}}">#{{tag}}</a>
+    <a class="post-tag" href="{{ '/tags.html' | relative_url }}#{{ tag | uri_escape }}">#{{tag}}</a>
     {%- endfor -%}
   </div>
   {%- endif -%}

@@ -10,6 +10,49 @@
 ## 访问链接
 你可以通过以下链接访问我的博客：[Yiyi L 的博客](https://611de.github.io/)
 
+## 本地运行
+
+本项目需要安装 Ruby、RubyGems 和 Bundler。确认 Ruby 可用后，在仓库根目录执行：
+
+```bash
+gem install bundler -v 2.6.9
+bundle install
+bundle exec jekyll serve
+```
+
+启动完成后，访问 [http://localhost:4000](http://localhost:4000) 查看博客。编辑文章、模板或样式后，Jekyll 会自动重新构建；修改 `_config.yml` 后需要停止并重新启动服务。
+
+如需只生成静态网站而不启动本地服务，可执行：
+
+```bash
+bundle exec jekyll build
+```
+
+生成结果位于 `_site/` 目录。
+
+### 这些命令分别做什么？
+
+- **Gem**：Ruby 的软件包，类似 Python 的 `pip` 包或 Node.js 的 npm 包。
+- **`gem`**：Ruby 自带的包管理命令，用于安装 Bundler 等工具。
+- **Bundler / `bundle`**：读取项目的 `Gemfile`，安装并管理项目依赖。
+- **Jekyll**：将 Markdown 文章、页面模板和样式生成静态网站。
+- **`bundle exec`**：使用当前项目指定的依赖版本执行命令，避免版本冲突。
+- **`serve`**：构建网站并启动本地服务，同时监听文件变化。
+
+本地运行流程如下：
+
+```text
+gem install bundler       安装依赖管理工具
+        ↓
+bundle install            安装项目依赖
+        ↓
+bundle exec jekyll serve  生成网站并启动本地服务
+        ↓
+http://localhost:4000     在浏览器中查看
+```
+
+Jekyll 会把 `_posts/`、模板和样式处理成 HTML、CSS、JavaScript，并输出到 `_site/`。`jekyll build` 只生成文件，`jekyll serve` 则会在生成后继续启动本地服务器。
+
 ## 博客搭建过程
 如果你对如何搭建类似的博客感兴趣，可以参考以下步骤：
 1. **选择主题**：去 Jekyll 官网主题页面（http://jekyllthemes.org/）挑选自己喜欢的主题。我选择的主题是 [JEKYLL YAT THEME](http://jekyllthemes.org/themes/jekyll-theme-yat/)，其 GitHub 地址为 [https://github.com/jeffreytse/jekyll-theme-yat/](https://github.com/jeffreytse/jekyll-theme-yat/)。选好主题后，访问该主题的 GitHub 仓库地址，fork 这个主题，并把仓库名字改成自己的。

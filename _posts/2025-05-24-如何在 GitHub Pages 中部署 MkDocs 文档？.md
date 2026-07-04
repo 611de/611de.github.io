@@ -2,8 +2,9 @@
 layout: post
 title: 如何在 GitHub Pages 中部署 MkDocs 文档？
 subtitle: 配置 Github Aciton 自动触发打包和部署 MkDocs
-categories: Docs
-tags: [docs]
+categories: 教程与踩坑
+tags: [MkDocs, GitHub Pages, 文档部署]
+series: 技术文档工程
 ---
 
 # 如何在 GitHub Pages 中部署 MkDocs 文档

@@ -2,8 +2,13 @@
 layout: post
 title: 无需工具！VSCode Claude Code 插件手动配置国内大模型指南
 subtitle: 告别第三方切换工具，三步搞定模型对接
-categories: 工具
+categories: LLM 应用开发
 tags: [VSCode, Claude Code, 国内模型, 配置, 通义千问, DeepSeek]
+featured: true
+updated: 2026-07-03
+environment: VS Code 与 Claude Code 扩展
+versions: 模型名称和平台接口可能变化，请以服务商控制台为准
+use_case: 不安装第三方切换工具，直接将 Claude Code 扩展接入兼容模型
 ---
 
 Claude Code 是 Anthropic 推出的强大 AI 编程助手，vscode 中的claude code 插件通过改环境变量还太行。想用国内大模型（通义千问、DeepSeek、智谱 GLM 等）替代，却不知道如何配置。`cc-switch` 等第三方工具虽然还算方便，但需要额外安装。
@@ -74,8 +79,8 @@ Claude Code 插件通过以下三个环境变量控制模型选择：
 1. 保存配置后重启 VS Code（或执行「Developer: Reload Window」）
 2. 打开 Claude Code 插件面板
 3. 点击「Switch Model」，选择不同档位测试
-![alt text](image-1.png)
-![alt text](image.png)
+![Claude Code 插件的模型切换菜单，当前选择 qwen3.5_123](/assets/images/posts/vscode-claude-code/model-switch.png)
+![Claude Code 调用不存在的 qwen3.5_123 模型时返回 400 错误](/assets/images/posts/vscode-claude-code/model-error.png)
 
 ## 主流平台配置模板
 

@@ -2,8 +2,8 @@
 layout: post
 title: 如何在 README 中加入 Star History
 subtitle: 一行代码引入 Star History 图
-categories: blog
-tags: [blog]
+categories: 教程与踩坑
+tags: [GitHub, README, Star History]
 ---
 
 # 如何在 README中 加入 Star History

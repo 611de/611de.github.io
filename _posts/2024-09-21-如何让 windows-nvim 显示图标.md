@@ -2,8 +2,9 @@
 layout: post
 title: How to Show UI Icon in Windows-nvim
 subtitle: Nerd Forts Install in Windows
-categories: Nvim
+categories: 开发环境
 tags: [vim, nerd fonts, icon]
+series: Windows 开发环境
 ---
 Windows 中使用 直接使用 nvim 会缺少图标，Neovim 的许多插件（如 `nvim-tree`、`lualine`）依赖图标增强可视化效果。这个时候会用到 **Nerd Fonts**，但需手动安装才能在终端中正确显示图标
 

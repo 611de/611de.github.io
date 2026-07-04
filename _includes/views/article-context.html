@@ -1,0 +1,25 @@
+{%- if page.collection == 'posts' -%}
+  {%- assign context_date = page.updated | default: page.date -%}
+  {%- assign date_format = site.yat.date_format | default: "%Y年%m月%d日" -%}
+  <aside class="article-context" aria-labelledby="article-context-title">
+    <h2 id="article-context-title">阅读指南</h2>
+    <dl>
+      <div>
+        <dt>适用场景</dt>
+        <dd>{{ page.use_case | default: page.subtitle | default: "解决正文标题所描述的问题" }}</dd>
+      </div>
+      <div>
+        <dt>运行环境</dt>
+        <dd>{{ page.environment | default: "未特别注明时，请参照正文中的命令与配置" }}</dd>
+      </div>
+      <div>
+        <dt>版本基准</dt>
+        <dd>{{ page.versions | default: "未特别注明时，以文章发布日期附近的软件版本为准" }}</dd>
+      </div>
+      <div>
+        <dt>最后更新</dt>
+        <dd>{{ context_date | date: date_format }}</dd>
+      </div>
+    </dl>
+  </aside>
+{%- endif -%}

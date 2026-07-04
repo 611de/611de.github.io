@@ -10,4 +10,10 @@
   <a class="post-link" href="{{ post.url | relative_url }}">
     {{ post.title | escape }}
   </a>
+  {%- assign now_timestamp = 'now' | date: '%s' | plus: 0 -%}
+  {%- assign post_timestamp = post.date | date: '%s' | plus: 0 -%}
+  {%- assign post_age = now_timestamp | minus: post_timestamp -%}
+  {%- if post_age >= 0 and post_age <= 2592000 -%}
+  <span class="new-badge">新文章</span>
+  {%- endif -%}
 </span>

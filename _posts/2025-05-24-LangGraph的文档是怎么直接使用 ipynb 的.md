@@ -2,8 +2,10 @@
 layout: post
 title: LangGraph 的文档是怎么直接显示 ipynb 文件的?
 subtitle: 预先转为 Markdown 并使用 Mkdocs 构建
-categories: Docs
-tags: [docs, langgraph]
+categories: 教程与踩坑
+tags: [MkDocs, LangGraph, Jupyter]
+series: 技术文档工程
+featured: true
 ---
 
 在 `langgraph` 项目中有许多的文档，仔细观察可以发现许多文档是只有 `.ipynb` 这样的笔记本格式，并没有直接的 Markdown 文本与之对应。文档使用 `mkdocs` 来构建，但 `mkdocs.yaml` 文件中也没有 jupyter 相关的插件，那 `langgraph` 到底是怎么直接展示 `ipynb` 文件的文档的呢？下面是豆包给的回答：
@@ -109,7 +111,7 @@ def _convert_links_in_markdown(markdown: str) -> str:
   env:
     MKDOCS_GIT_COMMITTERS_APIKEY: ${{ secrets.MKDOCS_GIT_COMMITTERS_APIKEY }}
     OPENAI_API_KEY: sf-proj-1234567890 # fake placeholder, shouldn't actually be used
-    ANTHROPIC_API_KEY: sk-ant-api03-1234567890 # fake placeholder, shouldn't actually be used
+    ANTHROPIC_API_KEY: YOUR_ANTHROPIC_API_KEY # placeholder, shouldn't actually be used
 ```
 `make build-docs` 命令会触发文档构建过程，其中包含了 `.ipynb` 文件转换为 Markdown 文件以及后续的文档生成操作。
 
@@ -134,4 +136,4 @@ if page.file.src_path.endswith(".ipynb"):
 
 ---
 [豆包](https://www.doubao.com/)
-![1748065850876](image/2025-05-24-LangGraph的文档是怎么直接使用ipynb的/1748065850876.png)
+![对照查看 LangGraph 文档构建说明和 GitHub 仓库结构](/assets/images/posts/langgraph-docs/build-process.png)

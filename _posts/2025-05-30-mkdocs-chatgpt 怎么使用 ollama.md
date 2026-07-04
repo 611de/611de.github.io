@@ -1,3 +1,12 @@
+---
+layout: post
+title: mkdocs-chatgpt 如何使用 Ollama
+subtitle: 将 MkDocs 智能问答插件接入本地模型
+categories: LLM 应用开发
+tags: [MkDocs, Ollama, LLM]
+series: 技术文档工程
+---
+
 要将 `mkdocs-chatgpt` 插件与 Ollama 本地大语言模型服务集成，需要进行一些自定义配置。虽然该插件默认支持 OpenAI API，但我们可以通过修改其请求逻辑来适配 Ollama 的 API 格式。以下是具体实现方法：
 
 

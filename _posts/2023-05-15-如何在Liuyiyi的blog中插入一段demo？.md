@@ -2,8 +2,9 @@
 layout: post
 title: 如何在Liuyiyi的blog中插入一段demo？
 subtitle: markdown中插入gradio的demo
-categories: blog
+categories: 项目案例
 tags: [blog, gradio]
+series: Jekyll 博客搭建
 ---
 
 > blog中可以插入一些demo，交互式的demo可以让blog更具有表现力

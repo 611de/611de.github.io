@@ -24,6 +24,12 @@
         <a class="post-link" href="{{ post_url }}">
           {{ post.title | escape }}
         </a>
+        {%- assign now_timestamp = 'now' | date: '%s' | plus: 0 -%}
+        {%- assign post_timestamp = post.date | date: '%s' | plus: 0 -%}
+        {%- assign post_age = now_timestamp | minus: post_timestamp -%}
+        {%- if post_age >= 0 and post_age <= 2592000 -%}
+        <span class="new-badge">新文章</span>
+        {%- endif -%}
       </h2>
       <div class="post-meta">
         <span class="post-date"><i class="fa fa-calendar"></i> {{ post.date | date: date_format }}</span>
@@ -31,12 +37,12 @@
       </div>
       <a class="post-excerpt" href="{{ post_url }}">
         <p>
-        {{ excerpt }} <span class="read_more">Read More</span>
+          {{ excerpt }} <span class="read_more">阅读全文 <span aria-hidden="true">→</span></span>
         </p>
       </a>
       <div class="post-tags">
         {%- for tag in post.tags -%}
-        <a class="post-tag" href="{{ '/tags.html ' | relative_url }}#{{tag}}">#{{tag}}</a>
+        <a class="post-tag" href="{{ '/tags.html' | relative_url }}#{{ tag | uri_escape }}">#{{tag}}</a>
         {%- endfor -%}
       </div>
     </li>

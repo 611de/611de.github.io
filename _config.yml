@@ -24,7 +24,7 @@
 # You can create any custom variable you would like, and they will be accessible
 # in the templates via {{ site.myvariable }}.
 
-title: Liu Yiyi ' s Blog
+title: Liu Yiyi's Blog
 email: liuyiyi-611@qq.com
 author: Liu Yiyi
 
@@ -40,11 +40,10 @@ author: Liu Yiyi
 #   "Copyright (c) 2017-{currentYear} <a href="https://example.com">{author}</a>"
 #   "Copyright © 2017-2021 Foobar"
 #
-copyright: "Unpublished Work (cleft) 2023-{currentYear} {author}"
+copyright: "(c) 2023-{currentYear} {author}"
 
 description: >- # this means to ignore newlines until "baseurl:"
-  Liu Yiyi 的个人博客，一个励志成为 AI 工程师的开发者，分享个人开发方法和经验
-  博客持续完善中，欢迎访问...
+  聚焦 AI Agent、LLM 工具链与开发效率实践，记录可复现的教程、项目经验与踩坑笔记。
 
 # Write an awesome description for your new site here. You can edit this
 # line in _config.yml. It will appear in your document head meta (for
@@ -57,7 +56,26 @@ favicon: "https://611de.github.io/assets/images/ico/bitbug_favicon.ico" # the fa
 # Yat date format
 # refer to https://shopify.github.io/liquid/filters/date/ if you want to customize this
 yat:
-  date_format: "%b %d, %Y"
+  date_format: "%Y年%m月%d日"
+
+lang: "zh-CN"
+content_width: "1080px"
+theme_color: snowwhite
+brand_color: "#2563eb"
+night_mode: "manual"
+
+header_pages:
+  - index.html
+  - archives.html
+  - categories.html
+  - tags.html
+  - about.html
+
+banner:
+  opacity: 0.72
+  background: "#0f172a"
+  height: "420px"
+  min_height: "280px"
 
 # If you want more debug log, you can set true
 # debug: false
