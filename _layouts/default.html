@@ -22,6 +22,8 @@
     </main>
 
     {%- include views/footer.html -%}
-    {%- include extensions/chatbot.html %}
+    {%- if page.layout == 'post' -%}
+      {%- include extensions/chatbot.html -%}
+    {%- endif -%}
   </body>
 </html>
