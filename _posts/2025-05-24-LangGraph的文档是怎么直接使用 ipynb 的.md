@@ -12,7 +12,7 @@ featured: true
 
 `mkdocs` 文档要显示 `.ipynb` 文件，主要涉及到将 `.ipynb` 文件转换为 Markdown 格式的过程，下面详细分析实现步骤：
 
-### 1. 文档结构与编写
+## 1. 文档结构与编写
 `langgraph` 的文档内容存于 `/docs` 目录，采用 IPython 笔记本（`.ipynb` 文件）和 Markdown（`.md` 文件）结合的方式编写。可参考 `langgraph/CONTRIBUTING.md` 里的说明：
 ```
 The content for the main documentation is located in the `/docs` directory of the monorepo.
@@ -22,7 +22,7 @@ and markdown (`.md` files). The notebooks are converted to markdown
 and then built using [MkDocs](https://www.mkdocs.org/).
 ```
 
-### 2. `.ipynb` 文件转换为 Markdown
+## 2. `.ipynb` 文件转换为 Markdown
 项目里存在用于把 `.ipynb` 文件转换为 Markdown 格式的脚本，像 `langgraph/docs/_scripts/generate_llms_text.py` 中的 `convert_ipynb_to_md` 函数：
 ```python
 async def convert_ipynb_to_md(file_path: str) -> Optional[str]:
@@ -60,7 +60,7 @@ async def convert_ipynb_to_md(file_path: str) -> Optional[str]:
 ```
 此函数会读取 `.ipynb` 文件内容，接着借助 `_on_page_markdown_with_config` 函数将其转换为 Markdown 格式，同时还会移除一些不必要的图片标签。
 
-### 3. 链接标准化
+## 3. 链接标准化
 为保证转换后的 Markdown 文件里的链接格式符合 `mkdocs` 要求，项目中还有链接标准化的脚本，例如 `langgraph/docs/_scripts/notebook_convert.py` 中的 `_convert_links_in_markdown` 函数：
 ```python
 def _convert_links_in_markdown(markdown: str) -> str:
@@ -98,7 +98,7 @@ def _convert_links_in_markdown(markdown: str) -> str:
 ```
 该函数会把 Markdown 中的链接转换为以 `.md` 为扩展名的格式。
 
-### 4. 使用 MkDocs 构建文档
+## 4. 使用 MkDocs 构建文档
 最后，运用 `MkDocs` 来构建文档。项目的 `langgraph/docs/mkdocs.yml` 文件对文档的结构、主题、插件等进行了配置，文档构建命令在 `langgraph/.github/workflows/deploy_docs.yml` 中有体现：
 ```yaml
 - name: Build site
@@ -118,7 +118,7 @@ def _convert_links_in_markdown(markdown: str) -> str:
 综上所述，`langgraph` 的 `mkdocs` 文档通过将 `.ipynb` 文件转换为 Markdown 格式，再使用 `MkDocs` 构建文档的方式来显示 `.ipynb` 文件内容。 
 
 
-### 5. 具体的被调用的过程
+## 5. 构建时的调用过程
 
 首先是在 MkDocs 的配置文件 `mkdocs.yaml` 中，使用了 hooks 配置如下：
 ```yaml

@@ -10,7 +10,7 @@ series: 技术文档工程
 要将 `mkdocs-chatgpt` 插件与 Ollama 本地大语言模型服务集成，需要进行一些自定义配置。虽然该插件默认支持 OpenAI API，但我们可以通过修改其请求逻辑来适配 Ollama 的 API 格式。以下是具体实现方法：
 
 
-### 一、核心思路
+## 一、核心思路
 
 `mkdocs-chatgpt` 插件通过 JavaScript 与后端 API 通信。我们需要：
 1. 创建一个自定义插件扩展
@@ -18,14 +18,14 @@ series: 技术文档工程
 3. 适配 Ollama 的响应格式
 
 
-### 二、实现步骤
+## 二、实现步骤
 
-#### 1. 安装必要依赖
+### 1. 安装必要依赖
 ```bash
 pip install mkdocs-chatgpt
 ```
 
-#### 2. 创建自定义插件扩展
+### 2. 创建自定义插件扩展
 
 在项目根目录下创建 `mkdocs_ollama_plugin` 目录，并添加以下文件：
 
@@ -77,7 +77,7 @@ class OllamaChatGPTPlugin(BasePlugin):
         })
 ```
 
-#### 3. 配置 `mkdocs.yml`
+### 3. 配置 `mkdocs.yml`
 
 添加自定义插件和静态资源路径：
 
@@ -92,7 +92,7 @@ extra_javascript:
   - assets/javascripts/chatgpt-widget.js  # 确保加载修改后的脚本
 ```
 
-#### 4. 创建前端适配脚本
+### 4. 创建前端适配脚本
 
 在 `docs/` 目录下创建 `assets/javascripts/chatgpt-widget.js` 文件：
 
@@ -144,7 +144,7 @@ extra_javascript:
 ```
 
 
-### 三、使用方法
+## 三、使用方法
 
 1. 启动 Ollama 服务：
    ```bash
@@ -164,7 +164,7 @@ extra_javascript:
    ```
 
 
-### 四、注意事项
+## 四、注意事项
 
 1. **跨域问题**：
    - 如果 Ollama 服务不在本地运行，需要配置 CORS 允许 MkDocs 域名访问

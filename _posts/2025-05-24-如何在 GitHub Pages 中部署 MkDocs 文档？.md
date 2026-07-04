@@ -7,7 +7,6 @@ tags: [MkDocs, GitHub Pages, 文档部署]
 series: 技术文档工程
 ---
 
-# 如何在 GitHub Pages 中部署 MkDocs 文档
 想把用 MkDocs 写好的文档部署到 GitHub Pages 上，方便分享和展示？按下面步骤操作，轻松搞定。
 
 ## 一、准备工作

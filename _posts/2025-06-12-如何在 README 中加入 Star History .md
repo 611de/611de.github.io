@@ -6,8 +6,6 @@ categories: 教程与踩坑
 tags: [GitHub, README, Star History]
 ---
 
-# 如何在 README中 加入 Star History
-
 在开源项目的README文件中展示Star History图表，能够让访问者快速了解项目的热度变化趋势，增加项目的吸引力和可信度。那么，如何将这一实用的可视化内容添加到README中呢？
 
 ## 使用 Markdown 语法嵌入图表
