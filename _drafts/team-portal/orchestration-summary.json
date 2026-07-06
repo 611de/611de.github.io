@@ -1,0 +1,28 @@
+{
+  "project": {
+    "name": "团队导航门户",
+    "designRead": "Internal team portal / engineering team / clean minimal efficiency / medium density / avoid cluttered dashboard look",
+    "designDials": {
+      "layoutVariance": 2,
+      "motionIntensity": 1,
+      "visualDensity": 3
+    },
+    "operatingMode": "free-explore",
+    "deviceType": "desktop",
+    "designSource": {
+      "styleConstraints": {
+        "radiusMax": 16,
+        "staticShadowAlphaMax": 0.05
+      }
+    }
+  },
+  "pages": [
+    {
+      "slug": "portal",
+      "title": "团队导航门户",
+      "pageType": "information-dense",
+      "htmlSrc": "pages/portal.html",
+      "nodeId": "page-portal"
+    }
+  ]
+}

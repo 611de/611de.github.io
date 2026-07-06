@@ -1,0 +1,136 @@
+/* Team Portal Brand CSS — HarmonyOS Style */
+:root {
+  /* === Brand Colors (HarmonyOS warm red) === */
+  --color-brand: #CF0A2C;
+  --color-brand-light: #E8334E;
+  --color-brand-lighter: #F2B0BA;
+  --color-brand-lightest: #FDE8EB;
+  --color-brand-bg: #FFF5F5;
+  --color-brand-dark: #B0081F;
+  --color-brand-darker: #8A0618;
+
+  /* === Neutral Palette (warm gray) === */
+  --color-bg: #ffffff;
+  --color-bg-secondary: #F5F5F5;
+  --color-bg-tertiary: #EDEDED;
+  --color-surface: #ffffff;
+  --color-border: #E0E0E0;
+  --color-border-light: #F0F0F0;
+  --color-text-primary: #191919;
+  --color-text-secondary: #666666;
+  --color-text-tertiary: #999999;
+  --color-text-inverse: #ffffff;
+
+  /* === Sidebar (warm white, HarmonyOS style) === */
+  --sidebar-bg: #F8F8F8;
+  --sidebar-text: #999999;
+  --sidebar-text-active: #191919;
+  --sidebar-hover: #F0F0F0;
+  --sidebar-border: #E8E8E8;
+
+  /* === State Colors (warm tones) === */
+  --state-success: #34A853;
+  --state-warning: #E67E22;
+  --state-error: #CF0A2C;
+  --state-info: #3B82F6;
+
+  /* === Radius Scale (larger, HarmonyOS roundness) === */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-full: 9999px;
+
+  /* === Shadow System (minimal, HarmonyOS prefers borders) === */
+  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.02);
+  --shadow-sm: 0 1px 4px rgba(0, 0, 0, 0.03);
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.04);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.04);
+
+  /* === Typography (HarmonyOS: wider spacing) === */
+  --font-display: 'HarmonyOS Sans', 'Noto Sans SC', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-body: 'HarmonyOS Sans', 'Noto Sans SC', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', 'SF Mono', Consolas, monospace;
+}
+
+html.dark {
+  --color-bg: #121212;
+  --color-bg-secondary: #1e1e1e;
+  --color-bg-tertiary: #2c2c2c;
+  --color-surface: #1e1e1e;
+  --color-border: #333333;
+  --color-border-light: #1e1e1e;
+  --color-text-primary: #E6E6E6;
+  --color-text-secondary: #999999;
+  --color-text-tertiary: #666666;
+  --color-brand-bg: #3D0712;
+  --color-brand-lightest: #3D0712;
+  --sidebar-bg: #1a1a1a;
+  --sidebar-hover: #2c2c2c;
+  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.1);
+  --shadow-sm: 0 1px 4px rgba(0, 0, 0, 0.15);
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.15);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.2);
+}
+
+/* === Typography Classes === */
+.text-display-lg {
+  font-family: var(--font-display);
+  font-size: 2.25rem;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: 0.01em;
+  color: var(--color-text-primary);
+}
+
+.text-display-md {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 600;
+  line-height: 1.35;
+  letter-spacing: 0.01em;
+  color: var(--color-text-primary);
+}
+
+.text-title {
+  font-family: var(--font-display);
+  font-size: 1.125rem;
+  font-weight: 600;
+  line-height: 1.4;
+  letter-spacing: 0.01em;
+  color: var(--color-text-primary);
+}
+
+.text-body {
+  font-family: var(--font-body);
+  font-size: 0.875rem;
+  font-weight: 400;
+  line-height: 1.7;
+  letter-spacing: 0.01em;
+  color: var(--color-text-secondary);
+}
+
+.text-caption {
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  font-weight: 400;
+  line-height: 1.5;
+  letter-spacing: 0.01em;
+  color: var(--color-text-tertiary);
+}
+
+.text-mono {
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  font-weight: 400;
+  line-height: 1.5;
+  color: var(--color-text-secondary);
+}
+
+.text-overline {
+  font-family: var(--font-body);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-text-tertiary);
+}

@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Untitled</title>
+    <style id="theme-vars">
+/* Team Portal Brand CSS — Clean Minimal */
+:root {
+  /* === Brand Colors === */
+  --color-brand: #2563eb;
+  --color-brand-light: #3b82f6;
+  --color-brand-lighter: #93c5fd;
+  --color-brand-lightest: #dbeafe;
+  --color-brand-bg: #eff6ff;
+  --color-brand-dark: #1d4ed8;
+  --color-brand-darker: #1e3a5f;
+
+  /* === Neutral Palette === */
+  --color-bg: #ffffff;
+  --color-bg-secondary: #f8fafc;
+  --color-bg-tertiary: #f1f5f9;
+  --color-surface: #ffffff;
+  --color-border: #e2e8f0;
+  --color-border-light: #f1f5f9;
+  --color-text-primary: #0f172a;
+  --color-text-secondary: #475569;
+  --color-text-tertiary: #94a3b8;
+  --color-text-inverse: #ffffff;
+
+  /* === State Colors === */
+  --state-success: #16a34a;
+  --state-warning: #ca8a04;
+  --state-error: #dc2626;
+  --state-info: #2563eb;
+
+  /* === Radius Scale === */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-full: 9999px;
+
+  /* === Shadow System === */
+  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.03);
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.04);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.04);
+  --shadow-lg: 0 12px 24px rgba(0, 0, 0, 0.05);
+
+  /* === Typography === */
+  --font-display: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', 'SF Mono', Consolas, monospace;
+}
+
+html.dark {
+  --color-bg: #0f172a;
+  --color-bg-secondary: #1e293b;
+  --color-bg-tertiary: #334155;
+  --color-surface: #1e293b;
+  --color-border: #334155;
+  --color-border-light: #1e293b;
+  --color-text-primary: #f1f5f9;
+  --color-text-secondary: #94a3b8;
+  --color-text-tertiary: #64748b;
+  --color-brand-bg: #1e3a5f;
+  --color-brand-lightest: #1e3a5f;
+  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.15);
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.2);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.2);
+  --shadow-lg: 0 12px 24px rgba(0, 0, 0, 0.3);
+}
+
+/* === Typography Classes === */
+.text-display-lg {
+  font-family: var(--font-display);
+  font-size: 2.25rem;
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: -0.025em;
+  color: var(--color-text-primary);
+}
+
+.text-display-md {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 600;
+  line-height: 1.3;
+  letter-spacing: -0.02em;
+  color: var(--color-text-primary);
+}
+
+.text-title {
+  font-family: var(--font-display);
+  font-size: 1.125rem;
+  font-weight: 600;
+  line-height: 1.4;
+  color: var(--color-text-primary);
+}
+
+.text-body {
+  font-family: var(--font-body);
+  font-size: 0.875rem;
+  font-weight: 400;
+  line-height: 1.6;
+  color: var(--color-text-secondary);
+}
+
+.text-caption {
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  font-weight: 400;
+  line-height: 1.5;
+  color: var(--color-text-tertiary);
+}
+
+.text-mono {
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  font-weight: 400;
+  line-height: 1.5;
+  color: var(--color-text-secondary);
+}
+
+.text-overline {
+  font-family: var(--font-body);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-text-tertiary);
+}
+
+/* Tool brand colors */
+.tool-jira { background: var(--tool-jira-bg); color: var(--tool-jira-fg); }
+.tool-confluence { background: var(--tool-confluence-bg); color: var(--tool-confluence-fg); }
+.tool-figma { background: var(--tool-figma-bg); color: var(--tool-figma-fg); }
+.tool-slack { background: var(--tool-slack-bg); color: var(--tool-slack-fg); }
+.tool-github { background: var(--tool-github-bg); color: var(--tool-github-fg); }
+.tool-gitlab { background: var(--tool-gitlab-bg); color: var(--tool-gitlab-fg); }
+.tool-grafana { background: var(--tool-grafana-bg); color: var(--tool-grafana-fg); }
+.tool-postman { background: var(--tool-postman-bg); color: var(--tool-postman-fg); }
+
+:root {
+  --tool-jira-bg: #0052CC; --tool-jira-fg: #fff;
+  --tool-confluence-bg: #0052CC; --tool-confluence-fg: #fff;
+  --tool-figma-bg: #A259FF; --tool-figma-fg: #fff;
+  --tool-slack-bg: #4A154B; --tool-slack-fg: #fff;
+  --tool-github-bg: #24292e; --tool-github-fg: #fff;
+  --tool-gitlab-bg: #FC6D26; --tool-gitlab-fg: #fff;
+  --tool-grafana-bg: #F46800; --tool-grafana-fg: #fff;
+  --tool-postman-bg: #FF6C37; --tool-postman-fg: #fff;
+}
+
+/* Avatar identity colors */
+.avatar-zhang { background: #3b82f6; color: #fff; }
+.avatar-li { background: #8b5cf6; color: #fff; }
+.avatar-wang { background: #ec4899; color: #fff; }
+.avatar-zhao { background: #f59e0b; color: #fff; }
+.avatar-sun { background: #10b981; color: #fff; }
+.avatar-chen { background: #6366f1; color: #fff; }
+.avatar-liu { background: #ef4444; color: #fff; }
+.avatar-zhou { background: #14b8a6; color: #fff; }
+
+/* Status badge colors */
+.badge-review { background: #fef3c7; color: #92400e; }
+.badge-design { background: #f3e8ff; color: #7c3aed; }
+.badge-test { background: #dcfce7; color: #166534; }
+
+/* Activity icon colors */
+.activity-icon-deploy { background: #dcfce7; }
+.activity-icon-deploy i { color: #166534; }
+.activity-icon-meeting { background: #fef3c7; }
+.activity-icon-meeting i { color: #92400e; }
+.activity-icon-pr { background: #fce7f3; }
+.activity-icon-pr i { color: #9d174d; }
+.activity-icon-bug { background: #f3e8ff; }
+.activity-icon-bug i { color: #7c3aed; }
+
+/* CI status dot colors */
+.ci-dot-argocd { background: #A259FF; }
+
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4.3.1/dist/index.global.js"></script>
+    <script src="https://unpkg.com/lucide@1.8.0/dist/umd/lucide.min.js"></script>
+    <style type="text/tailwindcss">
+  @theme inline {
+    --color-border: var(--color-border);
+  }
+  @layer base {
+    body { background: var(--color-surface); color: var(--color-text-primary); }
+    td, th { @apply break-words; word-break: break-all; word-break: auto-phrase; }
+    th { @apply whitespace-nowrap; }
+  }
+    </style>
+    <style>
+      .no-scrollbar::-webkit-scrollbar { display: none; }
+      .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+      [data-icon] {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        -webkit-mask-size: contain;
+        mask-size: contain;
+        -webkit-mask-repeat: no-repeat;
+        mask-repeat: no-repeat;
+        -webkit-mask-position: center;
+        mask-position: center;
+        background-color: currentColor;
+      }
+    </style>
+</head>
+<body class="min-h-screen font-sans antialiased">
+    <main class="min-h-screen" style="background: var(--color-bg);">
+
+        <!-- ===== HEADER / TOP BAR ===== -->
+        <header class="w-full sticky top-0 z-10" style="background: var(--color-surface); border-bottom: 1px solid var(--color-border);">
+            <div class="max-w-screen-xl mx-auto px-6 py-3 flex items-center justify-between gap-6">
+                <!-- Left: Logo + Greeting -->
+                <div class="flex items-center gap-4 shrink-0">
+                    <div class="w-9 h-9 rounded-lg flex items-center justify-center" style="background: var(--color-brand);">
+                        <i data-lucide="code-2" class="w-5 h-5" style="color: var(--color-text-inverse);"></i>
+                    </div>
+                    <div class="hidden sm:block">
+                        <div class="text-title text-sm truncate" style="color: var(--color-text-primary);">工程中心</div>
+                        <div id="greeting-text" class="text-caption" style="color: var(--color-text-tertiary);">早上好，欢迎回来</div>
+                    </div>
+                </div>
+
+                <!-- Center: Search Bar -->
+                <div class="flex-1 max-w-md">
+                    <div class="relative flex items-center">
+                        <i data-lucide="search" class="absolute left-3 w-4 h-4 shrink-0" style="color: var(--color-text-tertiary);"></i>
+                        <input
+                            type="text"
+                            placeholder="搜索工具、成员或文档..."
+                            class="w-full h-9 pl-9 pr-4 rounded-lg text-sm outline-none transition-colors"
+                            style="background: var(--color-bg-secondary); color: var(--color-text-primary); border: 1px solid var(--color-border);"
+                            onfocus="this.style.borderColor='var(--color-brand-light)'"
+                            onblur="this.style.borderColor='var(--color-border)'"
+                        >
+                    </div>
+                </div>
+
+                <!-- Right: Date + User -->
+                <div class="flex items-center gap-3 shrink-0">
+                    <div class="hidden md:flex items-center gap-1.5">
+                        <i data-lucide="calendar" class="w-3.5 h-3.5" style="color: var(--color-text-tertiary);"></i>
+                        <span id="current-date" class="text-caption whitespace-nowrap" style="color: var(--color-text-tertiary);">2026年7月6日 周一</span>
+                    </div>
+                    <div class="w-8 h-8 rounded-full flex items-center justify-center text-xs font-semibold" style="background: var(--color-brand-lightest); color: var(--color-brand);">
+                        我
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- ===== QUICK STATS BAR ===== -->
+        <section class="w-full" style="background: var(--color-bg-secondary);">
+            <div class="max-w-screen-xl mx-auto px-6 py-4">
+                <div class="grid grid-cols-2 lg:grid-cols-4 gap-3">
+                    <!-- KPI 1: Visits -->
+                    <div class="rounded-lg px-4 py-3" style="background: var(--color-surface); border: 1px solid var(--color-border);">
+                        <div class="flex items-center justify-between">
+                            <span class="text-caption" style="color: var(--color-text-tertiary);">今日访问量</span>
+                            <i data-lucide="eye" class="w-3.5 h-3.5" style="color: var(--color-text-tertiary);"></i>
+                        </div>
+                        <div class="flex items-baseline gap-2 mt-1">
+                            <span class="text-display-md text-xl whitespace-nowrap" style="color: var(--color-text-primary);">1,284</span>
+                            <span class="inline-flex items-center gap-0.5 text-caption whitespace-nowrap" style="color: var(--state-success);">
+                                <i data-lucide="trending-up" class="w-3 h-3"></i> +12%
+                            </span>
+                        </div>
+                    </div>
+                    <!-- KPI 2: Active Members -->
+                    <div class="rounded-lg px-4 py-3" style="background: var(--color-surface); border: 1px solid var(--color-border);">
+                        <div class="flex items-center justify-between">
+                            <span class="text-caption" style="color: var(--color-text-tertiary);">活跃成员</span>
+                            <i data-lucide="users" class="w-3.5 h-3.5" style="color: var(--color-text-tertiary);"></i>
+                        </div>
+                        <div class="flex items-baseline gap-1 mt-1">
+                            <span class="text-display-md text-xl whitespace-nowrap" style="color: var(--color-text-primary);">23</span>
+                            <span class="text-caption whitespace-nowrap" style="color: var(--color-text-tertiary);">/28</span>
+                        </div>
+                    </div>
+                    <!-- KPI 3: Pending Tickets -->
+                    <div class="rounded-lg px-4 py-3" style="background: var(--color-surface); border: 1px solid var(--color-border);">
+                        <div class="flex items-center justify-between">
+                            <span class="text-caption" style="color: var(--color-text-tertiary);">待处理工单</span>
+                            <i data-lucide="alert-circle" class="w-3.5 h-3.5" style="color: var(--color-text-tertiary);"></i>
+                        </div>
+                        <div class="flex items-baseline gap-2 mt-1">
+                            <span class="text-display-md text-xl whitespace-nowrap" style="color: var(--color-text-primary);">7</span>
+                            <span class="text-caption whitespace-nowrap" style="color: var(--state-warning);">需关注</span>
+                        </div>
+                    </div>
+                    <!-- KPI 4: Deployments -->
+                    <div class="rounded-lg px-4 py-3" style="background: var(--color-surface); border: 1px solid var(--color-border);">
+                        <div class="flex items-center justify-between">
+                            <span class="text-caption" style="color: var(--color-text-tertiary);">本周部署</span>
+                            <i data-lucide="rocket" class="w-3.5 h-3.5" style="color: var(--color-text-tertiary);"></i>
+                        </div>
+                        <div class="flex items-baseline gap-2 mt-1">
+                            <span class="text-display-md text-xl whitespace-nowrap" style="color: var(--color-text-primary);">15次</span>
+                            <span class="inline-flex items-center gap-0.5 text-caption whitespace-nowrap" style="color: var(--state-success);">
+                                <i data-lucide="check-circle" class="w-3 h-3"></i> 全部通过
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== MAIN CONTENT GRID ===== -->
+        <section class="max-w-screen-xl mx-auto px-6 py-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+
+                <!-- ===== LEFT COLUMN: Tools & Resources ===== -->
+                <div class="flex flex-col gap-4">
+
+                    <!-- Card: 常用工具 -->
+                    <div class="rounded-lg p-4" style="background: var(--color-surface); border: 1px solid var(--color-border);">
+                        <div class="flex items-center gap-2 mb-3">
+                            <i data-lucide="layout-grid" class="w-4 h-4" style="color: var(--color-brand);"></i>
+                            <h2 class="text-title text-sm" style="color: var(--color-text-primary);">常用工具</h2>
+                        </div>
+                        <div class="grid grid-cols-4 gap-2">
+                            <!-- Jira -->
+                            <a href="#" class="flex flex-col items-center gap-1.5 p-2 rounded-md transition-colors" style="color: var(--color-text-secondary);" onmouseover="this.style.background='var(--color-bg-secondary)'" onmouseout="this.style.background='transparent'">
+                                <div class="w-9 h-9 rounded-md flex items-center justify-center text-xs font-bold tool-jira">J</div>
+                                <span class="text-caption text-center truncate w-full">Jira</span>
+                            </a>
+                            <!-- Confluence -->
+                            <a href="#" class="flex flex-col items-center gap-1.5 p-2 rounded-md transition-colors" style="color: var(--color-text-secondary);" onmouseover="this.style.background='var(--color-bg-secondary)'" onmouseout="this.style.background='transparent'">
+                                <div class="w-9 h-9 rounded-md flex items-center justify-center text-xs font-bold" class="w-9 h-9 rounded-md flex items-center justify-center text-xs font-bold tool-confluence">C</div>
+                                <span class="text-caption text-center truncate w-full">Confluence</span>
+                            </a>
+                            <!-- Figma -->
+                            <a href="#" class="flex flex-col items-center gap-1.5 p-2 rounded-md transition-colors" style="color: var(--color-text-secondary);" onmouseover="this.style.background='var(--color-bg-secondary)'" onmouseout="this.style.background='transparent'">
+                                <div class="w-9 h-9 rounded-md flex items-center justify-center text-xs font-bold" style="class="w-9 h-9 rounded-md flex items-center justify-center text-xs font-bold tool-figma">F</div>
+                                <span class="text-caption text-center truncate w-full">Figma</span>
+                            </a>
+                            <!-- Slack -->
+                            <a href="#" class="flex flex-col items-center gap-1.5 p-2 rounded-md transition-colors" style="color: var(--color-text-secondary);" onmouseover="this.style.background='var(--color-bg-secondary)'" onmouseout="this.style.background='transparent'">
+                                <div class="w-9 h-9 rounded-md flex items-center justify-center text-xs font-bold" style="class="w-9 h-9 rounded-md flex items-center justify-center text-xs font-bold tool-slack">S</div>
+                                <span class="text-caption text-center truncate w-full">Slack</span>
+                            </a>
+                            <!-- GitHub -->
+                            <a href="#" class="flex flex-col items-center gap-1.5 p-2 rounded-md transition-colors" style="color: var(--color-text-secondary);" onmouseover="this.style.background='var(--color-bg-secondary)'" onmouseout="this.style.background='transparent'">
+                                <div class="w-9 h-9 rounded-md flex items-center justify-center text-xs font-bold" style="class="w-9 h-9 rounded-md flex items-center justify-center text-xs font-bold tool-github">G</div>
+                                <span class="text-caption text-center truncate w-full">GitHub</span>
+                            </a>
+                            <!-- GitLab -->
+                            <a href="#" class="flex flex-col items-center gap-1.5 p-2 rounded-md transition-colors" style="color: var(--color-text-secondary);" onmouseover="this.style.background='var(--color-bg-secondary)'" onmouseout="this.style.background='transparent'">
+                                <div class="w-9 h-9 rounded-md flex items-center justify-center text-xs font-bold" style="class="w-9 h-9 rounded-md flex items-center justify-center text-xs font-bold tool-gitlab">G</div>
+                                <span class="text-caption text-center truncate w-full">GitLab</span>
+                            </a>
+                            <!-- Grafana -->
+                            <a href="#" class="flex flex-col items-center gap-1.5 p-2 rounded-md transition-colors" style="color: var(--color-text-secondary);" onmouseover="this.style.background='var(--color-bg-secondary)'" onmouseout="this.style.background='transparent'">
+                                <div class="w-9 h-9 rounded-md flex items-center justify-center text-xs font-bold" style="class="w-9 h-9 rounded-md flex items-center justify-center text-xs font-bold tool-grafana">G</div>
+                                <span class="text-caption text-center truncate w-full">Grafana</span>
+                            </a>
+                            <!-- Postman -->
+                            <a href="#" class="flex flex-col items-center gap-1.5 p-2 rounded-md transition-colors" style="color: var(--color-text-secondary);" onmouseover="this.style.background='var(--color-bg-secondary)'" onmouseout="this.style.background='transparent'">
+                                <div class="w-9 h-9 rounded-md flex items-center justify-center text-xs font-bold" style="class="w-9 h-9 rounded-md flex items-center justify-center text-xs font-bold tool-postman">P</div>
+                                <span class="text-caption text-center truncate w-full">Postman</span>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Card: CI/CD 工具 -->
+                    <div class="rounded-lg p-4" style="background: var(--color-surface); border: 1px solid var(--color-border);">
+                        <div class="flex items-center gap-2 mb-3">
+                            <i data-lucide="git-branch" class="w-4 h-4" style="color: var(--color-brand);"></i>
+                            <h2 class="text-title text-sm" style="color: var(--color-text-primary);">CI/CD 工具</h2>
+                        </div>
+                        <div class="flex flex-col gap-2.5">
+                            <!-- Jenkins -->
+                            <div class="flex items-center justify-between px-3 py-2 rounded-md" style="background: var(--color-bg-secondary);">
+                                <div class="flex items-center gap-2.5 min-w-0">
+                                    <i data-lucide="box" class="w-4 h-4 shrink-0" style="color: var(--color-text-secondary);"></i>
+                                    <span class="text-sm truncate" style="color: var(--color-text-primary);">Jenkins</span>
+                                </div>
+                                <div class="flex items-center gap-1.5 shrink-0">
+                                    <span class="w-2 h-2 rounded-full" style="background: var(--state-success);"></span>
+                                    <span class="text-caption whitespace-nowrap" style="color: var(--state-success);">运行中</span>
+                                </div>
+                            </div>
+                            <!-- GitHub Actions -->
+                            <div class="flex items-center justify-between px-3 py-2 rounded-md" style="background: var(--color-bg-secondary);">
+                                <div class="flex items-center gap-2.5 min-w-0">
+                                    <i data-lucide="play-circle" class="w-4 h-4 shrink-0" style="color: var(--color-text-secondary);"></i>
+                                    <span class="text-sm truncate" style="color: var(--color-text-primary);">GitHub Actions</span>
+                                </div>
+                                <div class="flex items-center gap-1.5 shrink-0">
+                                    <span class="w-2 h-2 rounded-full" style="background: var(--state-success);"></span>
+                                    <span class="text-caption whitespace-nowrap" style="color: var(--state-success);">正常</span>
+                                </div>
+                            </div>
+                            <!-- SonarQube -->
+                            <div class="flex items-center justify-between px-3 py-2 rounded-md" style="background: var(--color-bg-secondary);">
+                                <div class="flex items-center gap-2.5 min-w-0">
+                                    <i data-lucide="shield-check" class="w-4 h-4 shrink-0" style="color: var(--color-text-secondary);"></i>
+                                    <span class="text-sm truncate" style="color: var(--color-text-primary);">SonarQube</span>
+                                </div>
+                                <div class="flex items-center gap-1.5 shrink-0">
+                                    <span class="w-2 h-2 rounded-full" style="background: var(--state-success);"></span>
+                                    <span class="text-caption whitespace-nowrap" style="color: var(--state-success);">已通过</span>
+                                </div>
+                            </div>
+                            <!-- ArgoCD -->
+                            <div class="flex items-center justify-between px-3 py-2 rounded-md" style="background: var(--color-bg-secondary);">
+                                <div class="flex items-center gap-2.5 min-w-0">
+                                    <i data-lucide="refresh-cw" class="w-4 h-4 shrink-0" style="color: var(--color-text-secondary);"></i>
+                                    <span class="text-sm truncate" style="color: var(--color-text-primary);">ArgoCD</span>
+                                </div>
+                                <div class="flex items-center gap-1.5 shrink-0">
+                                    <span class="w-2 h-2 rounded-full" style="background: var(--state-info);"></span>
+                                    <span class="text-caption whitespace-nowrap" style="color: var(--state-info);">同步完成</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ===== CENTER COLUMN: Team & People ===== -->
+                <div class="flex flex-col gap-4">
+
+                    <!-- Card: 团队成员 -->
+                    <div class="rounded-lg p-4" style="background: var(--color-surface); border: 1px solid var(--color-border);">
+                        <div class="flex items-center justify-between mb-3">
+                            <div class="flex items-center gap-2">
+                                <i data-lucide="users" class="w-4 h-4" style="color: var(--color-brand);"></i>
+                                <h2 class="text-title text-sm" style="color: var(--color-text-primary);">团队成员</h2>
+                            </div>
+                            <span class="text-caption" style="color: var(--color-text-tertiary);">23/28 在线</span>
+                        </div>
+                        <div class="grid grid-cols-4 gap-3">
+                            <!-- Member 1 -->
+                            <div class="flex flex-col items-center gap-1.5">
+                                <div class="relative">
+                                    <div class="w-10 h-10 rounded-full flex items-center justify-center text-xs font-semibold" style="class="w-10 h-10 rounded-full flex items-center justify-center text-xs font-semibold avatar-zhang">张</div>
+                                    <span class="absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full border-2" style="background: var(--state-success); border-color: var(--color-surface);"></span>
+                                </div>
+                                <span class="text-caption text-center truncate w-full" style="color: var(--color-text-secondary);">张三</span>
+                                <span class="text-caption text-center truncate w-full" style="color: var(--color-text-tertiary); font-size: 0.625rem;">前端开发</span>
+                            </div>
+                            <!-- Member 2 -->
+                            <div class="flex flex-col items-center gap-1.5">
+                                <div class="relative">
+                                    <div class="w-10 h-10 rounded-full flex items-center justify-center text-xs font-semibold" style="class="w-10 h-10 rounded-full flex items-center justify-center text-xs font-semibold avatar-li">李</div>
+                                    <span class="absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full border-2" style="background: var(--state-success); border-color: var(--color-surface);"></span>
+                                </div>
+                                <span class="text-caption text-center truncate w-full" style="color: var(--color-text-secondary);">李四</span>
+                                <span class="text-caption text-center truncate w-full" style="color: var(--color-text-tertiary); font-size: 0.625rem;">后端开发</span>
+                            </div>
+                            <!-- Member 3 -->
+                            <div class="flex flex-col items-center gap-1.5">
+                                <div class="relative">
+                                    <div class="w-10 h-10 rounded-full flex items-center justify-center text-xs font-semibold" style="class="w-10 h-10 rounded-full flex items-center justify-center text-xs font-semibold avatar-wang">王</div>
+                                    <span class="absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full border-2" style="background: var(--state-success); border-color: var(--color-surface);"></span>
+                                </div>
+                                <span class="text-caption text-center truncate w-full" style="color: var(--color-text-secondary);">王五</span>
+                                <span class="text-caption text-center truncate w-full" style="color: var(--color-text-tertiary); font-size: 0.625rem;">UI 设计</span>
+                            </div>
+                            <!-- Member 4 -->
+                            <div class="flex flex-col items-center gap-1.5">
+                                <div class="relative">
+                                    <div class="w-10 h-10 rounded-full flex items-center justify-center text-xs font-semibold" style="class="w-10 h-10 rounded-full flex items-center justify-center text-xs font-semibold avatar-zhao">赵</div>
+                                    <span class="absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full border-2" style="background: var(--state-success); border-color: var(--color-surface);"></span>
+                                </div>
+                                <span class="text-caption text-center truncate w-full" style="color: var(--color-text-secondary);">赵六</span>
+                                <span class="text-caption text-center truncate w-full" style="color: var(--color-text-tertiary); font-size: 0.625rem;">DevOps</span>
+                            </div>
+                            <!-- Member 5 -->
+                            <div class="flex flex-col items-center gap-1.5">
+                                <div class="relative">
+                                    <div class="w-10 h-10 rounded-full flex items-center justify-center text-xs font-semibold" style="class="w-10 h-10 rounded-full flex items-center justify-center text-xs font-semibold avatar-sun">孙</div>
+                                    <span class="absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full border-2" style="background: var(--state-success); border-color: var(--color-surface);"></span>
+                                </div>
+                                <span class="text-caption text-center truncate w-full" style="color: var(--color-text-secondary);">孙七</span>
+                                <span class="text-caption text-center truncate w-full" style="color: var(--color-text-tertiary); font-size: 0.625rem;">测试工程</span>
+                            </div>
+                            <!-- Member 6 -->
+                            <div class="flex flex-col items-center gap-1.5">
+                                <div class="relative">
+                                    <div class="w-10 h-10 rounded-full flex items-center justify-center text-xs font-semibold" style="class="w-10 h-10 rounded-full flex items-center justify-center text-xs font-semibold avatar-chen">陈</div>
+                                    <span class="absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full border-2" style="background: var(--state-warning); border-color: var(--color-surface);"></span>
+                                </div>
+                                <span class="text-caption text-center truncate w-full" style="color: var(--color-text-secondary);">陈六</span>
+                                <span class="text-caption text-center truncate w-full" style="color: var(--color-text-tertiary); font-size: 0.625rem;">后端开发</span>
+                            </div>
+                            <!-- Member 7 -->
+                            <div class="flex flex-col items-center gap-1.5">
+                                <div class="relative">
+                                    <div class="w-10 h-10 rounded-full flex items-center justify-center text-xs font-semibold" style="class="w-10 h-10 rounded-full flex items-center justify-center text-xs font-semibold avatar-liu">刘</div>
+                                    <span class="absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full border-2" style="background: var(--color-text-tertiary); border-color: var(--color-surface);"></span>
+                                </div>
+                                <span class="text-caption text-center truncate w-full" style="color: var(--color-text-secondary);">刘八</span>
+                                <span class="text-caption text-center truncate w-full" style="color: var(--color-text-tertiary); font-size: 0.625rem;">前端开发</span>
+                            </div>
+                            <!-- Member 8 -->
+                            <div class="flex flex-col items-center gap-1.5">
+                                <div class="relative">
+                                    <div class="w-10 h-10 rounded-full flex items-center justify-center text-xs font-semibold" style="class="w-10 h-10 rounded-full flex items-center justify-center text-xs font-semibold avatar-zhou">周</div>
+                                    <span class="absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full border-2" style="background: var(--state-success); border-color: var(--color-surface);"></span>
+                                </div>
+                                <span class="text-caption text-center truncate w-full" style="color: var(--color-text-secondary);">周九</span>
+                                <span class="text-caption text-center truncate w-full" style="color: var(--color-text-tertiary); font-size: 0.625rem;">产品经理</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card: 正在进行的工作 -->
+                    <div class="rounded-lg p-4" style="background: var(--color-surface); border: 1px solid var(--color-border);">
+                        <div class="flex items-center justify-between mb-3">
+                            <div class="flex items-center gap-2">
+                                <i data-lucide="loader" class="w-4 h-4" style="color: var(--color-brand);"></i>
+                                <h2 class="text-title text-sm" style="color: var(--color-text-primary);">正在进行的工作</h2>
+                            </div>
+                        </div>
+                        <div class="flex flex-col gap-3">
+                            <!-- Work Item 1 -->
+                            <div class="flex items-start gap-3">
+                                <div class="w-2 h-2 rounded-full mt-1.5 shrink-0" style="background: var(--state-info);"></div>
+                                <div class="min-w-0 flex-1">
+                                    <div class="flex items-center gap-2">
+                                        <span class="text-sm font-medium truncate" style="color: var(--color-text-primary);">张三</span>
+                                        <span class="text-caption truncate" style="color: var(--color-text-tertiary);">重构用户认证模块</span>
+                                    </div>
+                                    <div class="flex items-center gap-1.5 mt-0.5">
+                                        <span class="inline-flex items-center px-1.5 py-0.5 rounded text-caption whitespace-nowrap" style="background: var(--color-brand-lightest); color: var(--color-brand); font-size: 0.625rem;">进行中</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Work Item 2 -->
+                            <div class="flex items-start gap-3">
+                                <div class="w-2 h-2 rounded-full mt-1.5 shrink-0" style="background: var(--state-warning);"></div>
+                                <div class="min-w-0 flex-1">
+                                    <div class="flex items-center gap-2">
+                                        <span class="text-sm font-medium truncate" style="color: var(--color-text-primary);">李四</span>
+                                        <span class="text-caption truncate" style="color: var(--color-text-tertiary);">优化数据库查询性能</span>
+                                    </div>
+                                    <div class="flex items-center gap-1.5 mt-0.5">
+                                        <span class="inline-flex items-center px-1.5 py-0.5 rounded text-caption whitespace-nowrap" class="badge-review">代码审查中</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Work Item 3 -->
+                            <div class="flex items-start gap-3">
+                                <div class="w-2 h-2 rounded-full mt-1.5 shrink-0 ci-dot-argocd"></div>
+                                <div class="min-w-0 flex-1">
+                                    <div class="flex items-center gap-2">
+                                        <span class="text-sm font-medium truncate" style="color: var(--color-text-primary);">王五</span>
+                                        <span class="text-caption truncate" style="color: var(--color-text-tertiary);">设计新版Dashboard原型</span>
+                                    </div>
+                                    <div class="flex items-center gap-1.5 mt-0.5">
+                                        <span class="inline-flex items-center px-1.5 py-0.5 rounded text-caption whitespace-nowrap" class="badge-design">设计中</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Work Item 4 -->
+                            <div class="flex items-start gap-3">
+                                <div class="w-2 h-2 rounded-full mt-1.5 shrink-0" style="background: var(--state-success);"></div>
+                                <div class="min-w-0 flex-1">
+                                    <div class="flex items-center gap-2">
+                                        <span class="text-sm font-medium truncate" style="color: var(--color-text-primary);">赵六</span>
+                                        <span class="text-caption truncate" style="color: var(--color-text-tertiary);">配置K8s生产环境监控</span>
+                                    </div>
+                                    <div class="flex items-center gap-1.5 mt-0.5">
+                                        <span class="inline-flex items-center px-1.5 py-0.5 rounded text-caption whitespace-nowrap" class="badge-test">测试中</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Work Item 5 -->
+                            <div class="flex items-start gap-3">
+                                <div class="w-2 h-2 rounded-full mt-1.5 shrink-0" style="background: var(--color-text-tertiary);"></div>
+                                <div class="min-w-0 flex-1">
+                                    <div class="flex items-center gap-2">
+                                        <span class="text-sm font-medium truncate" style="color: var(--color-text-primary);">孙七</span>
+                                        <span class="text-caption truncate" style="color: var(--color-text-tertiary);">编写支付模块E2E测试</span>
+                                    </div>
+                                    <div class="flex items-center gap-1.5 mt-0.5">
+                                        <span class="inline-flex items-center px-1.5 py-0.5 rounded text-caption whitespace-nowrap" style="background: var(--color-bg-tertiary); color: var(--color-text-secondary); font-size: 0.625rem;">待开始</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ===== RIGHT COLUMN: Data & Activity ===== -->
+                <div class="flex flex-col gap-4">
+
+                    <!-- Card: 网站使用数据 -->
+                    <div class="rounded-lg p-4" style="background: var(--color-surface); border: 1px solid var(--color-border);">
+                        <div class="flex items-center justify-between mb-3">
+                            <div class="flex items-center gap-2">
+                                <i data-lucide="bar-chart-3" class="w-4 h-4" style="color: var(--color-brand);"></i>
+                                <h2 class="text-title text-sm" style="color: var(--color-text-primary);">网站使用数据</h2>
+                            </div>
+                            <span class="text-caption" style="color: var(--color-text-tertiary);">近7天</span>
+                        </div>
+                        <div class="flex items-end justify-between gap-2" style="height: 120px;">
+                            <!-- Mon -->
+                            <div class="flex flex-col items-center gap-1 flex-1">
+                                <div class="w-full rounded-t" style="height: 55%; background: var(--color-brand-lighter);"></div>
+                                <span class="text-caption" style="color: var(--color-text-tertiary); font-size: 0.625rem;">周一</span>
+                            </div>
+                            <!-- Tue -->
+                            <div class="flex flex-col items-center gap-1 flex-1">
+                                <div class="w-full rounded-t" style="height: 72%; background: var(--color-brand-light);"></div>
+                                <span class="text-caption" style="color: var(--color-text-tertiary); font-size: 0.625rem;">周二</span>
+                            </div>
+                            <!-- Wed -->
+                            <div class="flex flex-col items-center gap-1 flex-1">
+                                <div class="w-full rounded-t" style="height: 60%; background: var(--color-brand-lighter);"></div>
+                                <span class="text-caption" style="color: var(--color-text-tertiary); font-size: 0.625rem;">周三</span>
+                            </div>
+                            <!-- Thu -->
+                            <div class="flex flex-col items-center gap-1 flex-1">
+                                <div class="w-full rounded-t" style="height: 88%; background: var(--color-brand);"></div>
+                                <span class="text-caption" style="color: var(--color-text-tertiary); font-size: 0.625rem;">周四</span>
+                            </div>
+                            <!-- Fri -->
+                            <div class="flex flex-col items-center gap-1 flex-1">
+                                <div class="w-full rounded-t" style="height: 95%; background: var(--color-brand);"></div>
+                                <span class="text-caption" style="color: var(--color-text-tertiary); font-size: 0.625rem;">周五</span>
+                            </div>
+                            <!-- Sat -->
+                            <div class="flex flex-col items-center gap-1 flex-1">
+                                <div class="w-full rounded-t" style="height: 35%; background: var(--color-brand-lightest);"></div>
+                                <span class="text-caption" style="color: var(--color-text-tertiary); font-size: 0.625rem;">周六</span>
+                            </div>
+                            <!-- Sun -->
+                            <div class="flex flex-col items-center gap-1 flex-1">
+                                <div class="w-full rounded-t" style="height: 28%; background: var(--color-brand-lightest);"></div>
+                                <span class="text-caption" style="color: var(--color-text-tertiary); font-size: 0.625rem;">周日</span>
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-between mt-3 pt-3" style="border-top: 1px solid var(--color-border-light);">
+                            <div>
+                                <span class="text-caption" style="color: var(--color-text-tertiary);">周均访问</span>
+                                <span class="text-sm font-semibold ml-1 whitespace-nowrap" style="color: var(--color-text-primary);">1,186</span>
+                            </div>
+                            <div>
+                                <span class="text-caption" style="color: var(--color-text-tertiary);">峰值</span>
+                                <span class="text-sm font-semibold ml-1 whitespace-nowrap" style="color: var(--color-brand);">1,452</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card: 最近活动 -->
+                    <div class="rounded-lg p-4" style="background: var(--color-surface); border: 1px solid var(--color-border);">
+                        <div class="flex items-center justify-between mb-3">
+                            <div class="flex items-center gap-2">
+                                <i data-lucide="activity" class="w-4 h-4" style="color: var(--color-brand);"></i>
+                                <h2 class="text-title text-sm" style="color: var(--color-text-primary);">最近活动</h2>
+                            </div>
+                            <a href="#" class="text-caption whitespace-nowrap" style="color: var(--color-brand);">查看全部</a>
+                        </div>
+                        <div class="flex flex-col gap-0">
+                            <!-- Activity 1 -->
+                            <div class="flex items-start gap-3 py-2.5" style="border-bottom: 1px solid var(--color-border-light);">
+                                <div class="w-7 h-7 rounded-full flex items-center justify-center shrink-0 mt-0.5 activity-icon-deploy">
+                                    <i data-lucide="rocket" class="w-3.5 h-3.5"></i>
+                                </div>
+                                <div class="min-w-0 flex-1">
+                                    <p class="text-sm truncate" style="color: var(--color-text-primary);">系统部署完成 v2.3.1</p>
+                                    <span class="text-caption" style="color: var(--color-text-tertiary);">14:30</span>
+                                </div>
+                            </div>
+                            <!-- Activity 2 -->
+                            <div class="flex items-start gap-3 py-2.5" style="border-bottom: 1px solid var(--color-border-light);">
+                                <div class="w-7 h-7 rounded-full flex items-center justify-center shrink-0 mt-0.5" style="background: var(--color-brand-lightest);">
+                                    <i data-lucide="user-plus" class="w-3.5 h-3.5" style="color: var(--color-brand);"></i>
+                                </div>
+                                <div class="min-w-0 flex-1">
+                                    <p class="text-sm truncate" style="color: var(--color-text-primary);">新成员 陈六 加入团队</p>
+                                    <span class="text-caption" style="color: var(--color-text-tertiary);">13:15</span>
+                                </div>
+                            </div>
+                            <!-- Activity 3 -->
+                            <div class="flex items-start gap-3 py-2.5" style="border-bottom: 1px solid var(--color-border-light);">
+                                <div class="w-7 h-7 rounded-full flex items-center justify-center shrink-0 mt-0.5 activity-icon-meeting">
+                                    <i data-lucide="calendar-check" class="w-3.5 h-3.5"></i>
+                                </div>
+                                <div class="min-w-0 flex-1">
+                                    <p class="text-sm truncate" style="color: var(--color-text-primary);">Sprint 24 规划会议完成</p>
+                                    <span class="text-caption" style="color: var(--color-text-tertiary);">11:00</span>
+                                </div>
+                            </div>
+                            <!-- Activity 4 -->
+                            <div class="flex items-start gap-3 py-2.5" style="border-bottom: 1px solid var(--color-border-light);">
+                                <div class="w-7 h-7 rounded-full flex items-center justify-center shrink-0 mt-0.5 activity-icon-pr">
+                                    <i data-lucide="git-pull-request" class="w-3.5 h-3.5"></i>
+                                </div>
+                                <div class="min-w-0 flex-1">
+                                    <p class="text-sm truncate" style="color: var(--color-text-primary);">PR #342 合并至 main 分支</p>
+                                    <span class="text-caption" style="color: var(--color-text-tertiary);">10:22</span>
+                                </div>
+                            </div>
+                            <!-- Activity 5 -->
+                            <div class="flex items-start gap-3 py-2.5">
+                                <div class="w-7 h-7 rounded-full flex items-center justify-center shrink-0 mt-0.5 activity-icon-bug">
+                                    <i data-lucide="bug" class="w-3.5 h-3.5"></i>
+                                </div>
+                                <div class="min-w-0 flex-1">
+                                    <p class="text-sm truncate" style="color: var(--color-text-primary);">Bug #1089 已修复并关闭</p>
+                                    <span class="text-caption" style="color: var(--color-text-tertiary);">09:45</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ===== FOOTER ===== -->
+        <footer class="mt-auto" style="background: var(--color-bg-secondary); border-top: 1px solid var(--color-border);">
+            <div class="max-w-screen-xl mx-auto px-6 py-3 flex items-center justify-between">
+                <span class="text-caption" style="color: var(--color-text-tertiary);">工程中心 &copy; 2026</span>
+                <div class="flex items-center gap-4">
+                    <a href="#" class="text-caption whitespace-nowrap transition-colors" style="color: var(--color-text-tertiary);" onmouseover="this.style.color='var(--color-brand)'" onmouseout="this.style.color='var(--color-text-tertiary)'">帮助文档</a>
+                    <a href="#" class="text-caption whitespace-nowrap transition-colors" style="color: var(--color-text-tertiary);" onmouseover="this.style.color='var(--color-brand)'" onmouseout="this.style.color='var(--color-text-tertiary)'">提交反馈</a>
+                    <a href="#" class="text-caption whitespace-nowrap transition-colors" style="color: var(--color-text-tertiary);" onmouseover="this.style.color='var(--color-brand)'" onmouseout="this.style.color='var(--color-text-tertiary)'">系统状态</a>
+                </div>
+            </div>
+        </footer>
+
+    </main>
+    <script>lucide.createIcons();</script>
+    <script>
+    (function(){
+        var h = new Date().getHours();
+        var g = h < 12 ? '早上好' : h < 18 ? '下午好' : '晚上好';
+        var el = document.getElementById('greeting-text');
+        if (el) el.textContent = g + '，欢迎回来';
+        var now = new Date();
+        var days = ['周日','周一','周二','周三','周四','周五','周六'];
+        var ds = now.getFullYear() + '年' + (now.getMonth()+1) + '月' + now.getDate() + '日 ' + days[now.getDay()];
+        var de = document.getElementById('current-date');
+        if (de) de.textContent = ds;
+    })();
+    </script>
+</body>
+</html>

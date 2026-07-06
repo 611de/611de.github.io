@@ -1,0 +1,77 @@
+{
+  "data": [
+    {
+      "id": "page-portal",
+      "title": "团队导航门户",
+      "type": "page",
+      "version": 1,
+      "createdAt": 1783345000,
+      "canvasData": {
+        "x": 0,
+        "y": 0,
+        "group": 0
+      },
+      "devMetadata": {
+        "htmlSrc": "pages/portal.html",
+        "interactions": []
+      }
+    },
+    {
+      "id": "page-orbit",
+      "title": "Orbit 风格导航",
+      "type": "page",
+      "version": 1,
+      "createdAt": 1783346100,
+      "canvasData": {
+        "x": 0,
+        "y": 381,
+        "group": 1
+      },
+      "devMetadata": {
+        "htmlSrc": "pages/orbit.html",
+        "interactions": []
+      }
+    },
+    {
+      "id": "page-orbit-enhanced",
+      "title": "完整导航门户",
+      "type": "page",
+      "version": 1,
+      "createdAt": 1783347000,
+      "canvasData": {
+        "x": 0,
+        "y": 788,
+        "group": 2
+      },
+      "devMetadata": {
+        "htmlSrc": "pages/orbit-enhanced.html",
+        "interactions": []
+      }
+    },
+    {
+      "id": "page-harmony",
+      "title": "HarmonyOS 风格",
+      "type": "page",
+      "version": 1,
+      "createdAt": 1783350000,
+      "canvasData": {
+        "x": 0,
+        "y": 1363,
+        "group": 3
+      },
+      "devMetadata": {
+        "htmlSrc": "pages/harmony.html",
+        "interactions": []
+      }
+    }
+  ],
+  "config": {
+    "autoLayout": true,
+    "deviceType": "desktop",
+    "projectName": "团队导航门户",
+    "windowSize": {
+      "width": 800,
+      "height": 600
+    }
+  }
+}

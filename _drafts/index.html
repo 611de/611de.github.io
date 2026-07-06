@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Orbit · Team Workspace</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root { --ink:#172033; --muted:#778197; --line:#e8eaf0; --purple:#6d5dfc; --purple-soft:#eeecff; --green:#27ae83; --orange:#f59e55; --bg:#f5f6fa; }
+    * { box-sizing: border-box; }
+    body { margin:0; background:var(--bg); color:var(--ink); font-family:"DM Sans","Noto Sans SC",sans-serif; -webkit-font-smoothing:antialiased; }
+    button,input { font:inherit; }
+    .app { min-height:100vh; display:grid; grid-template-columns:232px minmax(0,1fr); }
+    aside { background:#111827; color:#fff; padding:24px 16px; display:flex; flex-direction:column; position:sticky; top:0; height:100vh; }
+    .brand { display:flex; align-items:center; gap:11px; font-weight:700; font-size:18px; padding:0 10px 26px; letter-spacing:-.3px; }
+    .brand-mark { width:31px; height:31px; border-radius:10px; background:linear-gradient(145deg,#887aff,#5b4cf1); display:grid; place-items:center; box-shadow:0 7px 18px #6556ee55; }
+    .nav-label { color:#667085; font-size:10px; letter-spacing:1.5px; font-weight:700; margin:20px 12px 8px; }
+    nav a { color:#9aa3b4; text-decoration:none; display:flex; gap:12px; align-items:center; padding:10px 12px; border-radius:9px; margin:2px 0; font-size:13px; font-weight:500; transition:.2s; }
+    nav a:hover, nav a.active { color:#fff; background:#ffffff0e; }
+    nav a.active { box-shadow:inset 2px 0 #7c6dfb; }
+    .ico { width:18px; text-align:center; font-size:15px; opacity:.9; }
+    .sidebar-foot { margin-top:auto; padding:14px 10px 0; border-top:1px solid #ffffff0d; display:flex; align-items:center; gap:10px; }
+    .avatar { width:34px; height:34px; border-radius:50%; background:linear-gradient(135deg,#ffd6b1,#b06b46); display:grid; place-items:center; color:#fff; font-weight:700; font-size:12px; }
+    .sidebar-foot b { display:block; font-size:12px; }.sidebar-foot span { font-size:10px; color:#7d8799; }
+    main { min-width:0; }
+    header { height:72px; display:flex; align-items:center; gap:20px; padding:0 38px; background:#ffffffd9; backdrop-filter:blur(16px); border-bottom:1px solid var(--line); position:sticky; top:0; z-index:5; }
+    .search { position:relative; width:min(410px,46vw); }
+    .search input { width:100%; border:1px solid #e7e9ef; background:#f7f8fa; border-radius:9px; padding:10px 44px 10px 38px; outline:none; font-size:12px; transition:.2s; }
+    .search input:focus { background:#fff; border-color:#bdb6ff; box-shadow:0 0 0 3px #6d5dfc12; }
+    .search::before { content:"⌕"; position:absolute; left:13px; top:5px; font-size:23px; color:#8a93a5; }
+    .key { position:absolute; right:9px; top:8px; color:#929aad; font-size:10px; border:1px solid #dde0e7; border-radius:5px; padding:2px 5px; background:#fff; }
+    .head-actions { margin-left:auto; display:flex; gap:10px; align-items:center; }
+    .circle-btn { width:35px; height:35px; border:1px solid #e7e9ef; background:white; border-radius:9px; color:#6e7788; cursor:pointer; }
+    .new-btn { border:0; color:#fff; padding:9px 15px; background:var(--purple); border-radius:9px; font-size:12px; font-weight:600; cursor:pointer; box-shadow:0 6px 15px #6d5dfc33; }
+    .content { max-width:1480px; margin:auto; padding:32px 38px 48px; }
+    .welcome { display:flex; align-items:flex-start; justify-content:space-between; margin-bottom:27px; }
+    h1 { margin:0 0 5px; font-size:25px; letter-spacing:-.7px; } .welcome p { margin:0; color:var(--muted); font-size:13px; }
+    .date { background:#fff; border:1px solid var(--line); padding:8px 11px; border-radius:8px; font-size:11px; color:#70798a; }
+    .metrics { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-bottom:24px; }
+    .metric,.card { background:#fff; border:1px solid var(--line); border-radius:13px; box-shadow:0 2px 4px #18213a05; }
+    .metric { padding:17px 18px; position:relative; overflow:hidden; }
+    .metric-top { display:flex; justify-content:space-between; color:#7e8798; font-size:11px; }.metric-icon { width:29px;height:29px;border-radius:8px;display:grid;place-items:center;background:#f1f3f7;color:#667085; }
+    .metric strong { display:block; font-size:23px; margin:12px 0 3px; letter-spacing:-.6px; }.metric small { color:#9299a8; font-size:10px; }.up { color:#1eaa79!important; font-weight:600; }
+    .layout { display:grid; grid-template-columns:minmax(0,1.52fr) minmax(280px,.72fr); gap:18px; }
+    .left { min-width:0; display:grid; gap:18px; }.card { padding:20px; min-width:0; }
+    .card-head { display:flex; align-items:center; justify-content:space-between; margin-bottom:18px; }.card-head h2 { margin:0; font-size:14px; }.card-head a { font-size:10px; text-decoration:none; color:var(--purple); font-weight:600; }
+    .tool-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:10px; }
+    .tool { border:1px solid #eceef3; border-radius:11px; padding:13px; min-height:92px; cursor:pointer; transition:.2s; text-decoration:none; color:inherit; }
+    .tool:hover { transform:translateY(-2px); border-color:#d8d3ff; box-shadow:0 8px 20px #27345a0b; }
+    .tool-logo { width:30px;height:30px;border-radius:8px;display:grid;place-items:center;margin-bottom:10px;font-size:15px;font-weight:700; }.tool b { font-size:11px; display:block; }.tool span { color:#9299a8;font-size:9px; }
+    .l1{background:#edf0ff;color:#5061d9}.l2{background:#f6edff;color:#9254c9}.l3{background:#e7f8f3;color:#209976}.l4{background:#fff0e6;color:#e67835}.l5{background:#e8f3ff;color:#3c85ce}.l6{background:#fff1f1;color:#e65c63}.l7{background:#eef0f3;color:#303846}.l8{background:#fff8dd;color:#c79525}
+    .pipeline { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; }
+    .pipe { padding:13px; border:1px solid var(--line); border-radius:10px; }.pipe-top{display:flex;justify-content:space-between;align-items:center}.pipe b{font-size:11px}.status{font-size:8px;padding:3px 6px;border-radius:9px;background:#e7f8f1;color:#1b956c;font-weight:700}.status.run{background:#fff4e7;color:#dc8737}.pipe p{font-size:9px;color:#9098a8;margin:8px 0}.bar{height:3px;background:#edf0f3;border-radius:2px;overflow:hidden}.bar i{display:block;height:100%;width:100%;background:#35b78e}.run+.pipe p{}.bar.orange i{width:67%;background:#f0a050}
+    .activity { padding-bottom:10px; }.person { display:flex; gap:11px; padding:13px 0; border-bottom:1px solid #f0f1f4; }.person:last-child{border:0}.face{width:31px;height:31px;flex:0 0 auto;border-radius:50%;display:grid;place-items:center;font-weight:700;font-size:10px;color:#fff}.f1{background:#5d7fde}.f2{background:#dc8c65}.f3{background:#7a65c7}.f4{background:#4d9d82}.person-content{min-width:0;flex:1}.person b{font-size:10px}.person p{margin:3px 0;color:#778092;font-size:10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.person time{font-size:8px;color:#a1a8b4}.dot{width:6px;height:6px;border-radius:50%;background:#34b789;margin-top:7px}
+    .members { display:flex; align-items:center; }.members .face{margin-left:-6px;border:2px solid #fff}.members .face:first-child{margin-left:0}.members span{font-size:9px;margin-left:7px;color:#7c8494}
+    .quick { display:grid; grid-template-columns:1fr 1fr; gap:9px; }.quick button{border:1px solid var(--line);background:#fff;border-radius:9px;padding:10px 8px;color:#687184;font-size:10px;cursor:pointer}.quick button:hover{background:#f7f6ff;color:var(--purple);border-color:#dcd7ff}
+    .link-groups{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.link-group{border:1px solid var(--line);border-radius:11px;padding:14px;background:#fdfdfe}.link-title{display:flex;align-items:center;gap:8px;font-size:10px;color:#7d8698;font-weight:600;margin-bottom:9px}.link-title i{width:23px;height:23px;border-radius:7px;display:grid;place-items:center;background:var(--purple-soft);color:var(--purple);font-style:normal}.fav-link{display:flex;align-items:center;justify-content:space-between;padding:8px 7px;margin:2px -7px;border-radius:7px;text-decoration:none;color:#3c4557;font-size:10px;transition:.2s}.fav-link:hover{color:var(--purple);background:#f4f2ff;padding-left:10px}.fav-link span{color:#a0a7b4;font-size:11px}
+    .contact{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid #f0f1f4}.contact:last-child{border:0}.contact-info{min-width:0;flex:1}.contact-info b{font-size:10px;display:block}.contact-info span{font-size:9px;color:#9299a8}.presence{display:inline-block;width:6px;height:6px;border-radius:50%;background:#32b588;margin-right:4px}.presence.away{background:#f0a052}.contact-actions{display:flex;gap:5px}.contact-actions button{width:26px;height:26px;border:1px solid var(--line);border-radius:7px;background:#fff;color:#7c8495;cursor:pointer;font-size:10px}.contact-actions button:hover{border-color:#cec8ff;color:var(--purple);background:#f7f6ff}
+    .toast { position:fixed; right:25px; bottom:24px; padding:11px 16px; border-radius:9px; background:#172033; color:#fff; font-size:11px; opacity:0; transform:translateY(10px); transition:.25s; pointer-events:none; }.toast.show{opacity:1;transform:none}
+    @media(max-width:1050px){.metrics{grid-template-columns:repeat(2,1fr)}.tool-grid{grid-template-columns:repeat(3,1fr)}.layout{grid-template-columns:1fr}.right{display:grid;grid-template-columns:1fr 1fr;gap:18px}.pipeline{grid-template-columns:1fr}}
+    @media(max-width:720px){.app{grid-template-columns:1fr}aside{display:none}header{padding:0 18px}.content{padding:24px 18px}.metrics{grid-template-columns:1fr 1fr}.tool-grid{grid-template-columns:repeat(2,1fr)}.right{grid-template-columns:1fr}.welcome .date,.new-btn{display:none}.pipeline,.link-groups{grid-template-columns:1fr}.search{width:100%}}
+  </style>
+</head>
+<body>
+<div class="app">
+  <aside>
+    <div class="brand"><div class="brand-mark">✦</div> Orbit</div>
+    <div class="nav-label">工作空间</div>
+    <nav><a class="active" href="#"><span class="ico">⌂</span>概览</a><a href="#tools"><span class="ico">◇</span>工具中心</a><a href="#links"><span class="ico">↗</span>常用链接</a><a href="#contacts"><span class="ico">◎</span>团队通讯录</a><a href="#ci"><span class="ico">⌁</span>CI / CD</a></nav>
+    <div class="nav-label">资源</div>
+    <nav><a href="#"><span class="ico">◫</span>产品文档</a><a href="#"><span class="ico">▱</span>数据看板</a><a href="#"><span class="ico">⚙</span>系统设置</a></nav>
+    <div class="sidebar-foot"><div class="avatar">YL</div><div><b>Yuan Liu</b><span>Product Team</span></div></div>
+  </aside>
+  <main>
+    <header><div class="search"><input id="search" placeholder="搜索工具、成员或文档…"><span class="key">⌘ K</span></div><div class="head-actions"><button class="circle-btn">?</button><button class="circle-btn">♢</button><button class="new-btn" onclick="notify('快捷入口已打开')">＋ 新建快捷入口</button></div></header>
+    <div class="content">
+      <section class="welcome"><div><h1>早上好，Yuan 👋</h1><p>这是团队今天的工作概况，一切运行良好。</p></div><div class="date">◷ 2026 年 7 月 6 日</div></section>
+      <section class="metrics">
+        <div class="metric"><div class="metric-top"><span>今日访问</span><span class="metric-icon">↗</span></div><strong>2,846</strong><small class="up">↑ 12.4%</small><small> 较昨日</small></div>
+        <div class="metric"><div class="metric-top"><span>活跃成员</span><span class="metric-icon">◎</span></div><strong>24</strong><small class="up">92%</small><small> 团队在线</small></div>
+        <div class="metric"><div class="metric-top"><span>构建成功率</span><span class="metric-icon">✓</span></div><strong>98.6%</strong><small class="up">↑ 2.1%</small><small> 本周</small></div>
+        <div class="metric"><div class="metric-top"><span>待处理事项</span><span class="metric-icon">⌁</span></div><strong>17</strong><small style="color:#e58b45">5 项</small><small> 即将到期</small></div>
+      </section>
+      <div class="layout">
+        <div class="left">
+          <section class="card" id="tools"><div class="card-head"><h2>常用工具</h2><a href="#">查看全部 →</a></div><div class="tool-grid">
+            <a class="tool" href="#"><div class="tool-logo l1">F</div><b>Figma</b><span>产品设计协作</span></a><a class="tool" href="#"><div class="tool-logo l2">N</div><b>Notion</b><span>团队知识库</span></a><a class="tool" href="#"><div class="tool-logo l3">S</div><b>Slack</b><span>即时沟通</span></a><a class="tool" href="#"><div class="tool-logo l4">J</div><b>Jira</b><span>研发任务管理</span></a>
+            <a class="tool" href="#"><div class="tool-logo l5">G</div><b>GitLab</b><span>代码与合并请求</span></a><a class="tool" href="#"><div class="tool-logo l6">A</div><b>Analytics</b><span>产品数据分析</span></a><a class="tool" href="#"><div class="tool-logo l7">D</div><b>Datadog</b><span>服务性能监控</span></a><a class="tool" href="#"><div class="tool-logo l8">＋</div><b>添加工具</b><span>自定义快捷链接</span></a>
+          </div></section>
+          <section class="card" id="links"><div class="card-head"><h2>常用链接</h2><a href="#">管理链接 →</a></div><div class="link-groups">
+            <div class="link-group"><div class="link-title"><i>◈</i>产品与设计</div><a class="fav-link" href="#">产品需求池 <span>↗</span></a><a class="fav-link" href="#">设计规范中心 <span>↗</span></a><a class="fav-link" href="#">用户反馈看板 <span>↗</span></a></div>
+            <div class="link-group"><div class="link-title"><i>⌘</i>研发资源</div><a class="fav-link" href="#">API 文档 <span>↗</span></a><a class="fav-link" href="#">服务状态页 <span>↗</span></a><a class="fav-link" href="#">发布流程指南 <span>↗</span></a></div>
+            <div class="link-group"><div class="link-title"><i>↗</i>运营与数据</div><a class="fav-link" href="#">核心指标看板 <span>↗</span></a><a class="fav-link" href="#">活动排期表 <span>↗</span></a><a class="fav-link" href="#">品牌素材库 <span>↗</span></a></div>
+          </div></section>
+          <section class="card" id="ci"><div class="card-head"><h2>CI / CD 状态</h2><a href="#">打开控制台 →</a></div><div class="pipeline">
+            <div class="pipe"><div class="pipe-top"><b>web-production</b><span class="status">成功</span></div><p>main · #2841 · 8 分钟前</p><div class="bar"><i></i></div></div>
+            <div class="pipe"><div class="pipe-top"><b>api-service</b><span class="status run">运行中</span></div><p>release/v2.4 · #912 · 2 分钟前</p><div class="bar orange"><i></i></div></div>
+            <div class="pipe"><div class="pipe-top"><b>mobile-app</b><span class="status">成功</span></div><p>develop · #1310 · 24 分钟前</p><div class="bar"><i></i></div></div>
+          </div></section>
+        </div>
+        <div class="right">
+          <section class="card" id="contacts"><div class="card-head"><h2>常用联系人</h2><a href="#">通讯录 →</a></div>
+            <div class="contact"><div class="face f1">M</div><div class="contact-info"><b>Mia Chen</b><span><i class="presence"></i>产品设计师</span></div><div class="contact-actions"><button onclick="notify('正在联系 Mia…')">✉</button><button onclick="notify('已复制联系方式')">⧉</button></div></div>
+            <div class="contact"><div class="face f2">L</div><div class="contact-info"><b>Leo Zhang</b><span><i class="presence"></i>前端负责人</span></div><div class="contact-actions"><button onclick="notify('正在联系 Leo…')">✉</button><button onclick="notify('已复制联系方式')">⧉</button></div></div>
+            <div class="contact"><div class="face f3">K</div><div class="contact-info"><b>Kevin Wu</b><span><i class="presence away"></i>后端工程师</span></div><div class="contact-actions"><button onclick="notify('正在联系 Kevin…')">✉</button><button onclick="notify('已复制联系方式')">⧉</button></div></div>
+            <div class="contact"><div class="face f4">A</div><div class="contact-info"><b>Amy Lin</b><span><i class="presence"></i>数据分析师</span></div><div class="contact-actions"><button onclick="notify('正在联系 Amy…')">✉</button><button onclick="notify('已复制联系方式')">⧉</button></div></div>
+          </section>
+          <section class="card activity" id="team" style="margin-top:18px"><div class="card-head"><h2>团队动态</h2><div class="members"><div class="face f1">M</div><div class="face f2">L</div><div class="face f3">K</div><span>+21</span></div></div>
+            <div class="person"><div class="face f1">M</div><div class="person-content"><b>Mia Chen</b><p>更新了「移动端体验优化」设计稿</p><time>12 分钟前 · Figma</time></div><i class="dot"></i></div>
+            <div class="person"><div class="face f2">L</div><div class="person-content"><b>Leo Zhang</b><p>合并了 feat/user-profile</p><time>28 分钟前 · GitLab</time></div></div>
+            <div class="person"><div class="face f3">K</div><div class="person-content"><b>Kevin Wu</b><p>正在处理 API 性能优化</p><time>45 分钟前 · Jira</time></div><i class="dot"></i></div>
+            <div class="person"><div class="face f4">A</div><div class="person-content"><b>Amy Lin</b><p>发布了本周数据周报</p><time>1 小时前 · Notion</time></div></div>
+          </section>
+          <section class="card" style="margin-top:18px"><div class="card-head"><h2>快速操作</h2></div><div class="quick"><button onclick="notify('正在创建项目…')">＋ 创建项目</button><button onclick="notify('正在邀请成员…')">◎ 邀请成员</button><button onclick="notify('文档中心已打开')">◫ 新建文档</button><button onclick="notify('数据报表已打开')">↗ 查看报表</button></div></section>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+<div class="toast" id="toast"></div>
+<script>
+  const search=document.querySelector('#search');
+  document.addEventListener('keydown',e=>{if((e.ctrlKey||e.metaKey)&&e.key==='k'){e.preventDefault();search.focus();}});
+  search.addEventListener('input',e=>{const q=e.target.value.toLowerCase();document.querySelectorAll('.tool,.fav-link,.contact').forEach(x=>x.style.display=x.innerText.toLowerCase().includes(q)?(x.classList.contains('tool')?'block':'flex'):'none');});
+  function notify(t){const el=document.querySelector('#toast');el.textContent=t;el.classList.add('show');setTimeout(()=>el.classList.remove('show'),1800)}
+</script>
+</body>
+</html>

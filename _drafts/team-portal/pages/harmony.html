@@ -1,0 +1,805 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>团队导航门户 - HarmonyOS</title>
+    <style id="theme-vars">
+/* Team Portal Brand CSS — HarmonyOS Style */
+:root {
+  /* === Brand Colors (HarmonyOS warm red) === */
+  --color-brand: #CF0A2C;
+  --color-brand-light: #E8334E;
+  --color-brand-lighter: #F2B0BA;
+  --color-brand-lightest: #FDE8EB;
+  --color-brand-bg: #FFF5F5;
+  --color-brand-dark: #B0081F;
+  --color-brand-darker: #8A0618;
+
+  /* === Neutral Palette (warm gray) === */
+  --color-bg: #ffffff;
+  --color-bg-secondary: #F5F5F5;
+  --color-bg-tertiary: #EDEDED;
+  --color-surface: #ffffff;
+  --color-border: #E0E0E0;
+  --color-border-light: #F0F0F0;
+  --color-text-primary: #191919;
+  --color-text-secondary: #666666;
+  --color-text-tertiary: #999999;
+  --color-text-inverse: #ffffff;
+
+  /* === Sidebar (warm white, HarmonyOS style) === */
+  --sidebar-bg: #F8F8F8;
+  --sidebar-text: #999999;
+  --sidebar-text-active: #191919;
+  --sidebar-hover: #F0F0F0;
+  --sidebar-border: #E8E8E8;
+
+  /* === State Colors (warm tones) === */
+  --state-success: #34A853;
+  --state-warning: #E67E22;
+  --state-error: #CF0A2C;
+  --state-info: #3B82F6;
+
+  /* === Radius Scale (larger, HarmonyOS roundness) === */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-full: 9999px;
+
+  /* === Shadow System (minimal, HarmonyOS prefers borders) === */
+  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.02);
+  --shadow-sm: 0 1px 4px rgba(0, 0, 0, 0.03);
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.04);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.04);
+
+  /* === Typography (HarmonyOS: wider spacing) === */
+  --font-display: 'HarmonyOS Sans', 'Noto Sans SC', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-body: 'HarmonyOS Sans', 'Noto Sans SC', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', 'SF Mono', Consolas, monospace;
+}
+
+html.dark {
+  --color-bg: #121212;
+  --color-bg-secondary: #1e1e1e;
+  --color-bg-tertiary: #2c2c2c;
+  --color-surface: #1e1e1e;
+  --color-border: #333333;
+  --color-border-light: #1e1e1e;
+  --color-text-primary: #E6E6E6;
+  --color-text-secondary: #999999;
+  --color-text-tertiary: #666666;
+  --color-brand-bg: #3D0712;
+  --color-brand-lightest: #3D0712;
+  --sidebar-bg: #1a1a1a;
+  --sidebar-hover: #2c2c2c;
+  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.1);
+  --shadow-sm: 0 1px 4px rgba(0, 0, 0, 0.15);
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.15);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.2);
+}
+
+/* === Typography Classes === */
+.text-display-lg {
+  font-family: var(--font-display);
+  font-size: 2.25rem;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: 0.01em;
+  color: var(--color-text-primary);
+}
+
+.text-display-md {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 600;
+  line-height: 1.35;
+  letter-spacing: 0.01em;
+  color: var(--color-text-primary);
+}
+
+.text-title {
+  font-family: var(--font-display);
+  font-size: 1.125rem;
+  font-weight: 600;
+  line-height: 1.4;
+  letter-spacing: 0.01em;
+  color: var(--color-text-primary);
+}
+
+.text-body {
+  font-family: var(--font-body);
+  font-size: 0.875rem;
+  font-weight: 400;
+  line-height: 1.7;
+  letter-spacing: 0.01em;
+  color: var(--color-text-secondary);
+}
+
+.text-caption {
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  font-weight: 400;
+  line-height: 1.5;
+  letter-spacing: 0.01em;
+  color: var(--color-text-tertiary);
+}
+
+.text-mono {
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  font-weight: 400;
+  line-height: 1.5;
+  color: var(--color-text-secondary);
+}
+
+.text-overline {
+  font-family: var(--font-body);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-text-tertiary);
+}
+
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4.3.1/dist/index.global.js"></script>
+    <script src="https://unpkg.com/lucide@1.8.0/dist/umd/lucide.min.js"></script>
+    <style type="text/tailwindcss">
+  @theme inline {
+    --color-border: var(--color-border);
+  }
+  @layer base {
+    body { background: var(--color-surface); color: var(--color-text-primary); }
+    td, th { @apply break-words; word-break: break-all; word-break: auto-phrase; }
+    th { @apply whitespace-nowrap; }
+  }
+    </style>
+    <style>
+      .no-scrollbar::-webkit-scrollbar { display: none; }
+      .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+      [data-icon] {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        -webkit-mask-size: contain;
+        mask-size: contain;
+        -webkit-mask-repeat: no-repeat;
+        mask-repeat: no-repeat;
+        -webkit-mask-position: center;
+        mask-position: center;
+        background-color: currentColor;
+      }
+    </style>
+</head>
+<body class="min-h-screen font-sans antialiased">
+    <main>
+      <!-- Page Layout: Sidebar + Main Content -->
+      <div class="flex min-h-screen">
+
+        <!-- ========== LEFT SIDEBAR (Light warm white, HarmonyOS style) ========== -->
+        <aside class="w-[220px] shrink-0 flex flex-col justify-between fixed top-0 left-0 h-screen z-20 max-lg:hidden" style="background:var(--sidebar-bg);border-right:1px solid var(--sidebar-border);">
+          <!-- Logo -->
+          <div>
+            <div class="flex items-center gap-3 px-5 py-5">
+              <div class="w-8 h-8 rounded-md flex items-center justify-center logo-icon" style="background:var(--color-brand);">
+                <i data-lucide="hexagon" class="w-4 h-4"></i>
+              </div>
+              <span class="text-display-md" style="color:var(--sidebar-text-active);">Harmony</span>
+            </div>
+
+            <!-- Nav: 工作空间 -->
+            <nav class="mt-2">
+              <p class="text-overline px-5 py-2">工作空间</p>
+              <a href="#" class="nav-item-active flex items-center gap-3 px-5 py-2.5 text-sm font-medium" style="color:var(--sidebar-text-active);background:var(--sidebar-hover);border-left:3px solid var(--color-brand);border-radius:0 var(--radius-sm) var(--radius-sm) 0;">
+                <i data-lucide="layout-dashboard" class="w-4 h-4"></i>
+                <span>概览</span>
+              </a>
+              <a href="#" class="flex items-center gap-3 px-5 py-2.5 text-sm font-medium transition-colors sidebar-link" style="color:var(--sidebar-text);">
+                <i data-lucide="folder-kanban" class="w-4 h-4"></i>
+                <span>项目管理</span>
+              </a>
+
+              <!-- Nav: 工具中心 -->
+              <p class="text-overline px-5 py-2 mt-4">工具中心</p>
+              <a href="#" class="flex items-center gap-3 px-5 py-2.5 text-sm font-medium transition-colors sidebar-link" style="color:var(--sidebar-text);">
+                <i data-lucide="git-branch" class="w-4 h-4"></i>
+                <span>CI/CD 状态</span>
+              </a>
+              <a href="#" class="flex items-center gap-3 px-5 py-2.5 text-sm font-medium transition-colors sidebar-link" style="color:var(--sidebar-text);">
+                <i data-lucide="users" class="w-4 h-4"></i>
+                <span>团队动态</span>
+              </a>
+              <a href="#" class="flex items-center gap-3 px-5 py-2.5 text-sm font-medium transition-colors sidebar-link" style="color:var(--sidebar-text);">
+                <i data-lucide="wrench" class="w-4 h-4"></i>
+                <span>常用工具</span>
+              </a>
+
+              <!-- Nav: 资源 -->
+              <p class="text-overline px-5 py-2 mt-4">资源</p>
+              <a href="#" class="flex items-center gap-3 px-5 py-2.5 text-sm font-medium transition-colors sidebar-link" style="color:var(--sidebar-text);">
+                <i data-lucide="book-open" class="w-4 h-4"></i>
+                <span>产品文档</span>
+              </a>
+              <a href="#" class="flex items-center gap-3 px-5 py-2.5 text-sm font-medium transition-colors sidebar-link" style="color:var(--sidebar-text);">
+                <i data-lucide="bar-chart-3" class="w-4 h-4"></i>
+                <span>数据看板</span>
+              </a>
+              <a href="#" class="flex items-center gap-3 px-5 py-2.5 text-sm font-medium transition-colors sidebar-link" style="color:var(--sidebar-text);">
+                <i data-lucide="settings" class="w-4 h-4"></i>
+                <span>系统设置</span>
+              </a>
+            </nav>
+          </div>
+
+          <!-- Bottom: User -->
+          <div class="flex items-center gap-3 px-5 py-4" style="border-top:1px solid var(--sidebar-border);">
+            <div class="w-7 h-7 rounded-full flex items-center justify-center text-xs font-semibold" style="background:var(--color-brand);color:var(--color-text-inverse);">Y</div>
+            <span class="text-sm font-medium flex-1 truncate" style="color:var(--sidebar-text-active);">Yuan</span>
+            <i data-lucide="settings" class="w-4 h-4 shrink-0" style="color:var(--sidebar-text);"></i>
+          </div>
+        </aside>
+
+        <!-- ========== MAIN CONTENT ========== -->
+        <div class="flex-1 ml-[220px] max-lg:ml-0" style="background:var(--color-bg-secondary);">
+
+          <!-- Sticky Header Bar (white, border-bottom instead of shadow) -->
+          <header class="sticky top-0 z-10 flex items-center gap-4 px-6 py-3" style="background:var(--color-surface);border-bottom:1px solid var(--color-border);">
+            <!-- Breadcrumb -->
+            <span class="text-body whitespace-nowrap shrink-0" style="color:var(--color-text-tertiary);">工作空间 / <span style="color:var(--color-text-primary);font-weight:500;">概览</span></span>
+
+            <!-- Search Bar -->
+            <div class="flex-1 flex items-center justify-center">
+              <div class="flex items-center gap-2 w-full max-w-md px-4 py-2 rounded-full" style="background:var(--color-bg-tertiary);">
+                <i data-lucide="search" class="w-4 h-4 shrink-0" style="color:var(--color-text-tertiary);"></i>
+                <input type="text" placeholder="搜索工具、成员或文档..." class="flex-1 bg-transparent border-none outline-none text-sm" style="color:var(--color-text-primary);" />
+                <kbd class="text-caption px-1.5 py-0.5 rounded shrink-0" style="background:var(--color-bg-secondary);color:var(--color-text-tertiary);font-family:var(--font-mono);font-size:0.6875rem;">⌘K</kbd>
+              </div>
+            </div>
+
+            <!-- Right Actions -->
+            <div class="flex items-center gap-3 shrink-0">
+              <button class="w-8 h-8 rounded-md flex items-center justify-center transition-colors" style="background:var(--color-bg-tertiary);color:var(--color-text-secondary);">
+                <i data-lucide="help-circle" class="w-4 h-4"></i>
+              </button>
+              <button class="w-8 h-8 rounded-md flex items-center justify-center transition-colors" style="background:var(--color-bg-tertiary);color:var(--color-text-secondary);">
+                <i data-lucide="bell" class="w-4 h-4"></i>
+              </button>
+              <button class="flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium text-white whitespace-nowrap transition-opacity" style="background:var(--color-brand);">
+                <i data-lucide="plus" class="w-4 h-4"></i>
+                <span>新建快捷入口</span>
+              </button>
+            </div>
+          </header>
+
+          <!-- Content Area -->
+          <div class="px-6 py-6">
+
+            <!-- Greeting Section (generous padding, centered feel, HarmonyOS lock-screen style) -->
+            <section class="flex items-start justify-between mb-8">
+              <div>
+                <h1 id="greeting-heading" class="text-display-lg flex items-center gap-3" style="text-wrap:balance;word-break:keep-all;overflow-wrap:break-word;">
+                  <span id="greeting-text">早上好, Yuan</span>
+                  <span class="inline-block w-1.5 h-1.5 rounded-full shrink-0" style="background:var(--color-brand);margin-top:0.35em;"></span>
+                </h1>
+                <p class="text-body mt-1">这是团队今天的工作概况，一切运行良好。</p>
+              </div>
+              <p id="current-date" class="text-caption whitespace-nowrap shrink-0 mt-1" style="color:var(--color-text-tertiary);"></p>
+            </section>
+
+            <!-- KPI Metrics Row (4 cards, 16px radius, subtle border) -->
+            <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+              <!-- Card 1: 今日访问 -->
+              <div class="card-harmony p-5" style="background:var(--color-surface);border-radius:var(--radius-lg);border:1px solid var(--color-border);">
+                <div class="flex items-start justify-between mb-3">
+                  <div class="kpi-icon-container w-9 h-9 rounded-md flex items-center justify-center" style="background:var(--color-brand-bg);">
+                    <i data-lucide="eye" class="w-4 h-4" style="color:var(--color-text-secondary);"></i>
+                  </div>
+                  <i data-lucide="trending-up" class="w-4 h-4" style="color:var(--state-success);"></i>
+                </div>
+                <p class="text-display-md whitespace-nowrap" style="font-size:1.75rem;">2,846</p>
+                <p class="text-caption mt-1">今日访问</p>
+                <p class="text-caption mt-0.5" style="color:var(--state-success);">↑12.4% 较昨日</p>
+              </div>
+              <!-- Card 2: 活跃成员 -->
+              <div class="card-harmony p-5" style="background:var(--color-surface);border-radius:var(--radius-lg);border:1px solid var(--color-border);">
+                <div class="flex items-start justify-between mb-3">
+                  <div class="kpi-icon-container w-9 h-9 rounded-md flex items-center justify-center" style="background:var(--color-brand-bg);">
+                    <i data-lucide="users" class="w-4 h-4" style="color:var(--color-text-secondary);"></i>
+                  </div>
+                  <span class="w-2.5 h-2.5 rounded-full inline-block mt-1.5" style="background:var(--state-success);"></span>
+                </div>
+                <p class="text-display-md whitespace-nowrap" style="font-size:1.75rem;">24</p>
+                <p class="text-caption mt-1">活跃成员</p>
+                <p class="text-caption mt-0.5">92% 团队在线</p>
+              </div>
+              <!-- Card 3: 构建成功率 -->
+              <div class="card-harmony p-5" style="background:var(--color-surface);border-radius:var(--radius-lg);border:1px solid var(--color-border);">
+                <div class="flex items-start justify-between mb-3">
+                  <div class="kpi-icon-container w-9 h-9 rounded-md flex items-center justify-center" style="background:var(--color-brand-bg);">
+                    <i data-lucide="check-circle-2" class="w-4 h-4" style="color:var(--color-text-secondary);"></i>
+                  </div>
+                  <i data-lucide="trending-up" class="w-4 h-4" style="color:var(--state-success);"></i>
+                </div>
+                <p class="text-display-md whitespace-nowrap" style="font-size:1.75rem;">98.6%</p>
+                <p class="text-caption mt-1">构建成功率</p>
+                <p class="text-caption mt-0.5" style="color:var(--state-success);">↑2.1% 本周</p>
+              </div>
+              <!-- Card 4: 待处理事项 -->
+              <div class="card-harmony p-5" style="background:var(--color-surface);border-radius:var(--radius-lg);border:1px solid var(--color-border);">
+                <div class="flex items-start justify-between mb-3">
+                  <div class="kpi-icon-container w-9 h-9 rounded-md flex items-center justify-center" style="background:var(--color-brand-bg);">
+                    <i data-lucide="list-checks" class="w-4 h-4" style="color:var(--color-text-secondary);"></i>
+                  </div>
+                  <span class="w-2.5 h-2.5 rounded-full inline-block mt-1.5" style="background:var(--state-warning);"></span>
+                </div>
+                <p class="text-display-md whitespace-nowrap" style="font-size:1.75rem;">17</p>
+                <p class="text-caption mt-1">待处理事项</p>
+                <p class="text-caption mt-0.5" style="color:var(--state-warning);">5项即将到期</p>
+              </div>
+            </section>
+
+            <!-- Two-Column Content Grid -->
+            <section class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+
+              <!-- Left Column (wider: 2/3) -->
+              <div class="lg:col-span-2 flex flex-col gap-4">
+
+                <!-- 常用工具 Card -->
+                <div class="card-harmony p-5" style="background:var(--color-surface);border-radius:var(--radius-lg);border:1px solid var(--color-border);">
+                  <div class="flex items-center gap-2 mb-4">
+                    <i data-lucide="grid-3x3" class="w-4 h-4" style="color:var(--color-brand);"></i>
+                    <h2 class="text-title">常用工具</h2>
+                  </div>
+                  <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                    <!-- Figma -->
+                    <a href="#" class="flex flex-col items-start gap-2 p-3 transition-shadow rounded-md" style="background:var(--color-bg-tertiary);">
+                      <div class="tool-figma w-9 h-9 flex items-center justify-center text-sm font-bold">F</div>
+                      <div class="min-w-0 w-full">
+                        <p class="text-sm font-medium truncate" style="color:var(--color-text-primary);">Figma</p>
+                        <p class="text-caption truncate">产品设计协作</p>
+                      </div>
+                    </a>
+                    <!-- Notion -->
+                    <a href="#" class="flex flex-col items-start gap-2 p-3 transition-shadow rounded-md" style="background:var(--color-bg-tertiary);">
+                      <div class="tool-notion w-9 h-9 flex items-center justify-center text-sm font-bold">N</div>
+                      <div class="min-w-0 w-full">
+                        <p class="text-sm font-medium truncate" style="color:var(--color-text-primary);">Notion</p>
+                        <p class="text-caption truncate">团队知识库</p>
+                      </div>
+                    </a>
+                    <!-- Slack -->
+                    <a href="#" class="flex flex-col items-start gap-2 p-3 transition-shadow rounded-md" style="background:var(--color-bg-tertiary);">
+                      <div class="tool-slack w-9 h-9 flex items-center justify-center text-sm font-bold">S</div>
+                      <div class="min-w-0 w-full">
+                        <p class="text-sm font-medium truncate" style="color:var(--color-text-primary);">Slack</p>
+                        <p class="text-caption truncate">即时沟通</p>
+                      </div>
+                    </a>
+                    <!-- Jira -->
+                    <a href="#" class="flex flex-col items-start gap-2 p-3 transition-shadow rounded-md" style="background:var(--color-bg-tertiary);">
+                      <div class="tool-jira w-9 h-9 flex items-center justify-center text-sm font-bold">J</div>
+                      <div class="min-w-0 w-full">
+                        <p class="text-sm font-medium truncate" style="color:var(--color-text-primary);">Jira</p>
+                        <p class="text-caption truncate">研发任务管理</p>
+                      </div>
+                    </a>
+                    <!-- GitLab -->
+                    <a href="#" class="flex flex-col items-start gap-2 p-3 transition-shadow rounded-md" style="background:var(--color-bg-tertiary);">
+                      <div class="tool-gitlab w-9 h-9 flex items-center justify-center text-sm font-bold">G</div>
+                      <div class="min-w-0 w-full">
+                        <p class="text-sm font-medium truncate" style="color:var(--color-text-primary);">GitLab</p>
+                        <p class="text-caption truncate">代码与合并请求</p>
+                      </div>
+                    </a>
+                    <!-- Analytics -->
+                    <a href="#" class="flex flex-col items-start gap-2 p-3 transition-shadow rounded-md" style="background:var(--color-bg-tertiary);">
+                      <div class="tool-analytics w-9 h-9 flex items-center justify-center text-sm font-bold">A</div>
+                      <div class="min-w-0 w-full">
+                        <p class="text-sm font-medium truncate" style="color:var(--color-text-primary);">Analytics</p>
+                        <p class="text-caption truncate">产品数据分析</p>
+                      </div>
+                    </a>
+                    <!-- Datadog -->
+                    <a href="#" class="flex flex-col items-start gap-2 p-3 transition-shadow rounded-md" style="background:var(--color-bg-tertiary);">
+                      <div class="tool-datadog w-9 h-9 flex items-center justify-center text-sm font-bold">D</div>
+                      <div class="min-w-0 w-full">
+                        <p class="text-sm font-medium truncate" style="color:var(--color-text-primary);">Datadog</p>
+                        <p class="text-caption truncate">服务性能监控</p>
+                      </div>
+                    </a>
+                    <!-- 添加工具 -->
+                    <a href="#" class="flex flex-col items-center justify-center gap-2 p-3 rounded-md transition-colors" style="border:2px dashed var(--color-border);">
+                      <div class="w-9 h-9 flex items-center justify-center" style="background:var(--color-bg-secondary);border-radius:var(--radius-md);">
+                        <i data-lucide="plus" class="w-4 h-4" style="color:var(--color-text-tertiary);"></i>
+                      </div>
+                      <p class="text-sm" style="color:var(--color-text-tertiary);">添加工具</p>
+                    </a>
+                  </div>
+                </div>
+
+                <!-- CI/CD 状态 Card -->
+                <div class="card-harmony p-5" style="background:var(--color-surface);border-radius:var(--radius-lg);border:1px solid var(--color-border);">
+                  <div class="flex items-center gap-2 mb-4">
+                    <i data-lucide="rocket" class="w-4 h-4" style="color:var(--color-brand);"></i>
+                    <h2 class="text-title">CI/CD 状态</h2>
+                  </div>
+                  <div class="flex flex-col gap-0">
+                    <!-- Pipeline 1 -->
+                    <div class="flex items-center justify-between gap-4 p-3 pipeline-row">
+                      <div class="flex items-center gap-3 min-w-0 flex-1">
+                        <span class="text-sm font-medium truncate" style="color:var(--color-text-primary);">web-production</span>
+                      </div>
+                      <span class="badge-success whitespace-nowrap text-xs font-medium px-2 py-0.5 rounded-full">成功</span>
+                      <span class="text-mono text-caption whitespace-nowrap hidden sm:inline">main #2841</span>
+                      <span class="text-caption whitespace-nowrap shrink-0">8分钟前</span>
+                    </div>
+                    <!-- Pipeline 2 -->
+                    <div class="flex items-center justify-between gap-4 p-3 pipeline-row">
+                      <div class="flex items-center gap-3 min-w-0 flex-1">
+                        <span class="text-sm font-medium truncate" style="color:var(--color-text-primary);">api-service</span>
+                      </div>
+                      <span class="badge-running whitespace-nowrap text-xs font-medium px-2 py-0.5 rounded-full">运行中</span>
+                      <span class="text-mono text-caption whitespace-nowrap hidden sm:inline">release/v2.4 #912</span>
+                      <span class="text-caption whitespace-nowrap shrink-0">2分钟前</span>
+                    </div>
+                    <!-- Pipeline 3 -->
+                    <div class="flex items-center justify-between gap-4 p-3 pipeline-row" style="border-bottom:none;">
+                      <div class="flex items-center gap-3 min-w-0 flex-1">
+                        <span class="text-sm font-medium truncate" style="color:var(--color-text-primary);">mobile-app</span>
+                      </div>
+                      <span class="badge-success whitespace-nowrap text-xs font-medium px-2 py-0.5 rounded-full">成功</span>
+                      <span class="text-mono text-caption whitespace-nowrap hidden sm:inline">develop #1310</span>
+                      <span class="text-caption whitespace-nowrap shrink-0">24分钟前</span>
+                    </div>
+                  </div>
+                  <div class="flex justify-end mt-3">
+                    <a href="#" class="text-sm font-medium whitespace-nowrap" style="color:var(--color-brand);">打开控制台 →</a>
+                  </div>
+                </div>
+
+                <!-- CI/CD 常用链接 Card -->
+                <div class="card-harmony p-5" style="background:var(--color-surface);border-radius:var(--radius-lg);border:1px solid var(--color-border);">
+                  <div class="flex items-center gap-2 mb-4">
+                    <i data-lucide="link" class="w-4 h-4" style="color:var(--color-brand);"></i>
+                    <h2 class="text-title">CI/CD 常用链接</h2>
+                  </div>
+                  <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                    <a href="#" class="flex items-center gap-3 p-3 rounded-md transition-shadow" style="background:var(--color-bg-tertiary);">
+                      <div class="ci-link-jenkins w-8 h-8 flex items-center justify-center text-xs font-bold shrink-0">J</div>
+                      <div class="min-w-0">
+                        <p class="text-sm font-medium truncate" style="color:var(--color-text-primary);">Jenkins</p>
+                        <p class="text-caption truncate">jenkins.company.com</p>
+                      </div>
+                    </a>
+                    <a href="#" class="flex items-center gap-3 p-3 rounded-md transition-shadow" style="background:var(--color-bg-tertiary);">
+                      <div class="ci-link-ghactions w-8 h-8 flex items-center justify-center text-xs font-bold shrink-0">G</div>
+                      <div class="min-w-0">
+                        <p class="text-sm font-medium truncate" style="color:var(--color-text-primary);">GitHub Actions</p>
+                        <p class="text-caption truncate">github.com/actions</p>
+                      </div>
+                    </a>
+                    <a href="#" class="flex items-center gap-3 p-3 rounded-md transition-shadow" style="background:var(--color-bg-tertiary);">
+                      <div class="ci-link-argocd w-8 h-8 flex items-center justify-center text-xs font-bold shrink-0">A</div>
+                      <div class="min-w-0">
+                        <p class="text-sm font-medium truncate" style="color:var(--color-text-primary);">ArgoCD</p>
+                        <p class="text-caption truncate">argocd.company.com</p>
+                      </div>
+                    </a>
+                    <a href="#" class="flex items-center gap-3 p-3 rounded-md transition-shadow" style="background:var(--color-bg-tertiary);">
+                      <div class="ci-link-sonar w-8 h-8 flex items-center justify-center text-xs font-bold shrink-0">S</div>
+                      <div class="min-w-0">
+                        <p class="text-sm font-medium truncate" style="color:var(--color-text-primary);">SonarQube</p>
+                        <p class="text-caption truncate">sonar.company.com</p>
+                      </div>
+                    </a>
+                    <a href="#" class="flex items-center gap-3 p-3 rounded-md transition-shadow" style="background:var(--color-bg-tertiary);">
+                      <div class="ci-link-docker w-8 h-8 flex items-center justify-center text-xs font-bold shrink-0">D</div>
+                      <div class="min-w-0">
+                        <p class="text-sm font-medium truncate" style="color:var(--color-text-primary);">Docker Registry</p>
+                        <p class="text-caption truncate">registry.company.com</p>
+                      </div>
+                    </a>
+                    <a href="#" class="flex items-center gap-3 p-3 rounded-md transition-shadow" style="background:var(--color-bg-tertiary);">
+                      <div class="ci-link-grafana w-8 h-8 flex items-center justify-center text-xs font-bold shrink-0">G</div>
+                      <div class="min-w-0">
+                        <p class="text-sm font-medium truncate" style="color:var(--color-text-primary);">Grafana</p>
+                        <p class="text-caption truncate">grafana.company.com</p>
+                      </div>
+                    </a>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Right Column (narrower: 1/3) -->
+              <div class="lg:col-span-1 flex flex-col gap-4">
+
+                <!-- 常用联系人 Card -->
+                <div class="card-harmony p-5" style="background:var(--color-surface);border-radius:var(--radius-lg);border:1px solid var(--color-border);">
+                  <div class="flex items-center gap-2 mb-4">
+                    <i data-lucide="address-book" class="w-4 h-4" style="color:var(--color-brand);"></i>
+                    <h2 class="text-title">常用联系人</h2>
+                  </div>
+                  <div class="flex flex-col gap-2.5">
+                    <!-- 张三 -->
+                    <div class="flex items-center gap-3 p-2.5 rounded-md transition-colors" style="background:var(--color-bg-tertiary);">
+                      <div class="contact-zhangsan w-9 h-9 rounded-full flex items-center justify-center text-xs font-semibold shrink-0">张</div>
+                      <div class="min-w-0 flex-1">
+                        <p class="text-sm font-medium truncate" style="color:var(--color-text-primary);">张三</p>
+                        <p class="text-caption truncate">技术负责人 · 后端</p>
+                      </div>
+                      <div class="flex items-center gap-1.5 shrink-0">
+                        <span class="w-2 h-2 rounded-full contact-online"></span>
+                        <button class="w-7 h-7 rounded-md flex items-center justify-center transition-colors" style="background:var(--color-surface);" title="发送消息">
+                          <i data-lucide="message-square" class="w-3.5 h-3.5" style="color:var(--color-text-tertiary);"></i>
+                        </button>
+                      </div>
+                    </div>
+                    <!-- 李四 -->
+                    <div class="flex items-center gap-3 p-2.5 rounded-md transition-colors" style="background:var(--color-bg-tertiary);">
+                      <div class="contact-lisi w-9 h-9 rounded-full flex items-center justify-center text-xs font-semibold shrink-0">李</div>
+                      <div class="min-w-0 flex-1">
+                        <p class="text-sm font-medium truncate" style="color:var(--color-text-primary);">李四</p>
+                        <p class="text-caption truncate">前端负责人 · React</p>
+                      </div>
+                      <div class="flex items-center gap-1.5 shrink-0">
+                        <span class="w-2 h-2 rounded-full contact-online"></span>
+                        <button class="w-7 h-7 rounded-md flex items-center justify-center transition-colors" style="background:var(--color-surface);" title="发送消息">
+                          <i data-lucide="message-square" class="w-3.5 h-3.5" style="color:var(--color-text-tertiary);"></i>
+                        </button>
+                      </div>
+                    </div>
+                    <!-- 王五 -->
+                    <div class="flex items-center gap-3 p-2.5 rounded-md transition-colors" style="background:var(--color-bg-tertiary);">
+                      <div class="contact-wangwu w-9 h-9 rounded-full flex items-center justify-center text-xs font-semibold shrink-0">王</div>
+                      <div class="min-w-0 flex-1">
+                        <p class="text-sm font-medium truncate" style="color:var(--color-text-primary);">王五</p>
+                        <p class="text-caption truncate">产品经理 · 需求</p>
+                      </div>
+                      <div class="flex items-center gap-1.5 shrink-0">
+                        <span class="w-2 h-2 rounded-full contact-busy"></span>
+                        <button class="w-7 h-7 rounded-md flex items-center justify-center transition-colors" style="background:var(--color-surface);" title="发送消息">
+                          <i data-lucide="message-square" class="w-3.5 h-3.5" style="color:var(--color-text-tertiary);"></i>
+                        </button>
+                      </div>
+                    </div>
+                    <!-- 赵六 -->
+                    <div class="flex items-center gap-3 p-2.5 rounded-md transition-colors" style="background:var(--color-bg-tertiary);">
+                      <div class="contact-zhaoliu w-9 h-9 rounded-full flex items-center justify-center text-xs font-semibold shrink-0">赵</div>
+                      <div class="min-w-0 flex-1">
+                        <p class="text-sm font-medium truncate" style="color:var(--color-text-primary);">赵六</p>
+                        <p class="text-caption truncate">DevOps · 运维</p>
+                      </div>
+                      <div class="flex items-center gap-1.5 shrink-0">
+                        <span class="w-2 h-2 rounded-full contact-offline"></span>
+                        <button class="w-7 h-7 rounded-md flex items-center justify-center transition-colors" style="background:var(--color-surface);" title="发送消息">
+                          <i data-lucide="message-square" class="w-3.5 h-3.5" style="color:var(--color-text-tertiary);"></i>
+                        </button>
+                      </div>
+                    </div>
+                    <!-- 陈七 -->
+                    <div class="flex items-center gap-3 p-2.5 rounded-md transition-colors" style="background:var(--color-bg-tertiary);">
+                      <div class="contact-chenqi w-9 h-9 rounded-full flex items-center justify-center text-xs font-semibold shrink-0">陈</div>
+                      <div class="min-w-0 flex-1">
+                        <p class="text-sm font-medium truncate" style="color:var(--color-text-primary);">陈七</p>
+                        <p class="text-caption truncate">设计师 · UI/UX</p>
+                      </div>
+                      <div class="flex items-center gap-1.5 shrink-0">
+                        <span class="w-2 h-2 rounded-full contact-online"></span>
+                        <button class="w-7 h-7 rounded-md flex items-center justify-center transition-colors" style="background:var(--color-surface);" title="发送消息">
+                          <i data-lucide="message-square" class="w-3.5 h-3.5" style="color:var(--color-text-tertiary);"></i>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- 团队动态 Card -->
+                <div class="card-harmony p-5" style="background:var(--color-surface);border-radius:var(--radius-lg);border:1px solid var(--color-border);">
+                  <div class="flex items-center justify-between mb-4">
+                    <div class="flex items-center gap-2">
+                      <i data-lucide="users" class="w-4 h-4" style="color:var(--color-brand);"></i>
+                      <h2 class="text-title">团队动态</h2>
+                    </div>
+                    <!-- Avatar stack -->
+                    <div class="flex items-center -space-x-2">
+                      <div class="avatar-mia w-7 h-7 rounded-full flex items-center justify-center text-xs font-semibold ring-2 shrink-0" style="ring-color:var(--color-surface);z-index:3;">M</div>
+                      <div class="avatar-leo w-7 h-7 rounded-full flex items-center justify-center text-xs font-semibold ring-2 shrink-0" style="ring-color:var(--color-surface);z-index:2;">L</div>
+                      <div class="avatar-kevin w-7 h-7 rounded-full flex items-center justify-center text-xs font-semibold ring-2 shrink-0" style="ring-color:var(--color-surface);z-index:1;">K</div>
+                      <span class="text-caption ml-2 whitespace-nowrap" style="color:var(--color-text-tertiary);">+21</span>
+                    </div>
+                  </div>
+                  <!-- Activity Feed -->
+                  <div class="flex flex-col gap-3">
+                    <div class="flex items-start gap-3">
+                      <div class="avatar-mia w-7 h-7 rounded-full flex items-center justify-center text-xs font-semibold shrink-0 mt-0.5">M</div>
+                      <div class="min-w-0 flex-1">
+                        <p class="text-sm"><span class="font-medium" style="color:var(--color-text-primary);">Mia Chen</span> <span style="color:var(--color-text-secondary);">更新了移动端体验设计</span></p>
+                        <p class="text-caption mt-0.5">12分钟前</p>
+                      </div>
+                    </div>
+                    <div class="flex items-start gap-3">
+                      <div class="avatar-leo w-7 h-7 rounded-full flex items-center justify-center text-xs font-semibold shrink-0 mt-0.5">L</div>
+                      <div class="min-w-0 flex-1">
+                        <p class="text-sm"><span class="font-medium" style="color:var(--color-text-primary);">Leo Zhang</span> <span style="color:var(--color-text-secondary);">合并了 feat/user-profile</span></p>
+                        <p class="text-caption mt-0.5">28分钟前</p>
+                      </div>
+                    </div>
+                    <div class="flex items-start gap-3">
+                      <div class="avatar-kevin w-7 h-7 rounded-full flex items-center justify-center text-xs font-semibold shrink-0 mt-0.5">K</div>
+                      <div class="min-w-0 flex-1">
+                        <p class="text-sm"><span class="font-medium" style="color:var(--color-text-primary);">Kevin Wu</span> <span style="color:var(--color-text-secondary);">正在优化 API 性能</span></p>
+                        <p class="text-caption mt-0.5">45分钟前</p>
+                      </div>
+                    </div>
+                    <div class="flex items-start gap-3">
+                      <div class="avatar-amy w-7 h-7 rounded-full flex items-center justify-center text-xs font-semibold shrink-0 mt-0.5">A</div>
+                      <div class="min-w-0 flex-1">
+                        <p class="text-sm"><span class="font-medium" style="color:var(--color-text-primary);">Amy Lin</span> <span style="color:var(--color-text-secondary);">发布了周数据报告</span></p>
+                        <p class="text-caption mt-0.5">1小时前</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="flex justify-end mt-3">
+                    <a href="#" class="text-sm font-medium whitespace-nowrap" style="color:var(--color-brand);">查看全部 →</a>
+                  </div>
+                </div>
+
+                <!-- 常用链接 Card -->
+                <div class="card-harmony p-5" style="background:var(--color-surface);border-radius:var(--radius-lg);border:1px solid var(--color-border);">
+                  <div class="flex items-center gap-2 mb-4">
+                    <i data-lucide="bookmark" class="w-4 h-4" style="color:var(--color-brand);"></i>
+                    <h2 class="text-title">常用链接</h2>
+                  </div>
+                  <div class="flex flex-col gap-2">
+                    <a href="#" class="flex items-center gap-3 p-2.5 rounded-md transition-colors group" style="background:var(--color-bg-tertiary);">
+                      <div class="w-8 h-8 rounded-md flex items-center justify-center shrink-0" style="background:var(--color-brand-bg);">
+                        <i data-lucide="book-open" class="w-4 h-4" style="color:var(--color-brand);"></i>
+                      </div>
+                      <span class="text-sm font-medium flex-1 truncate" style="color:var(--color-text-primary);">API 文档</span>
+                      <i data-lucide="chevron-right" class="w-4 h-4 shrink-0" style="color:var(--color-text-tertiary);"></i>
+                    </a>
+                    <a href="#" class="flex items-center gap-3 p-2.5 rounded-md transition-colors group" style="background:var(--color-bg-tertiary);">
+                      <div class="w-8 h-8 rounded-md flex items-center justify-center shrink-0" style="background:var(--color-brand-bg);">
+                        <i data-lucide="database" class="w-4 h-4" style="color:var(--color-brand);"></i>
+                      </div>
+                      <span class="text-sm font-medium flex-1 truncate" style="color:var(--color-text-primary);">数据库管理</span>
+                      <i data-lucide="chevron-right" class="w-4 h-4 shrink-0" style="color:var(--color-text-tertiary);"></i>
+                    </a>
+                    <a href="#" class="flex items-center gap-3 p-2.5 rounded-md transition-colors group" style="background:var(--color-bg-tertiary);">
+                      <div class="w-8 h-8 rounded-md flex items-center justify-center shrink-0" style="background:var(--color-brand-bg);">
+                        <i data-lucide="shield" class="w-4 h-4" style="color:var(--color-brand);"></i>
+                      </div>
+                      <span class="text-sm font-medium flex-1 truncate" style="color:var(--color-text-primary);">权限管理</span>
+                      <i data-lucide="chevron-right" class="w-4 h-4 shrink-0" style="color:var(--color-text-tertiary);"></i>
+                    </a>
+                    <a href="#" class="flex items-center gap-3 p-2.5 rounded-md transition-colors group" style="background:var(--color-bg-tertiary);">
+                      <div class="w-8 h-8 rounded-md flex items-center justify-center shrink-0" style="background:var(--color-brand-bg);">
+                        <i data-lucide="monitor" class="w-4 h-4" style="color:var(--color-brand);"></i>
+                      </div>
+                      <span class="text-sm font-medium flex-1 truncate" style="color:var(--color-text-primary);">测试环境</span>
+                      <i data-lucide="chevron-right" class="w-4 h-4 shrink-0" style="color:var(--color-text-tertiary);"></i>
+                    </a>
+                    <a href="#" class="flex items-center gap-3 p-2.5 rounded-md transition-colors group" style="background:var(--color-bg-tertiary);">
+                      <div class="w-8 h-8 rounded-md flex items-center justify-center shrink-0" style="background:var(--color-brand-bg);">
+                        <i data-lucide="file-text" class="w-4 h-4" style="color:var(--color-brand);"></i>
+                      </div>
+                      <span class="text-sm font-medium flex-1 truncate" style="color:var(--color-text-primary);">周报模板</span>
+                      <i data-lucide="chevron-right" class="w-4 h-4 shrink-0" style="color:var(--color-text-tertiary);"></i>
+                    </a>
+                    <a href="#" class="flex items-center gap-3 p-2.5 rounded-md transition-colors group" style="background:var(--color-bg-tertiary);">
+                      <div class="w-8 h-8 rounded-md flex items-center justify-center shrink-0" style="background:var(--color-brand-bg);">
+                        <i data-lucide="globe" class="w-4 h-4" style="color:var(--color-brand);"></i>
+                      </div>
+                      <span class="text-sm font-medium flex-1 truncate" style="color:var(--color-text-primary);">公司内网</span>
+                      <i data-lucide="chevron-right" class="w-4 h-4 shrink-0" style="color:var(--color-text-tertiary);"></i>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </section>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Custom Styles: HarmonyOS brand identity & component patterns -->
+    <style id="harmony-custom">
+      /* Tool brand identity colors - rounder containers */
+      .tool-figma { background: #A259FF; color: #fff; border-radius: var(--radius-md); }
+      .tool-notion { background: #191919; color: #fff; border-radius: var(--radius-md); }
+      .tool-slack { background: #4A154B; color: #fff; border-radius: var(--radius-md); }
+      .tool-jira { background: #0052CC; color: #fff; border-radius: var(--radius-md); }
+      .tool-gitlab { background: #FC6D26; color: #fff; border-radius: var(--radius-md); }
+      .tool-analytics { background: #FF6D00; color: #fff; border-radius: var(--radius-md); }
+      .tool-datadog { background: #632CA6; color: #fff; border-radius: var(--radius-md); }
+
+      /* Avatar identity colors */
+      .avatar-mia { background: #3b82f6; color: #fff; }
+      .avatar-leo { background: #16a34a; color: #fff; }
+      .avatar-kevin { background: #f59e0b; color: #fff; }
+      .avatar-amy { background: #8b5cf6; color: #fff; }
+
+      /* Status badges - warmer HarmonyOS tones */
+      .badge-success { background: #E8F5E9; color: #34A853; }
+      .badge-running { background: #E3F2FD; color: #3B82F6; animation: pulse 2s ease-in-out infinite; }
+      @keyframes pulse {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.7; }
+      }
+
+      /* Card hover - very subtle shadow, no lift */
+      .card-harmony { transition: box-shadow 0.2s ease; }
+      .card-harmony:hover { box-shadow: var(--shadow-sm); }
+
+      /* Contact avatar identity colors */
+      .contact-zhangsan { background: #3b82f6; color: #fff; }
+      .contact-lisi { background: #8b5cf6; color: #fff; }
+      .contact-wangwu { background: #ec4899; color: #fff; }
+      .contact-zhaoliu { background: #f59e0b; color: #fff; }
+      .contact-chenqi { background: #10b981; color: #fff; }
+
+      /* Contact online status dots */
+      .contact-online { background: #34A853; }
+      .contact-busy { background: #E67E22; }
+      .contact-offline { background: #999999; }
+
+      /* CI/CD link icon colors */
+      .ci-link-jenkins { background: #d33833; color: #fff; border-radius: var(--radius-md); }
+      .ci-link-ghactions { background: #24292e; color: #fff; border-radius: var(--radius-md); }
+      .ci-link-argocd { background: #ef7b4d; color: #fff; border-radius: var(--radius-md); }
+      .ci-link-sonar { background: #4e9bcd; color: #fff; border-radius: var(--radius-md); }
+      .ci-link-docker { background: #2496ed; color: #fff; border-radius: var(--radius-md); }
+      .ci-link-grafana { background: #f46800; color: #fff; border-radius: var(--radius-md); }
+
+      /* Pipeline rows - border separation instead of bg-fill */
+      .pipeline-row { border-bottom: 1px solid var(--color-border-light); }
+
+      /* Logo icon white */
+      .logo-icon { color: var(--color-text-inverse); }
+
+      /* Sidebar link hover */
+      .sidebar-link:hover { background: var(--sidebar-hover); border-radius: 0 var(--radius-sm) var(--radius-sm) 0; }
+
+      /* KPI icon containers use 12px radius */
+      .kpi-icon-container { border-radius: var(--radius-md); }
+
+      /* Tablet: sidebar icon-only */
+      @media (max-width: 1023px) and (min-width: 768px) {
+        aside { width: 60px !important; }
+        aside span:not(.text-overline) { display: none; }
+        aside .text-overline { display: none; }
+        aside .px-5 { padding-left: 0.75rem; padding-right: 0.75rem; justify-content: center; }
+        aside nav a, aside .nav-item-active { justify-content: center; padding-left: 0; padding-right: 0; border-left: none !important; }
+        aside .flex.items-center.gap-3.px-5 { justify-content: center; }
+        aside .flex.items-center.gap-3.px-5 span { display: none; }
+        aside .flex.items-center.gap-3.px-5.py-4 { justify-content: center; padding-left: 0; padding-right: 0; }
+        aside .flex.items-center.gap-3.px-5.py-4 span { display: none; }
+        .ml-\[220px\] { margin-left: 60px !important; }
+      }
+
+      /* Mobile: sidebar hidden */
+      @media (max-width: 767px) {
+        aside { display: none !important; }
+        .ml-\[220px\] { margin-left: 0 !important; }
+      }
+    </style>
+
+    <!-- Time-based greeting & date display -->
+    <script>
+      (function() {
+        var hour = new Date().getHours();
+        var greeting = hour < 12 ? '早上好' : (hour < 18 ? '下午好' : '晚上好');
+        var heading = document.getElementById('greeting-text');
+        if (heading) heading.textContent = greeting + ', Yuan';
+
+        var now = new Date();
+        var days = ['星期日','星期一','星期二','星期三','星期四','星期五','星期六'];
+        var dateStr = now.getFullYear() + '年' + (now.getMonth()+1) + '月' + now.getDate() + '日 ' + days[now.getDay()];
+        var dateEl = document.getElementById('current-date');
+        if (dateEl) dateEl.textContent = dateStr;
+      })();
+      lucide.createIcons();
+    </script>
+</body>
+</html>
