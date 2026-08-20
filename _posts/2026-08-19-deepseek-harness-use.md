@@ -631,5 +631,30 @@ curl -fsSL https://raw.githubusercontent.com/Lum1104/dsh-browser/refs/heads/main
 
 ## 总结
 
-
 DeepSeek Harness 与 VS code 像，可用性强，比 Claude 格局大
+
+
+## PI Agent
+
+| 对比维度 | Pi Agent | OpenCode |
+|---|---|---|
+| 设计哲学 | 原语（Primitives）而非功能（Features）——给你积木，你自己搭 | 终端里的全功能 IDE——开箱即用，功能完整 |
+| 核心工具数 | 仅 4 个：`read`、`write`、`edit`、`bash` | 20+ 内置工具，包含 LSP 集成、多文件编辑、规划 Agent、记忆系统等 |
+| 系统提示词 | 约 200–1,000 Tokens（极致精简） | 10K+ Tokens（功能越多，提示越重） |
+| 安装复杂度 | 中（需要理解设计哲学，自己写扩展） | 低（一条命令安装，几分钟配好） |
+| GitHub Stars | 约 15K–32K | 140K+（社区人气王） |
+| 开发者 | Mario Zechner（libGDX 作者） | AnomalyCo（SST 团队） |
+| 编程语言 | TypeScript | Go |
+
+
+### Pi 插件
+
+pi install npm:pi-subagents          # 子代理
+pi install npm:pi-mcp-adapter       # MCP 支持
+pi install npm:pi-web-access        # 网页搜索
+pi install npm:context-mode         # 极致上下文节省
+pi install npm:pi-hermes-memory     # 记忆扩展
+
+### 总结
+
+在未来的趋势，模式训练会针对 Agent 能力做训练（ToolBench， AgentBench 基准测试）基础编程提示会嵌入模型训练中
