@@ -474,6 +474,32 @@ DSH 插件可以分为八类：
 
 例如，要开发一个会对会话事件作出反应的小宠物，可以使用 Session 插件。
 
+## 1. Session 层
+
+核心：**追加式事件日志 + 从日志投影模型可见内容**
+
+- **持久化**
+  - 加密存储
+  - 对象存储
+  - 文件存储
+- **上下文压缩策略类**
+- **会话管理类**
+  - 会话分享
+  - 会话搜索
+
+## 2. Sandbox 层
+
+核心：**执行环境 + 权限边界**
+
+- **Docker 沙箱**
+  - 容器化运行
+- **远程开发机沙箱**
+- **浏览器沙箱**
+
+## 
+
+
+
 ## DSH 社区生态
 
 ### 安装前置说明
@@ -658,3 +684,11 @@ pi install npm:pi-hermes-memory     # 记忆扩展
 ### 总结
 
 在未来的趋势，模式训练会针对 Agent 能力做训练（ToolBench， AgentBench 基准测试）基础编程提示会嵌入模型训练中
+
+
+TODO:
+1. DSH 八类插件分别是什么可以定制什么
+2. https://github.com/freestylefly/awesome-gpt-image-2
+3. deepseek harness 怎么指挥codex干活
+4. opencode 有没有多模型配置
+5. deepseek的多模态理解是怎么回事
