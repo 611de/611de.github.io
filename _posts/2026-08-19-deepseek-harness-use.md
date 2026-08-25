@@ -692,3 +692,8 @@ TODO:
 3. deepseek harness 怎么指挥codex干活
 4. opencode 有没有多模型配置
 5. deepseek的多模态理解是怎么回事
+
+
+### deepseek-v4-flash-vision-exp 怎么使用
+
+直接当个多模态模型使用即可，不过codex需要配置一下模型的输入，允许输入图片才能正常发送请求
