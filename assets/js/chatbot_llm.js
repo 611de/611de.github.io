@@ -9,8 +9,8 @@
     var form = document.getElementById("article-assistant-form");
     var input = document.getElementById("article-assistant-input");
     var content = document.querySelector(".post-content");
-    var apiKeyMeta = document.querySelector('meta[name="unsecurity"]');
-    var apiKey = apiKeyMeta ? apiKeyMeta.content : "";
+    var keyMeta = document.querySelector('meta[name="chatbot-key"]');
+    var apiKey = keyMeta ? keyMeta.content : "";
     var model = "qwen-turbo";
     var conversation = [];
     var dragState = null;
@@ -197,38 +197,46 @@
       addLinkList("找到 " + Math.min(matches.length, 5) + " 处相关内容", matches.slice(0, 5));
     }
 
+    function buildMessages(question, articleTitle, articleContent) {
+      return [{
+        role: "system",
+        content: "你是博客文章阅读助手。请优先根据以下文章回答，内容不足时明确说明，不要编造。回答保持简洁。\n\n文章标题：" +
+          (articleTitle || "") + "\n\n文章内容：\n" + articleContent
+      }].concat(conversation.slice(0, -1));
+    }
+
+    async function requestAnswer(question, articleTitle, articleContent) {
+      var response = await fetch("https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer " + apiKey
+        },
+        body: JSON.stringify({
+          model: model,
+          max_tokens: 800,
+          messages: buildMessages(question, articleTitle, articleContent)
+        })
+      });
+      if (response.status === 429) throw new Error("ratelimit");
+      if (!response.ok) throw new Error("API request failed: " + response.status);
+      var data = await response.json();
+      return data.choices && data.choices[0] && data.choices[0].message
+        ? data.choices[0].message.content
+        : "没有收到有效回答。";
+    }
+
     async function askAI(question) {
       var articleTitle = document.querySelector(".post-title");
       var articleContent = content.textContent.replace(/\s+/g, " ").trim().slice(0, 12000);
+      var titleText = articleTitle ? articleTitle.textContent.trim() : "";
       var loading = addTextMessage("正在结合文章内容思考……");
 
       conversation.push({ role: "user", content: question });
       conversation = conversation.slice(-6);
 
       try {
-        var response = await fetch("https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            "Authorization": "Bearer " + apiKey
-          },
-          body: JSON.stringify({
-            model: model,
-            max_tokens: 800,
-            messages: [{
-              role: "system",
-              content: "你是博客文章阅读助手。请优先根据以下文章回答，内容不足时明确说明，不要编造。回答保持简洁。\n\n文章标题：" +
-                (articleTitle ? articleTitle.textContent.trim() : "") + "\n\n文章内容：\n" + articleContent
-            }].concat(conversation)
-          })
-        });
-
-        if (!response.ok) throw new Error("API request failed: " + response.status);
-
-        var data = await response.json();
-        var answer = data.choices && data.choices[0] && data.choices[0].message
-          ? data.choices[0].message.content
-          : "没有收到有效回答。";
+        var answer = await requestAnswer(question, titleText, articleContent);
 
         loading.remove();
         addTextMessage(answer);
@@ -237,8 +245,14 @@
       } catch (error) {
         loading.remove();
         console.error("文章助手请求失败:", error);
-        addTextMessage("AI 服务暂时不可用，已改为搜索正文中的相关内容。");
-        searchArticle(question, false);
+        if (error.message === "ratelimit") {
+          addTextMessage("提问太频繁了，请稍等一分钟再试。");
+        } else if (error.message === "forbidden") {
+          addTextMessage("人机验证未通过，请刷新页面后重试。");
+        } else {
+          addTextMessage("AI 服务暂时不可用，已改为搜索正文中的相关内容。");
+          searchArticle(question, false);
+        }
       }
     }
 

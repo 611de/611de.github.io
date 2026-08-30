@@ -1,0 +1,37 @@
+name: Generate OG images
+
+# 为新文章生成 OG 分享图并提交回 main。
+# 注意：本工作流只改动 assets/og/，不会再次触发自身。
+on:
+  push:
+    branches: [main]
+    paths:
+      - "_posts/**"
+      - "tools/generate-og.mjs"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install renderer dependencies
+        working-directory: tools
+        run: npm install --no-audit --no-fund
+
+      - name: Generate OG images for new posts
+        run: node tools/generate-og.mjs --skip-existing
+
+      - name: Commit generated images
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "chore: generate OG share images"
+          file_pattern: "assets/og/*.png"

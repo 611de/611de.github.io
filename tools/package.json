@@ -1,0 +1,13 @@
+{
+  "name": "blog-og-generator",
+  "private": true,
+  "type": "module",
+  "description": "为博客文章生成 OG 分享图（satori + resvg）",
+  "scripts": {
+    "generate": "node generate-og.mjs"
+  },
+  "dependencies": {
+    "@resvg/resvg-js": "^2.6.2",
+    "satori": "^0.13.1"
+  }
+}
