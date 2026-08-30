@@ -1,0 +1,75 @@
+{
+  "title": "给 DeepSeek Harness 写一个 hello 插件",
+  "agent": "DeepSeek Harness · deepseek-v4-flash · 4 个工具调用",
+  "task": "在 scratch-plugin/ 里创建一个最小 Harness 插件，注册到 cordis.yml 覆盖层，并启动 Web UI 验证插件被加载。",
+  "steps": [
+    {
+      "type": "thinking",
+      "title": "拆解任务",
+      "text": "要做一个最小插件，需要三样东西：插件源文件 my-plugin.ts、cordis.yml 覆盖层（用 insert 指向源文件的绝对路径）、以及带 --patch 的启动命令。先建目录。",
+      "duration": "1.8s"
+    },
+    {
+      "type": "tool",
+      "tool": "Bash",
+      "title": "创建插件目录",
+      "input": "mkdir -p scratch-plugin/src",
+      "output": "",
+      "status": "ok",
+      "duration": "0.1s"
+    },
+    {
+      "type": "thinking",
+      "title": "编写插件入口",
+      "text": "Cordis 插件导出 name 和 apply(ctx)。apply 会在所有必需依赖就绪后调用，这里只打印一行日志验证加载。",
+      "duration": "2.3s"
+    },
+    {
+      "type": "tool",
+      "tool": "Write",
+      "title": "写入 scratch-plugin/src/my-plugin.ts",
+      "input": "import type { Context } from '@deepseek-ai/cordis'\n\nexport const name = 'hello-plugin'\n\nexport function apply(ctx: Context) {\n  console.log('[hello-plugin] plugin loaded!')\n}",
+      "output": "已创建 my-plugin.ts（8 行）",
+      "status": "ok",
+      "duration": "0.4s"
+    },
+    {
+      "type": "tool",
+      "tool": "Bash",
+      "title": "获取仓库绝对路径",
+      "input": "pwd",
+      "output": "/home/user/projects/deepseek-harness",
+      "status": "ok",
+      "duration": "0.1s"
+    },
+    {
+      "type": "thinking",
+      "title": "组装覆盖层配置",
+      "text": "patch 文件只提供配置，不会改变 loader 解析模块路径的方式，所以插件路径必须是绝对路径，用上一步的 pwd 输出拼接。",
+      "duration": "1.5s"
+    },
+    {
+      "type": "tool",
+      "tool": "Write",
+      "title": "写入 scratch-plugin/cordis.yml",
+      "input": "- insert:\n    - id: hello\n      name: '/home/user/projects/deepseek-harness/scratch-plugin/src/my-plugin.ts'",
+      "output": "已创建 cordis.yml（3 行）",
+      "status": "ok",
+      "duration": "0.3s"
+    },
+    {
+      "type": "tool",
+      "tool": "Bash",
+      "title": "带覆盖层启动 Web UI",
+      "input": "pnpm dsh web --patch ./scratch-plugin/cordis.yml",
+      "output": "…\n[hello-plugin] plugin loaded!\nWeb UI listening on http://127.0.0.1:3080",
+      "status": "ok",
+      "duration": "6.2s"
+    },
+    {
+      "type": "final",
+      "title": "最终回复",
+      "text": "插件已经加载成功。终端里出现了 [hello-plugin] plugin loaded!，Web UI 跑在 http://127.0.0.1:3080。后续可以在这个文件里给 ctx 挂服务或监听会话事件， Cordis 会在卸载时统一清理资源。"
+    }
+  ]
+}

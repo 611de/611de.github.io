@@ -275,6 +275,10 @@ pnpm dsh web --patch ./scratch-plugin/cordis.yml
 [hello-plugin] plugin loaded!
 ```
 
+下面把「创建插件 → 注册 → 启动验证」这整个过程做成了可回放的执行轨迹，可以单步检查 Agent 每一步的工具调用：
+
+{% include agent-trace.html file="deepseek-harness" %}
+
 ## Cordis 是什么
 
 Cordis 是一个面向 Node.js 和 TypeScript 的插件化框架。它基于上下文和依赖注入工作，是 Koishi 生态的底层组件之一，主要负责服务、插件生命周期和事件管理。

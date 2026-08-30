@@ -1,0 +1,36 @@
+{%- comment -%}
+Agent 执行轨迹回放器。
+用法：在 _data/traces/<file>.json 里定义轨迹，然后在文章中写：
+  {% raw %}{% include agent-trace.html file="deepseek-harness" %}{% endraw %}
+数据结构见 _data/traces/deepseek-harness.json。
+{%- endcomment -%}
+{%- assign trace = site.data.traces[include.file] -%}
+{%- if trace -%}
+<div class="agent-trace" data-agent-trace aria-label="Agent 执行轨迹回放器">
+  <script type="application/json" class="agent-trace-data">{{ trace | jsonify }}</script>
+  <header class="agent-trace-header">
+    <div class="agent-trace-heading">
+      <p class="agent-trace-kicker">AGENT TRACE</p>
+      <h3>{{ trace.title | escape }}</h3>
+      {% if trace.agent %}<p class="agent-trace-agent">{{ trace.agent | escape }}</p>{% endif %}
+    </div>
+    <div class="agent-trace-controls">
+      <button type="button" data-trace-action="play" aria-label="自动播放">
+        <i class="fa fa-play" aria-hidden="true"></i> 播放
+      </button>
+      <button type="button" data-trace-action="step" aria-label="单步执行">
+        <i class="fa fa-step-forward" aria-hidden="true"></i> 单步
+      </button>
+      <button type="button" data-trace-action="reset" aria-label="重置回放">
+        <i class="fa fa-undo" aria-hidden="true"></i> 重置
+      </button>
+    </div>
+  </header>
+  {% if trace.task %}<p class="agent-trace-task"><strong>任务：</strong>{{ trace.task | escape }}</p>{% endif %}
+  <div class="agent-trace-progress" aria-hidden="true">
+    <div class="agent-trace-progress-bar" data-trace-progress></div>
+  </div>
+  <ol class="agent-trace-steps" data-trace-steps></ol>
+  <p class="agent-trace-hint">点「播放」看完整执行过程，或用「单步」逐条检查每一步的工具调用。</p>
+</div>
+{%- endif -%}
