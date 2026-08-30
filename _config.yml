@@ -51,6 +51,10 @@ description: >- # this means to ignore newlines until "baseurl:"
 
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "https://611de.github.io" # the base hostname & protocol for your site, e.g. https://example.com
+
+# 构建时包含"未来日期"的文章：作者在 UTC+8 写作，文章日期是当天，
+# 而 GitHub Pages 按 UTC 构建，晚上发布时当天日期在 UTC 仍是"未来"。
+future: true
 favicon: "/assets/images/ico/bitbug_favicon.ico" # the favicon for your site
 
 # Yat date format
