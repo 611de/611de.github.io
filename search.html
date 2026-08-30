@@ -1,0 +1,26 @@
+---
+layout: framework
+title: 搜索
+banner:
+sidebar:
+---
+
+<div class="search-page">
+  <div class="section-heading">
+    <p class="section-kicker">SEARCH</p>
+    <h1>搜索全站</h1>
+  </div>
+
+  <form class="search-form" id="search-form" role="search">
+    <label class="sr-only" for="search-input">输入关键词</label>
+    <input id="search-input" type="search" autocomplete="off"
+      placeholder="试试：Claude Code、LiteLLM、WSL、Responses API">
+    <button type="submit" aria-label="搜索">
+      <i class="fa fa-search" aria-hidden="true"></i>
+    </button>
+  </form>
+  <div id="search-status" class="search-status"></div>
+  <div id="search-results" class="search-results"></div>
+</div>
+
+<script src="{{ '/assets/js/search.js' | relative_url }}" defer></script>

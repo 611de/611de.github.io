@@ -1,0 +1,145 @@
+---
+layout: framework
+title: 图谱
+banner:
+sidebar:
+---
+
+<div class="graph-page">
+  <div class="section-heading">
+    <p class="section-kicker">GRAPH</p>
+    <h1>文章知识图谱</h1>
+  </div>
+  <p class="graph-desc">
+    每个蓝色节点是一篇文章，灰色小节点是标签，连线的疏密反映了主题之间的关联。
+    拖动节点重新布局，滚轮缩放，点击文章节点直接跳转阅读。
+  </p>
+  <div class="graph-legend">
+    <span><i class="legend-dot legend-post"></i>文章</span>
+    <span><i class="legend-dot legend-tag"></i>标签</span>
+  </div>
+  <div id="graph" class="graph-canvas" role="img" aria-label="文章与标签构成的交互式知识图谱">
+    <noscript>知识图谱需要启用 JavaScript 后查看。也可以直接浏览 <a href="/categories.html">分类</a> 或 <a href="/tags.html">标签</a>。</noscript>
+  </div>
+</div>
+
+<script src="{{ '/assets/js/vendor/cytoscape.min.js' | relative_url }}"></script>
+<script>
+(function () {
+  "use strict";
+
+  var container = document.getElementById("graph");
+  if (!container) return;
+
+  fetch("/graph.json")
+    .then(function (response) { return response.json(); })
+    .then(function (data) {
+      if (typeof cytoscape === "undefined") throw new Error("cytoscape missing");
+
+      var elements = [];
+      // 只保留被至少两篇文章共用的标签，避免单次标签把图撑散。
+      var sharedTags = {};
+      data.nodes.forEach(function (node) {
+        if (node.type === "tag" && (node.count || 0) < 2) return;
+        if (node.type === "tag") sharedTags[node.id] = true;
+        elements.push({
+          group: "nodes",
+          data: {
+            id: node.id,
+            label: node.label,
+            type: node.type,
+            count: node.count || 0
+          }
+        });
+      });
+      data.edges.forEach(function (edge) {
+        if (!sharedTags[edge.target]) return;
+        elements.push({ group: "edges", data: edge });
+      });
+
+      var cy = cytoscape({
+        container: container,
+        elements: elements,
+        style: [
+          {
+            selector: "node[type='post']",
+            style: {
+              "background-color": "#2563eb",
+              label: "data(label)",
+              width: 22,
+              height: 22,
+              "font-size": 11,
+              color: "#64748b",
+              "text-valign": "bottom",
+              "text-margin-y": 6,
+              "text-wrap": "ellipsis",
+              "text-max-width": 110
+            }
+          },
+          {
+            selector: "node[type='tag']",
+            style: {
+              "background-color": "#94a3b8",
+              label: "data(label)",
+              width: "mapData(count, 1, 10, 10, 26)",
+              height: "mapData(count, 1, 10, 10, 26)",
+              "font-size": 12,
+              color: "#475569",
+              "text-valign": "center",
+              "text-halign": "center",
+              "text-wrap": "ellipsis",
+              "text-max-width": 90
+            }
+          },
+          {
+            selector: "edge",
+            style: {
+              width: 1.2,
+              "line-color": "#cbd5e1",
+              "curve-style": "haystack",
+              "haystack-radius": 0.4,
+              opacity: 0.6
+            }
+          }
+        ],
+        layout: {
+          name: "cose",
+          animate: false,
+          padding: 30,
+          idealEdgeLength: 90,
+          nodeOverlap: 24
+        },
+        wheelSensitivity: 0.25
+      });
+
+      cy.on("tap", "node[type='post']", function (event) {
+        window.location.href = event.target.id();
+      });
+
+      cy.on("mouseover", "node", function () {
+        container.style.cursor = "pointer";
+      });
+      cy.on("mouseout", "node", function () {
+        container.style.cursor = "default";
+      });
+
+      // 点选标签时高亮它的所有关联文章。
+      cy.on("tap", "node[type='tag']", function (event) {
+        var tag = event.target;
+        cy.elements().removeClass("dimmed highlighted");
+        tag.neighborhood().addClass("highlighted");
+        cy.elements().not(tag.neighborhood()).not(tag).addClass("dimmed");
+      });
+      cy.on("tap", function (event) {
+        if (event.target === cy) {
+          cy.elements().removeClass("dimmed highlighted");
+        }
+      });
+    })
+    .catch(function (error) {
+      container.innerHTML =
+        '<p class="graph-error">图谱加载失败（' + error.message +
+        '）。也可以直接浏览 <a href="/categories.html">分类</a> 或 <a href="/tags.html">标签</a>。</p>';
+    });
+})();
+</script>

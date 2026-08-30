@@ -1,0 +1,26 @@
+---
+permalink: /graph.json
+---
+{
+  "nodes": [
+    {%- for post in site.posts -%}
+    { "id": {{ post.url | jsonify }}, "label": {{ post.title | jsonify }}, "type": "post", "group": {{ post.categories | join: ", " | jsonify }}, "date": {{ post.date | date: "%Y-%m-%d" | jsonify }} }{%- unless forloop.last -%},{%- endunless -%}
+    {%- endfor -%}
+    {%- assign tag_list = site.tags | sort -%}
+    {%- if tag_list.size > 0 -%},{%- endif -%}
+    {%- for tag in tag_list -%}
+    { "id": {{ tag[0] | prepend: "tag:" | jsonify }}, "label": {{ tag[0] | jsonify }}, "type": "tag", "count": {{ tag[1].size }} }
+    {%- unless forloop.last -%},{%- endunless -%}
+    {%- endfor -%}
+  ],
+  "edges": [
+    {%- assign first = true -%}
+    {%- for post in site.posts -%}
+    {%- for t in post.tags -%}
+    {%- unless first -%},{%- endunless -%}
+    { "source": {{ post.url | jsonify }}, "target": {{ t | prepend: "tag:" | jsonify }} }
+    {%- assign first = false -%}
+    {%- endfor -%}
+    {%- endfor -%}
+  ]
+}
