@@ -15,6 +15,8 @@ OpenAI 目前有两个常见的文本生成接口：`/v1/chat/completions` 和 `
 
 简单地说：**Chat Completions 围绕消息列表设计；Responses 围绕不同类型的输入、输出和工具调用设计。**
 
+我还做了一个[交互式演示页](/demos/api-playground.html)，改参数就能实时对照两种接口的请求体、curl 和 Python SDK 写法，建议配合本文一起看。
+
 ## Chat Completions 是什么
 
 Chat Completions 使用 `messages` 表示对话。每条消息都有一个角色，例如 `system`、`user` 或 `assistant`。

@@ -3,21 +3,70 @@ layout: about
 title: 关于
 ---
 
+<div class="about-terminal" aria-hidden="true">
+  <div class="about-terminal-bar">
+    <span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span>
+    <span class="about-terminal-title">liuyiyi@blog ~ %</span>
+  </div>
+  <pre class="about-terminal-body" id="about-terminal-body"></pre>
+</div>
+
 <h2>你好，我是 Liu Yiyi</h2>
 
-<p>我生活在上海，关注生成式人工智能及其在真实开发工作中的应用。这个博客用于沉淀可以复现、可以验证的实践经验。</p>
+<p>我生活在上海，关注生成式人工智能及其在真实开发工作中的应用。这个博客用于沉淀可以复现、可以验证的实践经验——每篇教程尽量注明环境、版本和踩坑过程，让读者可以直接照着做出来。</p>
+
+<div class="about-stats">
+  <div class="about-stat"><strong>{{ site.posts | size }}</strong><span>篇文章</span></div>
+  <div class="about-stat"><strong>{{ site.categories | size }}</strong><span>个分类</span></div>
+  <div class="about-stat"><strong>{{ site.tags | size }}</strong><span>个标签</span></div>
+  <div class="about-stat"><strong>2023</strong><span>开写至今</span></div>
+</div>
 
 <h2>关注方向</h2>
 
 <ul>
-  <li>AI Agent 与领域知识库</li>
-  <li>Claude Code、LangGraph 和 LLM 工具链</li>
-  <li>开发环境、自动化和效率工具</li>
+  <li><strong>AI Agent 与领域知识库</strong> —— 用 Claude Code、LangGraph 等工具把领域数据变成可用的 Agent</li>
+  <li><strong>LLM 工具链</strong> —— LiteLLM Proxy、OpenAI 兼容接口、模型接入与迁移实践</li>
+  <li><strong>开发环境与效率</strong> —— WSL、Neovim、Windows 终端等日常工具链打磨</li>
 </ul>
 
-<h2>你可以在这里找到</h2>
+<h2>动手玩的交互演示</h2>
 
-<p>完整的配置步骤、问题排查过程、项目案例，以及我在实际使用工具时踩过的坑。文章会尽量注明环境与版本，减少无法复现的问题。</p>
+<div class="about-projects">
+  <a class="about-project" href="/search.html">
+    <strong>🔎 全站搜索</strong>
+    <span>全文检索所有文章，支持中英文混排和关键词高亮。</span>
+  </a>
+  <a class="about-project" href="/graph.html">
+    <strong>🕸️ 文章知识图谱</strong>
+    <span>把博客 20+ 篇文章和标签画成可拖拽的关系图谱，点击即读。</span>
+  </a>
+  <a class="about-project" href="/demos/api-playground.html">
+    <strong>⚡ API 对比演示</strong>
+    <span>改参数实时生成 Chat Completions 与 Responses API 的请求代码。</span>
+  </a>
+  <a class="about-project" href="/demos/travel-guide.html">
+    <strong>🧭 旅游攻略 Agent</strong>
+    <span>基于 Hugging Face Space 部署的领域 Agent 实例。</span>
+  </a>
+</div>
+
+<h2>写作时间线</h2>
+
+<div class="about-timeline">
+  <div class="about-milestone">
+    <p class="about-year">2023</p>
+    <p>从零搭起这个 Jekyll 博客，折腾评论系统和 GitHub 主页定制。</p>
+  </div>
+  <div class="about-milestone">
+    <p class="about-year">2025</p>
+    <p>转向 LLM 工具链：LangGraph 源码阅读、MkDocs 文档部署、LiteLLM Proxy 接入。</p>
+  </div>
+  <div class="about-milestone">
+    <p class="about-year">2026</p>
+    <p>聚焦 Agent 工程化：Claude Code 领域 Agent、DeepSeek Harness、OpenAI Responses API 迁移。</p>
+  </div>
+</div>
 
 <h2>联系我</h2>
 
@@ -25,3 +74,50 @@ title: 关于
   <li>GitHub：<a href="https://github.com/611de">@611de</a></li>
   <li>Email：<a href="mailto:liuyiyi-611@qq.com">liuyiyi-611@qq.com</a></li>
 </ul>
+
+<script>
+(function () {
+  "use strict";
+  var body = document.getElementById("about-terminal-body");
+  if (!body) return;
+
+  var prefersReduced = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var lines = [
+    "$ whoami",
+    "Liu Yiyi — AI Agent / LLM 工具链 / 开发效率",
+    "$ cat focus.txt",
+    "Agent 工程化 · Claude Code · LangGraph · LiteLLM · WSL",
+    "$ ls posts/ | wc -l",
+    "{{ site.posts | size }} 篇可复现的教程与踩坑笔记",
+    "$ open ./graph.html",
+    "→ 知识图谱已就绪，欢迎来玩"
+  ];
+
+  if (prefersReduced) {
+    body.textContent = lines.join("\n");
+    return;
+  }
+
+  var output = "";
+  var lineIndex = 0;
+  var charIndex = 0;
+
+  function tick() {
+    if (lineIndex >= lines.length) return;
+    var current = lines[lineIndex];
+    if (charIndex < current.length) {
+      body.textContent = output + current.slice(0, charIndex + 1);
+      charIndex++;
+      window.setTimeout(tick, current.charAt(0) === "$" ? 40 : 18);
+    } else {
+      output += current + "\n";
+      lineIndex++;
+      charIndex = 0;
+      body.textContent = output;
+      window.setTimeout(tick, lineIndex === lines.length ? 0 : 360);
+    }
+  }
+
+  tick();
+})();
+</script>

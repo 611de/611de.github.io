@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Chat Completions vs Responses API 交互演示</title>
+  <style>
+    :root {
+      --surface: #ffffff;
+      --surface-muted: #f8fafc;
+      --border: #e2e8f0;
+      --text: #0f172a;
+      --text-muted: #64748b;
+      --accent: #2563eb;
+      --accent-strong: #1d4ed8;
+      --radius: 12px;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --surface: #111827;
+        --surface-muted: #1e293b;
+        --border: #334155;
+        --text: #f1f5f9;
+        --text-muted: #cbd5e1;
+      }
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      padding: 32px 16px 64px;
+      font-family: system-ui, "PingFang SC", "Microsoft YaHei", sans-serif;
+      background: var(--surface-muted);
+      color: var(--text);
+      line-height: 1.7;
+    }
+    .wrap { max-width: 1080px; margin: 0 auto; }
+    h1 { font-size: 26px; margin: 0 0 6px; }
+    .sub { color: var(--text-muted); margin: 0 0 24px; }
+    .mode-toggle {
+      display: inline-flex;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      background: var(--surface);
+      overflow: hidden;
+      margin-bottom: 24px;
+    }
+    .mode-toggle button {
+      padding: 10px 22px;
+      border: 0;
+      background: transparent;
+      color: var(--text-muted);
+      font-size: 15px;
+      cursor: pointer;
+    }
+    .mode-toggle button.is-active {
+      background: var(--accent);
+      color: #fff;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1.2fr;
+      gap: 20px;
+      align-items: start;
+    }
+    @media (max-width: 860px) { .grid { grid-template-columns: 1fr; } }
+    .panel {
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--surface);
+      padding: 20px;
+    }
+    .panel h2 { font-size: 16px; margin: 0 0 14px; }
+    label { display: block; font-size: 13px; color: var(--text-muted); margin: 12px 0 4px; }
+    input[type="text"], textarea {
+      width: 100%;
+      padding: 9px 12px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--surface-muted);
+      color: var(--text);
+      font-size: 14px;
+      font-family: inherit;
+    }
+    textarea { resize: vertical; min-height: 70px; }
+    input:focus-visible, textarea:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+    .checks { display: flex; flex-wrap: wrap; gap: 16px; margin-top: 14px; }
+    .checks label { display: flex; align-items: center; gap: 6px; margin: 0; font-size: 14px; color: var(--text); }
+    pre {
+      margin: 0;
+      padding: 14px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: #0b1220;
+      color: #e2e8f0;
+      font-size: 12.5px;
+      line-height: 1.6;
+      overflow-x: auto;
+      max-height: 460px;
+    }
+    .tabbar { display: flex; gap: 8px; margin-bottom: 12px; flex-wrap: wrap; }
+    .tabbar button {
+      padding: 6px 14px;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      background: var(--surface);
+      color: var(--text-muted);
+      font-size: 13px;
+      cursor: pointer;
+    }
+    .tabbar button.is-active { border-color: var(--accent); color: var(--accent-strong); }
+    table { width: 100%; border-collapse: collapse; margin-top: 24px; font-size: 14px; }
+    th, td { border: 1px solid var(--border); padding: 8px 12px; text-align: left; vertical-align: top; }
+    th { background: var(--surface); }
+    td code, .sub code { background: rgba(37,99,235,.1); border-radius: 4px; padding: 1px 5px; font-size: 13px; }
+    .note { color: var(--text-muted); font-size: 13px; margin-top: 10px; }
+  </style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Chat Completions vs Responses API</h1>
+  <p class="sub">改左边的参数，右边实时生成对应的请求体、curl 和 Python SDK 代码。配套文章见博客《Chat Completions 到 Responses》。</p>
+
+  <div class="mode-toggle" role="tablist" aria-label="API 模式">
+    <button type="button" class="is-active" data-mode="chat" role="tab" aria-selected="true">Chat Completions</button>
+    <button type="button" data-mode="responses" role="tab" aria-selected="false">Responses</button>
+  </div>
+
+  <div class="grid">
+    <div class="panel">
+      <h2>请求参数</h2>
+      <label for="base-url">Base URL</label>
+      <input type="text" id="base-url" value="https://api.openai.com/v1">
+
+      <label for="model">模型</label>
+      <input type="text" id="model" value="gpt-4o-mini">
+
+      <label for="system">System / Instructions</label>
+      <textarea id="system">You are a helpful assistant.</textarea>
+
+      <label for="user">用户消息</label>
+      <textarea id="user">用一句话介绍 RAG。</textarea>
+
+      <label for="image">图片 URL（可选，演示多模态输入）</label>
+      <input type="text" id="image" placeholder="https://example.com/image.png">
+
+      <div class="checks">
+        <label><input type="checkbox" id="use-tools"> 演示工具调用（联网搜索）</label>
+        <label><input type="checkbox" id="use-stream"> 流式输出 <code>stream: true</code></label>
+      </div>
+      <p class="note">此页面纯前端运行，不会发出任何真实请求，只生成代码。</p>
+    </div>
+
+    <div class="panel">
+      <div class="tabbar" role="tablist" aria-label="输出格式">
+        <button type="button" class="is-active" data-view="json">请求 JSON</button>
+        <button type="button" data-view="curl">curl</button>
+        <button type="button" data-view="python">Python SDK</button>
+        <button type="button" data-view="diff">关键差异</button>
+      </div>
+      <pre id="output" aria-live="polite"></pre>
+    </div>
+  </div>
+
+  <table>
+    <thead>
+      <tr><th>维度</th><th>Chat Completions</th><th>Responses</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>定位</td><td>为「聊天」设计的消息补全接口</td><td>为「Agent / 任务」设计的状态化接口</td></tr>
+      <tr><td>状态管理</td><td>无状态，每次手动回传全部历史</td><td>可用 <code>previous_response_id</code> 让服务端接管历史</td></tr>
+      <tr><td>系统提示</td><td><code>messages</code> 里 role=system</td><td>独立参数 <code>instructions</code></td></tr>
+      <tr><td>多模态输入</td><td>content 数组中 <code>image_url</code></td><td><code>input</code> 数组中 <code>input_image</code></td></tr>
+      <tr><td>工具定义</td><td><code>tools: [{ function: {...} }]</code> 嵌套一层</td><td><code>tools: [{ type: "web_search" }]</code> 内置工具扁平化</td></tr>
+      <tr><td>输出读取</td><td><code>choices[0].message.content</code></td><td>遍历 <code>output</code> 数组按类型取块</td></tr>
+      <tr><td>适用场景</td><td>简单对话、兼容存量生态</td><td>多轮 Agent、工具编排、需要持久化会话</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<script>
+(function () {
+  "use strict";
+
+  var mode = "chat";
+  var view = "json";
+  var fields = ["base-url", "model", "system", "user", "image"];
+  var flags = ["use-tools", "use-stream"];
+  var output = document.getElementById("output");
+
+  function val(id) { return document.getElementById(id).value.trim(); }
+  function on(id) { return document.getElementById(id).checked; }
+  function esc(str) { return JSON.stringify(str); }
+
+  function buildBody() {
+    var model = val("model");
+    var system = val("system");
+    var user = val("user");
+    var image = val("image");
+    var stream = on("use-stream");
+    var body;
+
+    if (mode === "chat") {
+      body = { model: model, messages: [] };
+      if (system) body.messages.push({ role: "system", content: system });
+      if (image) {
+        body.messages.push({
+          role: "user",
+          content: [
+            { type: "text", text: user },
+            { type: "image_url", image_url: { url: image } }
+          ]
+        });
+      } else {
+        body.messages.push({ role: "user", content: user });
+      }
+      if (on("use-tools")) {
+        body.tools = [{
+          type: "function",
+          function: {
+            name: "web_search",
+            description: "联网搜索最新资料",
+            parameters: { type: "object", properties: { query: { type: "string" } }, required: ["query"] }
+          }
+        }];
+      }
+      if (stream) body.stream = true;
+    } else {
+      body = { model: model, input: [] };
+      if (system) body.instructions = system;
+      if (image) {
+        body.input.push({
+          role: "user",
+          content: [
+            { type: "input_text", text: user },
+            { type: "input_image", image_url: image }
+          ]
+        });
+      } else {
+        body.input.push({ role: "user", content: user });
+      }
+      if (on("use-tools")) {
+        body.tools = [{ type: "web_search" }];
+      }
+      if (stream) body.stream = true;
+    }
+    return body;
+  }
+
+  function renderJSON() {
+    return JSON.stringify(buildBody(), null, 2);
+  }
+
+  function renderCurl() {
+    var path = mode === "chat" ? "/chat/completions" : "/responses";
+    var lines = [
+      "curl " + esc(val("base-url") + path) + " \\",
+      "  -H \"Content-Type: application/json\" \\",
+      "  -H \"Authorization: Bearer $OPENAI_API_KEY\" \\",
+      "  -d '" + JSON.stringify(buildBody()) + "'"
+    ];
+    return lines.join("\n");
+  }
+
+  function renderPython() {
+    var system = val("system");
+    var user = val("user");
+    var image = val("image");
+    var code;
+
+    if (mode === "chat") {
+      var messages = [];
+      if (system) messages.push("        {\"role\": \"system\", \"content\": " + esc(system) + "},");
+      if (image) {
+        messages.push("        {\"role\": \"user\", \"content\": [");
+        messages.push("            {\"type\": \"text\", \"text\": " + esc(user) + "},");
+        messages.push("            {\"type\": \"image_url\", \"image_url\": {\"url\": " + esc(image) + "}},");
+        messages.push("        ]},");
+      } else {
+        messages.push("        {\"role\": \"user\", \"content\": " + esc(user) + "},");
+      }
+      code = [
+        "from openai import OpenAI",
+        "",
+        "client = OpenAI()",
+        "response = client.chat.completions.create(",
+        "    model=" + esc(val("model")) + ",",
+        "    messages=["
+      ].concat(messages, ["    ],"]) ;
+      if (on("use-tools")) code.push("    tools=[...],");
+      if (on("use-stream")) code.push("    stream=True,");
+      code = code.concat(["])", "", "print(response.choices[0].message.content)"]);
+    } else {
+      var input = [];
+      if (image) {
+        input.push("        {\"role\": \"user\", \"content\": [");
+        input.push("            {\"type\": \"input_text\", \"text\": " + esc(user) + "},");
+        input.push("            {\"type\": \"input_image\", \"image_url\": " + esc(image) + "},");
+        input.push("        ]},");
+      } else {
+        input.push("        {\"role\": \"user\", \"content\": " + esc(user) + "},");
+      }
+      code = [
+        "from openai import OpenAI",
+        "",
+        "client = OpenAI()",
+        "response = client.responses.create(",
+        "    model=" + esc(val("model")) + ",",
+        system ? "    instructions=" + esc(system) + "," : null,
+        "    input=["
+      ].filter(Boolean).concat(input, ["    ],"]);
+      if (on("use-tools")) code.push("    tools=[{\"type\": \"web_search\"}],");
+      if (on("use-stream")) code.push("    stream=True,");
+      code = code.concat(["])", "", "print(response.output_text)"]);
+    }
+    return code.join("\n");
+  }
+
+  function renderDiff() {
+    if (mode === "chat") {
+      return [
+        "当前模式：Chat Completions",
+        "",
+        "· 历史要自己带：每一轮都把完整 messages 数组重新发一遍，",
+        "  token 成本随对话线性增长，需要自己裁剪。",
+        "· 系统提示藏在 messages 里，和普通消息混在一起。",
+        "· 工具定义要多嵌套一层 function 对象。",
+        "· 取结果：response.choices[0].message.content。",
+        "",
+        "什么时候够用：单轮/少量轮次的对话、Q&A 机器人、",
+        "以及需要最大化兼容国内模型生态的时候——几乎所有厂商",
+        "都提供 /chat/completions 兼容端点。"
+      ].join("\n");
+    }
+    return [
+      "当前模式：Responses",
+      "",
+      "· 服务端接管历史：传 previous_response_id 即可续接对话，",
+        "  客户端不必重复发送上下文。",
+      "· 系统提示是独立参数 instructions，语义更清晰。",
+      "· 内置工具扁平化：tools: [{\"type\": \"web_search\"}]，",
+        "  不用自己写工具 schema；自定义工具另用 function 类型。",
+      "· 取结果：response.output_text（SDK 提供的聚合快捷方式），",
+        "  或遍历 output 数组按 type 分别处理推理/工具/文本块。",
+      "",
+      "什么时候值得切换：多轮 Agent、需要工具编排、",
+      "需要服务端持久化会话状态或使用内置工具时。"
+    ].join("\n");
+  }
+
+  function render() {
+    if (view === "json") output.textContent = renderJSON();
+    else if (view === "curl") output.textContent = renderCurl();
+    else if (view === "python") output.textContent = renderPython();
+    else output.textContent = renderDiff();
+  }
+
+  document.querySelectorAll("[data-mode]").forEach(function (button) {
+    button.addEventListener("click", function () {
+      mode = button.getAttribute("data-mode");
+      document.querySelectorAll("[data-mode]").forEach(function (other) {
+        var active = other === button;
+        other.classList.toggle("is-active", active);
+        other.setAttribute("aria-selected", active ? "true" : "false");
+      });
+      render();
+    });
+  });
+
+  document.querySelectorAll("[data-view]").forEach(function (button) {
+    button.addEventListener("click", function () {
+      view = button.getAttribute("data-view");
+      document.querySelectorAll("[data-view]").forEach(function (other) {
+        other.classList.toggle("is-active", other === button);
+      });
+      render();
+    });
+  });
+
+  fields.forEach(function (id) {
+    document.getElementById(id).addEventListener("input", render);
+  });
+  flags.forEach(function (id) {
+    document.getElementById(id).addEventListener("change", render);
+  });
+
+  render();
+})();
+</script>
+</body>
+</html>
