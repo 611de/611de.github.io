@@ -50,8 +50,8 @@ description: >- # this means to ignore newlines until "baseurl:"
 # Google search results) and in your feed.xml site description.
 
 baseurl: "" # the subpath of your site, e.g. /blog
-url: "" # the base hostname & protocol for your site, e.g. https://example.com
-favicon: "https://611de.github.io/assets/images/ico/bitbug_favicon.ico" # the favicon for your site
+url: "https://611de.github.io" # the base hostname & protocol for your site, e.g. https://example.com
+favicon: "/assets/images/ico/bitbug_favicon.ico" # the favicon for your site
 
 # Yat date format
 # refer to https://shopify.github.io/liquid/filters/date/ if you want to customize this
@@ -69,6 +69,8 @@ header_pages:
   - archives.html
   - categories.html
   - tags.html
+  - search.html
+  - graph.html
   - about.html
 
 banner:
@@ -226,10 +228,15 @@ utterances:
   theme: "github-light"
   follow_site_theme: true
 
+# 文章助手直连 DashScope 的 API Key。
+# 注意：这个值会原样出现在每个页面的 HTML 源码里（公开可见），
+# 靠阿里云侧的限流/额度控制风险。
+chatbot_api_key: "sk-24780afef09c4df19270bc68f3345e0b"
+
 # Build settings
 # highlighter: none
 markdown: kramdown
-kmarkdown:
+kramdown:
   input: GFM
 
 plugins:

@@ -2,13 +2,19 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="unsecurity" content="sk-24780afef09c4df19270bc68f3345e0b">
   <meta name="google-translate-customization" content="108d9124921d80c3-80e20d618ff053c8-g4f02ec6f3dba68b7-c">
   {%- seo -%}
+  {%- if site.chatbot_api_key -%}
+  <meta name="chatbot-key" content="{{ site.chatbot_api_key }}">
+  {%- endif -%}
+  {%- if page.layout == 'post' -%}
+  <meta property="og:image" content="{{ site.url }}/assets/og/{{ page.path | split: '/' | last | remove: '.md' | remove: '.html' }}.png">
+  {%- endif -%}
   <link rel="icon" href="{{ site.favicon }}">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   <link rel="stylesheet" href="{{ "/assets/css/main.css" | relative_url }}">
   <script src="{{ "/assets/js/main.js" | relative_url }}"></script>
+  <script src="{{ "/assets/js/agent-trace.js" | relative_url }}" defer></script>
   {%- feed_meta -%}
   {%- if jekyll.environment == 'production' and site.google_analytics -%}
   {%- include extensions/google-analytics.html -%}

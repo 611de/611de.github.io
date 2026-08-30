@@ -3,3 +3,6 @@
 .sass-cache
 _site
 Gemfile.lock
+.vscode
+.og-font-cache/
+tools/node_modules/

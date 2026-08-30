@@ -1,5 +1,17 @@
 # Repository Guidelines
 
+## Writing Blog Posts（用户说"写blog"时遵循）
+
+当用户要求写博客（"写blog"、"写篇文章"、"把这个写成博客"等）时：
+
+1. **位置与命名**：新文章写到 `_posts/`，文件名 `YYYY-MM-DD-标题.md`，日期用当天，标题可用中文并含英文关键词，参考同目录现有文件的命名风格。
+2. **先读再写**：动笔前先读 `_posts/` 里最近 2~3 篇同类文章，对齐语气（第一人称、口语化、可用 emoji）、结构和标题风格。
+3. **Front matter 必填**：`layout: post`、`title`、`subtitle`、`categories`、`tags`。`categories` 从现有文章中选用（如：教程与踩坑、LLM 应用开发、开发环境、项目案例），不要随意发明新分类。
+4. **站内互链**：引用站内文章用 `](/YYYY/MM/DD/标题/)` 格式，以 `_posts` 里现有写法为准。
+5. **图片**：静态图片放 `assets/images/posts/<文章短名>/`，用仓库相对路径 `/assets/images/...` 引用。
+6. **验证**：写完必须运行 `bundle exec jekyll build`，确认无报错且 `_site` 中生成了对应文件，再向用户报告。
+7. **提交**：除非用户明确要求，写完不要自动 commit/push，先让用户确认。
+
 ## Project Structure & Module Organization
 
 This repository is a Jekyll-based personal blog using the YAT theme. Blog posts live in `_posts/`; start new articles from `_templates/post.md` and name them `YYYY-MM-DD-title.md`. Unfinished writing belongs in `_drafts/`, standalone pages in `demos/`, and notebooks in `examples/`. Shared page templates are in `_layouts/`, reusable fragments in `_includes/`, site data in `_data/`, and Sass sources in `_sass/`. Static images, styles, and scripts belong under `assets/`. Configure site-wide metadata, navigation, and theme behavior in `_config.yml`.

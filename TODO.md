@@ -58,11 +58,7 @@
 
 - [x] 将 Chatbot 定位调整为“问这篇文章”，统一中文文案和博客视觉。
 - [x] 在不依赖后端时提供文章概览、目录、关键词检索和相关文章功能。
-- [ ] 新建 Cloudflare Worker，代理通义千问 API 请求。
-- [ ] 将通义千问 API Key 保存为 Worker Secret，不再传给浏览器。
-- [ ] 在 Worker 中加入单 IP 限流、输入长度、输出 Token 和每日额度限制。
-- [ ] 博客前端改为请求 Worker，并增加加载、错误和频率限制提示。
-- [ ] 配置 Cloudflare Turnstile，降低接口被脚本滥用的风险。
+- [x] 决定保留浏览器直连 DashScope 方案：Key 随页面公开（`_config.yml` 的 `chatbot_api_key`），靠阿里云侧限流和额度控制风险，不部署 Worker 代理。若未来要隐藏 Key，再引入代理即可。
 
 ## 进行中：内容质量
 
