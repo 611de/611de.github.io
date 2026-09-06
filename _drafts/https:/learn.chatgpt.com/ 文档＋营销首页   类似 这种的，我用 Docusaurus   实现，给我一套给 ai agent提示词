@@ -1,0 +1,129 @@
+这套我按「**一轮上下文 + 分阶段任务**」给你。先贴一段每次都要带的「总体上下文」，然后按阶段给它单独的任务：这样 AI agent 能专注、不走偏，也不会一次性铺得太开。
+
+## 使用说明
+
+- 每轮对话，先把「上下文」那段发给它，再发对应阶段的「任务」。
+- 里面 `[...]` 是占位符，发之前替换成你的值（站点名、GitHub 仓库、品牌色、是否需要付费搜索、语言等）。
+- 它默认按 **Docusaurus 3 + TypeScript + React + MDX** 来写。
+
+---
+
+## ① 总体上下文（每轮都带上）
+
+```
+你是一名资深前端工程师。帮我用 Docusaurus 3（TypeScript）搭建一个「营销首页 + 文档」一体化的站点，
+成品风格参照 https://learn.chatgpt.com/ 的首页与文档体验：科技感、大留白、品牌化、暗色模式，
+首页既要有产品营销感又要有强交互，文档则可搜索、有侧边栏、支持多版本。
+
+硬性约束：
+1. 使用 Docusaurus 3，语言 TypeScript，组件 React + MDX。
+2. 站点结构：/ 为营销首页；/docs 为文档；/blog 可选用。
+3. 广告营销首页用 src/pages/index.tsx（React 路由），文档用 docs/ 目录 + 内置侧边栏。
+4. 全局可复用的自定义组件放 src/components/；要在 MDX 里全局可用，用 src/theme/MDXComponents.tsx
+   去包装 @theme-original/MDXComponents 后注册。
+5. 内容尽量数据驱动：把可复用内容放到 src/data/*.json（或 .ts），组件用 props 接收，别写死。
+6. 全站要有暗/亮色切换；样式优先用 Docusaurus/Infima 的 theme 变量，如需 Tailwind 必须说明
+   与 Docusaurus 的冲突规避方案（@tailwind base 需谨慎，避免覆盖 Infima）。
+7. 每个阶段完成都要给我：改了哪些文件、如何本地验证（npm run start / build）结果、以及
+   「验收清单」让我自己核对。不要在未确认前擅自发布或改动与我无关的文件。
+
+站点信息：
+- 站点名：[站点名]
+- 目标仓库/GitHub：[仓库地址]
+- 品牌主色：[主色 hex]，强调色：[辅色 hex]，可叠加中文/英文两种语言：[语言列表]
+- 是否需要：内置搜索（本地 lunr/Pagefind 方案）还是 Algolia DocSearch（要申请 AppID/Key）：[选择]
+
+现在开始，我先给你【阶段1】的任务。
+```
+
+---
+
+## ② 阶段任务（按顺序一条条发）
+
+**阶段 1：项目脚手架 + 主题基线**
+```
+【阶段1｜脚手架与主题】
+在 [仓库目录] 用 `npm create docusaurus@latest my-site classic` 初始化 TypeScript 版 Docusaurus 3，
+把 favicon/标题/描述/meta 设为 [站点名]。
+1. 配置 docusaurus.config.ts：siteTitle、url、baseUrl、onBrokenLinks/onBrokenMarkdownLinks 设为 throw。
+2. 主题：自定义 ./src/css/custom.css 的 Infima 变量，设定品牌主色/辅色（dark + light 两套），
+   并确保 navbar/footer 能展示站点名与主色调。
+3. 删除默认示例文档页（如 docs/tutorial-*），保留 docs/ 目录结构并给出 /docs 的二级/三级侧边栏骨架。
+4. 跑通 `npm run build`，确认无 broken link/无 TS 报错。
+完成后列出改动文件清单 + 本地验收点（build 通过、切换暗色正常）。
+```
+
+**阶段 2：营销首页结构（Hero + 信息区块 + 卡片网格）**
+```
+【阶段2｜营销首页骨架】
+在 src/pages/index.tsx 搭建首页，结构与 learn.chatgpt.com 首页对齐：
+1. Hero 区：大标题 + 一句话副标题 + 主打 CTA（跳到 /docs 或注册）。
+2. 三个「模式」信息区块（对应 Explore ideas / Get work done / Build anything），
+   每块 = 标题 + 描述 + 一组可点击的 items；先只做静态展示，交互留给阶段3。
+3. 「What will you do with ChatGPT?」式用例卡片网格：每张卡片一张封面图 + 标题，
+   点击跳到对应文档页（路由用 /docs/...）。
+4. 一个 What's new 区块（从 src/data/posts.json 读取最近更新，卡片式）。
+5. Watch and learn 区块：视频卡片（YouTube 嵌入，数据在 src/data/videos.json）。
+6. Resources / Community 区块 + footer，可用 Docusaurus footer 或自定义。
+所有文本写在 src/data/home.json 里，组件消费它。
+完成后给我：文件清单、npm run start 效果如何看、每个区块验收点。
+```
+
+**阶段 3：ModeStoryInteractive 交互组件**
+```
+【阶段3｜可点击的「应用预览」交互组件】
+写一个 React 组件 src/components/ModeStoryInteractive.tsx，复刻 learn.chatgpt.com 的交互：
+1. props：{ mode: 'chat'|'work'|'codex'; title: string; description: string; items: {title,description}[] }。
+2. 用 useState 管理当前选中项，点击 item 切换（role=tablist/tab/tabpanel，aria-selected，
+   aria-live=polite，键盘可达）。
+3. 右侧/下方渲染一个「迷你应用预览」：根据 mode 显示不同的 mock UI（如 work→假电子表格
+   「Q2 regional margin analysis.xlsx」含 Margin summary/Revenue/Margin change 等假数据；
+   codex→假代码面板；chat→假对话流）。只在客户端用假数据，不接任何后端/API。
+4. 加一个 CTA（如「Create Codex app」），点击触发 analytics 事件 t_app_launch，并跳到
+   一个真实链接（[目标链接]）。
+5. 通过 src/theme/MDXComponents.tsx 注册全局，使 MDX 里可直接用 <ModeStoryInteractive .../>。
+6. 给出可复用的 mock 数据（src/data/modes.json）与示例文档。
+完成后给：组件说明、MDX 使用方法、键盘/无障碍自查点。
+```
+
+**阶段 4：文档侧（侧边栏、版本化、搜索、i18n）**
+```
+【阶段4｜文档体验】
+1. 侧边栏：按 docs/ 目录自动生成，二级/三级自动折叠，自定义 sidebar 排序（/docs/*）。
+2. 版本化：初始化 v1.0 版本，写好 migrate 说明，给出 `docs:version` 的用法。
+3. 搜索：按我上面选定的方案接入——本地方案（如 @easyops-cn/docusaurus-search-local 或 lunr）
+   或 Algolia DocSearch（在 config 里配置 appId/apiKey/indexName；无 key 时降级为禁用）。
+4. i18n：按配置开启 zh-Hans / en，[默认语言]，文档目录支持 locale；导航/侧边栏文案走 Docusaurus
+   i18n 机制。
+5. 给文档页加「上一页/下一页」「breadcrumbs」与「编辑此文」链接（指向 [仓库路径]）。
+6. 写 2 篇示例文档（一篇含自定义组件、一篇含 code block/tabs）。
+完成后给：配置改动清单、搜索/版本化/i18n 如何验收、潜在坑。
+```
+
+**阶段 5：设计系统与组件（品牌化、暗色、可复用 UI）**
+```
+【阶段5｜设计系统】
+把外观做成统一的设计语言：
+1. 定义颜色/间距/圆角/字号 token（CSS 变量），dark 与 light 两套，尽量复用 Infima 变量，
+   避免与 Docusaurus 默认样式冲突。
+2. 抽一批通用组件：Button、Card、Badge、Section、SectionHeader、VideoCard，
+   放 src/components/ui/，全部支持主题色与暗色。
+3. 再做一个交互式的「Docs agent / Site tools」小入口（点击弹出搜索/llms.txt 引导），可选。
+4. 写一份它们怎么被你（作者）在 JSX/MDX 中复用的简短说明。
+完成后给：token 表、组件 props 说明、如何全局应暗色。
+```
+
+**阶段 6：内容填充、质量与部署验收**
+```
+【阶段6｜内容 + 构建 + 部署】
+1. 用我提供的 [内容清单/占位] 填充首页 hero、模式区块、用例卡片、What's new、videos、
+   Resources/Community 的文案；无内容处用可信占位并标注 TODO。
+2. `npm run build` 严格无错；处理所有 broken link / 缺失图片 / 可访问性警告（避免 aria 缺失、
+   颜色对比度不足、img 无 alt）。
+3. 给出部署方案：Vercel 或 GitHub Pages（说明 baseUrl 差异、静态输出、_redirects 如有需要）。
+4. 最后交付：项目结构树、npm scripts 说明、一份「如何写新文档/新页面/新组件」的 3 分钟操作手册。
+```
+
+---
+
+要不要我再帮你的具体的 `[站点名]`、主色、目标仓库、搜索方案这四项定好默认值，直接生成一段**可以直接整段粘贴**的一体化提示词（不用分阶段）？你告诉我这四项的实际值，我就给你合成版。
