@@ -1,0 +1,83 @@
+/* story-chrome.css — light "story" chrome: chapter tags + scroll-progress bar.
+
+   Additive only. This file does NOT restyle the existing `.eyebrow` or
+   `nav a.active` rules in styles.css — it adds new, independent classes.
+
+   Colors/spacing/type come from styles.css tokens (theme-aware). Motion tokens
+   live in story.css and are not redefined here. Chapter tags are static and
+   legible with JS off; only the progress bar depends on JS (gated on
+   `html.js-ready`, set pre-paint by the controller). */
+
+/* ---------- Chapter tags (static markup, no-JS safe) ----------
+   Sits directly above each section's existing `.eyebrow` without replacing it.
+   A short leading rule + the chapter label, harmonizing with the eyebrow's
+   uppercase, letter-spaced, --primary-strong look while staying visibly lighter
+   (thinner rule, smaller size). */
+.chapter-tag {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.6rem;
+	margin: 0 0 0.5rem;
+	color: var(--primary-strong);
+	font-size: 0.72rem;
+	font-weight: 700;
+	letter-spacing: 0.12em;
+	text-transform: uppercase;
+	/* Keep >= 1.3 so stacked uppercase Vietnamese diacritics (e.g. Ờ, Ư, Ơ)
+	   never clip; matches the diacritic-safety note in styles.css. */
+	line-height: 1.35;
+}
+
+/* Short leading rule, fading in from the margin like a film slate. Uses
+   currentColor so it adapts to each section context (default vs. hero) and to
+   the active theme automatically. */
+.chapter-tag::before {
+	content: '';
+	flex: none;
+	width: 2rem;
+	height: 2px;
+	border-radius: 2px;
+	background: linear-gradient(90deg, transparent, currentColor);
+	opacity: 0.65;
+}
+
+/* The home hero renders on a dark photo overlay; its `.eyebrow` is already
+   recolored to --hero-accent in styles.css. Match that so the chapter tag and
+   its rule keep contrast against the imagery. */
+.home-hero .chapter-tag {
+	color: var(--hero-accent);
+}
+
+/* ---------- Scroll-progress bar (decorative; JS-driven) ----------
+   Hidden by default so no-JS / unsupported-browser visitors never see a bar
+   that can't move. Revealed only once the controller marks `html.js-ready`. */
+.scroll-progress {
+	display: none;
+}
+
+html.js-ready .scroll-progress {
+	position: fixed;
+	inset: 0 0 auto 0; /* top:0 right:0 left:0, spans full viewport width */
+	z-index: 15; /* above the sticky header (10), below the skip-link (20) */
+	display: block;
+	height: 3px;
+	background: transparent;
+	pointer-events: none; /* never intercept clicks or the skip-link focus */
+}
+
+/* GPU-friendly fill: scaleX from a left origin instead of animating width,
+   so there is no width thrash and no layout reflow (zero CLS). JS updates the
+   transform inside a single rAF loop. */
+.scroll-progress__fill {
+	display: block;
+	height: 100%;
+	transform: scaleX(0);
+	transform-origin: left center;
+	background: linear-gradient(90deg, var(--primary-strong), var(--primary));
+	box-shadow: 0 0 12px var(--glow-primary);
+	will-change: transform;
+	/* Subtle smoothing between frames. The global prefers-reduced-motion block
+	   in styles.css collapses this to ~1ms, so reduced-motion visitors get the
+	   fill with no smoothing transition (still fills, just no easing). */
+	transition: transform 90ms linear;
+}

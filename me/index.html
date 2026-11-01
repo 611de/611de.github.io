@@ -1,0 +1,362 @@
+<!doctype html>
+<html lang="zh-CN" data-theme="light">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta name="robots" content="noindex, nofollow" />
+		<title>刘奕羿 | 一封自我介绍</title>
+		<meta name="description" content="刘奕羿的一封自我介绍，写给那个会一起走远的人——像一部短片那样讲。" />
+		<meta name="theme-color" content="#ffffff" />
+
+		<meta property="og:type" content="website" />
+		<meta property="og:title" content="刘奕羿 | 一封自我介绍" />
+		<meta property="og:description" content="写给那个会一起走远的人——像一部短片那样讲。" />
+		<meta property="og:image" content="https://611de.github.io/me/assets/liu-portrait.jpg" />
+		<meta name="twitter:card" content="summary_large_image" />
+
+		<link rel="preload" as="image" href="assets/hero.webp" fetchpriority="high" />
+
+		<script>
+			// 强制白主题；并在 IntersectionObserver 可用时开启滚动渐显。
+			// 带 watchdog：若动画引擎 1.2s 内没接管，直接取消隐藏，保证任何情况下都能读。
+			(() => {
+				try {
+					const root = document.documentElement;
+					root.dataset.theme = 'light';
+					root.style.colorScheme = 'light';
+					if ('IntersectionObserver' in window) {
+						root.classList.add('js-ready');
+						window.setTimeout(() => {
+							if (root.dataset.storyEngine) return;
+							root.dataset.storyWatchdog = 'fired';
+							root.classList.remove('js-ready');
+						}, 1200);
+					}
+				} catch {
+					document.documentElement.dataset.theme = 'light';
+				}
+			})();
+		</script>
+
+		<link rel="stylesheet" href="assets/styles.css" />
+		<link rel="stylesheet" href="assets/story.css" />
+		<link rel="stylesheet" href="assets/story-chrome.css" />
+		<link rel="stylesheet" href="assets/story-film.css" />
+		<link rel="stylesheet" href="assets/me.css" />
+
+		<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+		<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js" defer></script>
+		<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/ScrollTrigger.min.js" defer></script>
+		<script src="https://cdn.jsdelivr.net/npm/lenis@1.3.25/dist/lenis.min.js" defer></script>
+		<script src="assets/story-film.js" defer></script>
+		<script src="assets/story.js" defer></script>
+		<script src="assets/story-chrome.js" defer></script>
+	</head>
+	<body>
+		<div class="nightfall" aria-hidden="true"><span class="nightfall__dust"></span></div>
+		<div class="scroll-progress" aria-hidden="true"><span class="scroll-progress__fill"></span></div>
+
+		<a class="skip-link" href="#content">跳到正文</a>
+
+		<header class="site-header">
+			<div class="site-shell site-header__inner">
+				<a class="brand-mark" href="#home" aria-label="回到开头">
+					<span class="brand-seal">LY</span>
+					<span class="brand-name">一封自我介绍</span>
+				</a>
+
+				<div class="header-actions">
+					<nav aria-label="主导航">
+						<a href="#home">开头</a>
+						<a href="#applicant">这个人</a>
+						<a href="#offer">邀请</a>
+						<a href="#closing">联系</a>
+						<a href="#dossier">明细</a>
+						<a href="zhengji/">征集</a>
+					</nav>
+				</div>
+			</div>
+		</header>
+
+		<main id="content">
+			<!-- ============ 第一场 · 冷开场：旁边的位置 ============ -->
+			<section class="home-hero film-scene" id="home" data-scene data-scene-pin>
+				<div class="site-shell hero-copy" data-reveal-group>
+					<p class="chapter-tag" data-reveal>第一场 · 旁边的位置</p>
+					<p class="eyebrow" data-reveal>在找一个能一起走远的人</p>
+					<h1 data-reveal>刘奕羿</h1>
+					<p class="lead" data-reveal>
+						旁边的位置空了一阵子。一个常待在家里的程序员，其实也想出去玩——只是懒得一个人去。
+						想找个能一起走远的人，认真的程度超过我打游戏冲段位。
+					</p>
+					<div class="button-row" data-reveal>
+						<a class="button" href="#applicant">认识一下</a>
+						<a class="button secondary" href="#offer">读读我的邀请</a>
+					</div>
+				</div>
+			</section>
+
+			<!-- ============ 第二场 · 主角 ============ -->
+			<section
+				class="site-shell page-section section-grid film-scene"
+				id="applicant"
+				aria-labelledby="applicant-title"
+				data-scene
+				data-reveal-group
+			>
+				<div data-reveal>
+					<p class="chapter-tag">第二场 · 主角</p>
+					<p class="eyebrow">快速画像</p>
+					<h2 id="applicant-title">我是谁？</h2>
+					<figure class="portrait">
+						<img
+							class="portrait__img"
+							src="assets/liu-portrait.jpg"
+							alt="刘奕羿"
+							width="900"
+							height="1125"
+							loading="lazy"
+							decoding="async"
+						/>
+					</figure>
+				</div>
+				<div class="panel-list">
+					<article class="panel" data-reveal>
+						<h3>内向，但有手艺</h3>
+						<p>
+							2022 年四川大学计算机硕士毕业，现在在成都写代码，做的是华为 OD 的项目。
+							说白了：一个挺宅的程序员，不太爱出门，但事情交到我手上会做到底。
+						</p>
+					</article>
+					<article class="panel" data-reveal>
+						<h3>半个游戏人</h3>
+						<p>
+							闲下来打两局游戏，和朋友开黑。技术这行变得快，我不追风口，习惯把手上的事做扎实。
+							同事电脑出了问题、AI 工具用不明白，一般会来找我。
+						</p>
+					</article>
+					<article class="panel" data-reveal>
+						<h3>生活半径很小</h3>
+						<p>
+							公司和住处都在郫都，通勤不出区。朋友不多，但都处得久。
+							不抽烟、不喝酒、不打牌——不是刻意克制，是本来就不需要。
+						</p>
+					</article>
+				</div>
+			</section>
+
+			<!-- ============ 第三场 · 一开始就说实话 ============ -->
+			<section
+				class="site-shell page-section section-grid film-scene"
+				id="honest"
+				aria-labelledby="honest-title"
+				data-scene
+				data-reveal-group
+			>
+				<div data-reveal>
+					<p class="chapter-tag">第三场 · 一开始就说实话</p>
+					<p class="eyebrow">直说</p>
+					<h2 id="honest-title">直说，省得你猜。</h2>
+				</div>
+				<div class="panel-list">
+					<article class="panel" data-reveal>
+						<h3>过得简单</h3>
+						<p>
+							家在四川资中，父母都还在干活。一个社保、一个农保，身体都好，不用我操心。
+							我花钱省，四年攒下八十多万——不是抠，是真的不太需要花。
+						</p>
+					</article>
+					<article class="panel" data-reveal>
+						<h3>认真对待长期</h3>
+						<p>
+							29 岁，没有恋爱经历。有过两次真的快到那一步，是我自己退的——不是对方不好，
+							是我当时不敢往前走。这件事我认。
+						</p>
+					</article>
+					<article class="panel" data-reveal>
+						<h3>说到最后</h3>
+						<p>
+							身高 163，这是真实数字，不掺鞋底。现在做的是华为 OD 的项目，年薪 30 万，
+							没有负债，也没有用家里的钱。
+						</p>
+					</article>
+				</div>
+			</section>
+
+			<!-- ============ 第四场 · 邀请 ============ -->
+			<section
+				class="site-shell page-section film-scene"
+				id="offer"
+				aria-labelledby="offer-title"
+				data-scene
+				data-reveal-group
+			>
+				<p class="chapter-tag" data-reveal>第四场 · 邀请</p>
+				<p class="eyebrow" data-reveal>给会来的人</p>
+				<h2 class="page-title" id="offer-title" data-reveal>我能给出去的东西。</h2>
+				<p class="lead" data-reveal>
+					我没什么大的可以承诺。主要是注意力、不跑、一起吃饭、一些只有我们懂的笑话，
+					和一个犯了错会回来找你的人。
+				</p>
+				<ul class="gift-list">
+					<li data-reveal>你难受的那几天、突然冒出来的怪想法、安静的晚上，优先处理。</li>
+					<li data-reveal>稳定地诚实，有话直说；出了问题先解决，不先怪人。</li>
+					<li data-reveal>一个能把线上系统修好、也会认真想今晚吃什么的人。</li>
+					<li data-reveal>往后的路：身体好一点，出去多一点，故事多一点。</li>
+				</ul>
+			</section>
+
+			<!-- ============ 第五场 · 两个人一起守的东西 ============ -->
+			<section
+				class="site-shell page-section section-grid film-scene"
+				id="shared"
+				aria-labelledby="shared-title"
+				data-scene
+				data-reveal-group
+			>
+				<div data-reveal>
+					<p class="chapter-tag">第五场 · 两个人一起守的</p>
+					<p class="eyebrow">小小的约定</p>
+					<h2 id="shared-title">这些，我们一起守住。</h2>
+				</div>
+				<ul class="vow-list">
+					<li data-reveal>用直说的话，和反复发生的小事，把信任建起来。</li>
+					<li data-reveal>尊重彼此的时间、工作、家人、朋友，和各自那些看起来没用的仪式。</li>
+					<li data-reveal>带着好奇心、善意，以及吵完之后还愿意修好的心。</li>
+					<li data-reveal>一起维持一种生活：该认真的时候认真，该幼稚的时候幼稚。</li>
+				</ul>
+			</section>
+
+			<!-- ============ 第六场 · 没有考试 ============ -->
+			<section
+				class="site-shell page-section section-grid film-scene"
+				id="no-test"
+				aria-labelledby="no-test-title"
+				data-scene
+				data-reveal-group
+			>
+				<div data-reveal>
+					<p class="chapter-tag">第六场 · 没有考试</p>
+					<p class="eyebrow">加分项</p>
+					<h2 id="no-test-title">有加分项很好，没有也没关系。</h2>
+				</div>
+				<div class="panel-list">
+					<article class="panel" data-reveal>
+						<ul>
+							<li>喜欢吃的、走路的、游戏、电影，或者为了没有截止日期的事学点新的。</li>
+							<li>能对着无聊的玩笑笑出来，也不会把感情变成一张有截止日期的计划表。</li>
+							<li>相信感情靠耐心，不靠猜。</li>
+							<li>属相是牛。合不合得来，比合不合属相重要。</li>
+						</ul>
+					</article>
+					<article class="panel quiet" data-reveal>
+						<h3>真心话</h3>
+						<p>
+							没有考试，也没有筛选。我想遇到的是一个累了还保持善意、乱了能直说、
+							在很小很日常的瞬间愿意选择彼此的人。
+						</p>
+					</article>
+				</div>
+			</section>
+
+			<!-- ============ 第七场 · 收尾 ============ -->
+			<section
+				class="site-shell page-section section-grid film-scene"
+				id="closing"
+				aria-labelledby="closing-title"
+				data-scene
+				data-scene-pin
+				data-reveal-group
+			>
+				<div data-reveal="soft">
+					<p class="chapter-tag">第七场 · 收尾</p>
+					<h2 id="closing-title">想认识的话，加个微信。</h2>
+				</div>
+				<article class="panel strong" data-reveal="soft">
+					<p>
+						谢谢你看到这里。这一页只能讲一部分——如果觉得有点对得上，就加我吧。
+						加的时候备注一下来意就好。
+					</p>
+					<div class="button-row">
+						<span class="button" id="wechat-num">微信 18280334215</span>
+						<button class="button secondary compact" type="button" id="copy-btn">复制微信号</button>
+						<a class="button secondary compact" href="zhengji/">看征集海报</a>
+					</div>
+				</article>
+			</section>
+
+			<!-- ============ 附录 · 一些具体的事 ============ -->
+			<section
+				class="site-shell page-section section-grid film-scene"
+				id="dossier"
+				aria-labelledby="dossier-title"
+				data-scene
+				data-reveal-group
+			>
+				<div data-reveal>
+					<p class="chapter-tag">附录 · 一些具体的事</p>
+					<p class="eyebrow">快速信息</p>
+					<h2 id="dossier-title">省得你猜。</h2>
+				</div>
+				<dl class="facts-list" data-reveal>
+					<div><dt>年龄</dt><dd>29 — 1997 年生，属牛</dd></div>
+					<div><dt>寻找</dt><dd>长期关系</dd></div>
+					<div><dt>所在</dt><dd>成都 · 郫都</dd></div>
+					<div><dt>性别</dt><dd>男</dd></div>
+					<div><dt>身高</dt><dd>163cm — 真实数字，不掺鞋底</dd></div>
+					<div><dt>体重</dt><dd>56kg，匀称</dd></div>
+					<div><dt>籍贯</dt><dd>四川 · 资中</dd></div>
+					<div><dt>现居</dt><dd>郫都租房，上班也在郫都</dd></div>
+					<div><dt>学历</dt><dd>四川大学 · 计算机硕士</dd></div>
+					<div><dt>工作</dt><dd>软件开发 · 华为 OD</dd></div>
+					<div><dt>年薪</dt><dd>30W（税前，含年终）</dd></div>
+					<div><dt>存款</dt><dd>好几十哦，全部自己攒，无负债</dd></div>
+					<div><dt>感情经历</dt><dd>没有恋爱经历</dd></div>
+					<div><dt>家庭</dt><dd>独生子，父母健康，养老压力小</dd></div>
+					<div><dt>习惯</dt><dd>不抽烟、不喝酒、不打牌</dd></div>
+					<div><dt>户口</dt><dd>暂无成都户口</dd></div>
+					<div><dt>计划</dt><dd>2 年内在成都买房买车</dd></div>
+				</dl>
+				<p class="lead" data-reveal style="margin-top:2rem">
+					还有一版做成了图片：<a href="zhengji/">脱单征集海报 →</a>
+				</p>
+			</section>
+
+			<!-- ============ 结束卡 ============ -->
+			<section class="site-shell page-section end-card film-scene" id="end" data-scene data-reveal-group>
+				<span class="brand-seal end-card__seal" aria-hidden="true">LY</span>
+				<p class="end-card__mark" data-reveal="soft">完。</p>
+				<div class="button-row" data-reveal="soft">
+					<a class="button" href="#closing">回到联系方式</a>
+				</div>
+				<p class="freshness-stamp" data-freshness hidden></p>
+			</section>
+		</main>
+
+		<script>
+			(function () {
+				var btn = document.getElementById('copy-btn');
+				var num = document.getElementById('wechat-num');
+				if (!btn || !num) return;
+				btn.addEventListener('click', function () {
+					var text = num.textContent.replace(/^微信\s*/, '').trim();
+					var done = function () {
+						btn.textContent = '已复制';
+						setTimeout(function () { btn.textContent = '复制微信号'; }, 1600);
+					};
+					if (navigator.clipboard && navigator.clipboard.writeText) {
+						navigator.clipboard.writeText(text).then(done, done);
+					} else {
+						var ta = document.createElement('textarea');
+						ta.value = text;
+						document.body.appendChild(ta);
+						ta.select();
+						try { document.execCommand('copy'); } catch (e) {}
+						document.body.removeChild(ta);
+						done();
+					}
+				});
+			})();
+		</script>
+	</body>
+</html>

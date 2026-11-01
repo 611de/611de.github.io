@@ -1,0 +1,142 @@
+/* ============================================================
+   中文站适配层 —— 加载在 styles.css 之后，只做三件事：
+   1) 白主题（覆盖参考项目的暖米色 tokens）
+   2) 中文字体（参考项目用 Fraunces + Be Vietnam Pro，中文不适用，
+      且 Google Fonts 在国内不可达，这里全部改用系统字体）
+   3) 关掉「入夜」变暗效果，保持整页纯白
+   ============================================================ */
+
+:root {
+  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+    "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans CJK SC", sans-serif;
+  --font-serif: "Noto Serif CJK SC", "Source Han Serif SC", "Songti SC", "STSong",
+    "SimSun", Georgia, serif;
+
+  /* ---- 白主题 ---- */
+  --background: #ffffff;
+  --surface: #ffffff;
+  --surface-muted: #f4f5f7;
+  --surface-translucent: rgba(255, 255, 255, 0.9);
+  --panel-bg: #ffffff;
+  --header-bg: rgba(255, 255, 255, 0.88);
+
+  --ink: #14161a;
+  --muted: #5d6470;
+
+  --primary: #17191d;        /* 按钮、面板左侧竖条 */
+  --primary-strong: #0f1114;
+  --on-primary: #ffffff;
+
+  --focus: #2563eb;
+  --line: rgba(20, 22, 26, 0.12);
+  --glow-primary: rgba(20, 22, 26, 0.08);
+  --shadow: 0 20px 56px rgba(20, 22, 26, 0.10);
+
+  /* 首屏照片上的压暗层，白页下仍保留电影感 */
+  --hero-ink: #ffffff;
+  --hero-muted: rgba(255, 255, 255, 0.88);
+  --hero-accent: #dbe4f3;
+  --hero-border: rgba(255, 255, 255, 0.7);
+  --hero-overlay-start: rgba(10, 12, 16, 0.88);
+  --hero-overlay-mid: rgba(18, 22, 30, 0.58);
+  --hero-overlay-end: rgba(18, 22, 30, 0.12);
+}
+
+body {
+  font-family: var(--font-sans);
+  background: var(--background);
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, .page-title, .brand-name, .end-card__mark {
+  font-family: var(--font-serif);
+  font-optical-sizing: auto;
+}
+
+/* 中文标题不需要 Fraunces 的收紧字距，稍微放开更透气 */
+h1, h2, h3 { letter-spacing: 0.01em; }
+
+/* 首屏背景换成本人照片（原项目是一张 webp 铺垫） */
+.home-hero::before {
+  background-image:
+    linear-gradient(90deg, var(--hero-overlay-start), var(--hero-overlay-mid), var(--hero-overlay-end)),
+    url("hero.webp");
+  background-position: 68% center;
+}
+
+/* 白主题下不要整页「入夜」变暗 */
+.nightfall { display: none; }
+
+/* 白底 + 白面板，用极淡描边把面板和页面区分开 */
+.panel {
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--primary);
+}
+
+/* 微信复制按钮，跟主按钮同款但更小 */
+.button.compact {
+  padding: 0.55rem 1rem;
+  font-size: 0.9rem;
+}
+
+/* ---------- 中文排版修正 ----------
+   参考项目面向越南语，标题用 clamp(2rem, 5vw, 4.6rem) 配合拉丁字母。
+   汉字是方块字、字宽约为拉丁字母两倍，同样字号下同一行能放的字少一半，
+   所以标题会挤成两三行。这里统一降字号、放宽行高、并给左栏更多宽度。 */
+
+.section-grid {
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.3fr);
+  gap: clamp(2rem, 5vw, 4.5rem);
+}
+
+h2 {
+  font-size: clamp(1.7rem, 3.1vw, 2.7rem);
+  line-height: 1.38;
+  letter-spacing: 0.02em;
+}
+
+.page-title {
+  font-size: clamp(2.2rem, 5.6vw, 3.9rem);
+  line-height: 1.32;
+  max-width: 14ch;
+}
+
+h3 {
+  font-size: clamp(1.15rem, 2.1vw, 1.6rem);
+  line-height: 1.5;
+}
+
+.lead {
+  line-height: 1.9;
+}
+
+/* 正文中文行高比拉丁文更松才好读 */
+.panel p,
+.panel li,
+.gift-list li,
+.vow-list li {
+  line-height: 1.9;
+}
+
+/* 手机上标题不再被 5vw 放大 */
+@media (max-width: 640px) {
+  h2 { font-size: 1.55rem; }
+  .page-title { font-size: 2rem; }
+  .section-grid { grid-template-columns: 1fr; gap: 2rem; }
+}
+
+/* 中文的 ch 单位按数字宽度算，会比实际可用宽度短，导致大标题被强行折行 */
+.page-title {
+  max-width: none;
+  font-size: clamp(2rem, 5vw, 3.4rem);
+}
+
+/* 人像用正脸照（4:5），容器比例与图片一致，不再二次裁切 */
+.portrait {
+  aspect-ratio: 4 / 5;
+  max-width: 17rem;
+}
+.portrait__img {
+  object-fit: cover;
+  object-position: center;
+}

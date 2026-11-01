@@ -1,0 +1,65 @@
+/* story.css — scroll-reveal "chapters" motion layer.
+   Progressive enhancement only: every motion-hiding rule is scoped under
+   `html.js-ready` (set pre-paint by the controller, guarded by
+   IntersectionObserver support, and defensively re-added by story.js). This
+   guarantees no-JS, unsupported-browser, and reduced-motion visitors always
+   receive the full, un-jumped content.
+
+   This file owns MOTION tokens only. Colors, spacing, and type come from
+   styles.css and are never redefined here. */
+
+:root {
+	/* Shared motion contract — consumed by story.js and any sibling stylesheet.
+	   Tuned for a tender, cinematic entrance: a touch more travel, a longer
+	   settle, and a wider cascade so beats arrive like turning a page rather
+	   than snapping in. */
+	--reveal-distance: 32px;
+	--reveal-duration: 900ms;
+	--reveal-ease: cubic-bezier(0.16, 1, 0.3, 1);
+	--reveal-stagger: 120ms;
+	/* Slower, softer landing reserved for the closing emotional beat. */
+	--reveal-duration-soft: 1250ms;
+}
+
+/* Hidden starting state. Only applied once JS can guarantee a later reveal, so
+   content is never trapped invisible for visitors without the enhancement. The
+   `:not(.film-ready)` guard hands motion to the GSAP film layer (story-film.js)
+   when it activates, so beats are never hidden by two engines at once. */
+html.js-ready:not(.film-ready) [data-reveal] {
+	opacity: 0;
+	/* translateY only — no height/display change, so nothing reflows (zero CLS). */
+	transform: translateY(var(--reveal-distance));
+	/* GPU-friendly: animate compositor-only properties (transform + opacity). */
+	transition:
+		opacity var(--reveal-duration) var(--reveal-ease),
+		transform var(--reveal-duration) var(--reveal-ease);
+}
+
+/* Closing "Lời kết" variant: same gentle rise, longer duration to let the warm
+   final beat settle rather than snap in. */
+html.js-ready:not(.film-ready) [data-reveal='soft'] {
+	transition:
+		opacity var(--reveal-duration-soft) var(--reveal-ease),
+		transform var(--reveal-duration-soft) var(--reveal-ease);
+}
+
+/* Revealed state added by story.js when the element (or its group) enters view. */
+html.js-ready:not(.film-ready) [data-reveal].is-visible {
+	opacity: 1;
+	transform: none;
+}
+
+/* Reduced-motion: neutralize this layer entirely so content shows instantly and
+   in its final position, independent of the .is-visible toggle. Scoped
+   explicitly (not relying on the global duration override in styles.css) so
+   [data-reveal] can never render invisible for these visitors. */
+@media (prefers-reduced-motion: reduce) {
+	html.js-ready:not(.film-ready) [data-reveal],
+	html.js-ready:not(.film-ready) [data-reveal='soft'] {
+		opacity: 1;
+		transform: none;
+		transition: none;
+		/* Cancel any inline stagger delay story.js may have written. */
+		transition-delay: 0ms !important;
+	}
+}
