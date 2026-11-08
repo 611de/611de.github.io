@@ -1,0 +1,75 @@
+/* story-film.css — layout + pre-hide for the scroll-driven "short film" layer.
+   Everything here is scoped under `html.film-ready`, a class added by
+   assets/story-film.js ONLY when the film activates (wide viewport, motion
+   allowed, CDN libraries present). With JS off, on phones, or under
+   reduced-motion this class is never set, so none of these rules apply and the
+   page renders exactly as the static reveal (story.css) presents it.
+
+   This file owns FILM layout + starting opacity only. Colors, spacing, and type
+   come from styles.css and are never redefined here. */
+
+/* Each scene becomes a full-height stage so beats have room to scrub in and
+   pinned title cards hold cleanly. min-height (not fixed height) lets
+   content-heavy scenes grow past the viewport instead of clipping.
+
+   Deliberately does NOT set `display`: five scenes carry `.section-grid`
+   (display:grid, two editorial columns) and this selector's specificity (0,2,1)
+   would silently beat it (0,1,0), collapsing them to one 1120px column at ~130
+   characters per line. Vertical centring is expressed per display type below. */
+html.film-ready .film-scene {
+	min-height: 100vh;
+}
+
+/* Grid scenes keep their two columns; centre the rows in the taller stage. */
+html.film-ready .section-grid {
+	align-content: center;
+}
+
+/* The only non-grid, non-hero scene (#offer) is a single column, so it centres
+   as a flex column. .home-hero is excluded: it already sets its own
+   `display:flex; align-items:center` for a row, and flipping it to a column
+   would silently repurpose that align-items into horizontal alignment. */
+html.film-ready .film-scene:not(.section-grid):not(.home-hero) {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+}
+
+/* Pre-hide beats so there is no flash before GSAP takes over. story-film.js
+   sets the same values via gsap.set(); this rule only covers the gap between
+   first paint and the script running. failOpen() overrides both with inline
+   styles, so this can never trap content.
+
+   The `:not(.beat-in)` guard is load-bearing. On completion story-film.js
+   clears its inline styles and adds `.beat-in`, handing the element back to the
+   stylesheet — without the guard, clearing the inline transform would let this
+   rule re-hide the beat. The reason for the handoff at all: GSAP leaves a
+   residual inline `transform: translate(0px, 0px)`, and an inline transform
+   outranks any stylesheet rule, which silently disabled `.panel:hover`'s lift
+   for the whole session.
+
+   No blanket `will-change`: holding a compositor layer for every beat for the
+   life of the page costs more than it saves. story-film.js sets it per beat when
+   a reveal starts and clears it on completion. */
+html.film-ready [data-scene] [data-reveal]:not(.beat-in) {
+	opacity: 0;
+	transform: translateY(40px);
+}
+
+/* Defensive: the film never activates under reduced motion (story-film.js gates
+   on it), but if that ever changes, keep content visible rather than hidden. */
+@media (prefers-reduced-motion: reduce) {
+	html.film-ready [data-scene] [data-reveal]:not(.beat-in) {
+		opacity: 1;
+		transform: none;
+	}
+}
+
+/* Beats in #applicant slide in from the side, which puts them briefly outside
+   the 16px gutter. Clipping the x axis only contains that without creating a
+   scroll container, so ScrollTrigger's pinning is unaffected (this computes to
+   `clip visible`, and both pins keep identical start/end across a refresh).
+   Film-scoped: the other two tiers have no horizontal travel to contain. */
+html.film-ready main {
+	overflow: clip visible;
+}

@@ -1,0 +1,450 @@
+/* ============================================================
+   中文站适配层 —— 加载在 styles.css 之后，只做三件事：
+   1) 白主题（覆盖参考项目的暖米色 tokens）
+   2) 中文字体（参考项目用 Fraunces + Be Vietnam Pro，中文不适用，
+      且 Google Fonts 在国内不可达，这里全部改用系统字体）
+   3) 关掉「入夜」变暗效果，保持整页纯白
+   ============================================================ */
+
+:root {
+  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+    "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans CJK SC", sans-serif;
+  --font-serif: "Noto Serif CJK SC", "Source Han Serif SC", "Songti SC", "STSong",
+    "SimSun", Georgia, serif;
+
+  /* ---- 白主题 ---- */
+  --background: #ffffff;
+  --surface: #ffffff;
+  --surface-muted: #f4f5f7;
+  --surface-translucent: rgba(255, 255, 255, 0.9);
+  --panel-bg: #ffffff;
+  --header-bg: rgba(255, 255, 255, 0.88);
+
+  --ink: #14161a;
+  --muted: #5d6470;
+
+  --primary: #17191d;        /* 按钮、面板左侧竖条 */
+  --primary-strong: #0f1114;
+  --on-primary: #ffffff;
+
+  --focus: #2563eb;
+  --line: rgba(20, 22, 26, 0.12);
+  --glow-primary: rgba(20, 22, 26, 0.08);
+  --shadow: 0 20px 56px rgba(20, 22, 26, 0.10);
+
+  /* 首屏照片上的压暗层，白页下仍保留电影感 */
+  --hero-ink: #ffffff;
+  --hero-muted: rgba(255, 255, 255, 0.88);
+  --hero-accent: #dbe4f3;
+  --hero-border: rgba(255, 255, 255, 0.7);
+  --hero-overlay-start: rgba(10, 12, 16, 0.88);
+  --hero-overlay-mid: rgba(18, 22, 30, 0.58);
+  --hero-overlay-end: rgba(18, 22, 30, 0.12);
+}
+
+body {
+  font-family: var(--font-sans);
+  background: var(--background);
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, .page-title, .brand-name, .end-card__mark {
+  font-family: var(--font-serif);
+  font-optical-sizing: auto;
+}
+
+/* 中文标题不需要 Fraunces 的收紧字距，稍微放开更透气 */
+h1, h2, h3 { letter-spacing: 0.01em; }
+
+/* 首屏背景换成本人照片（原项目是一张 webp 铺垫） */
+.home-hero::before {
+  background-image:
+    linear-gradient(90deg, var(--hero-overlay-start), var(--hero-overlay-mid), var(--hero-overlay-end)),
+    url("hero.webp");
+  background-position: 68% center;
+}
+
+/* 白主题下不要整页「入夜」变暗 */
+.nightfall { display: none; }
+
+/* 白底 + 白面板，用极淡描边把面板和页面区分开 */
+.panel {
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--primary);
+}
+
+/* 微信复制按钮，跟主按钮同款但更小 */
+.button.compact {
+  padding: 0.55rem 1rem;
+  font-size: 0.9rem;
+}
+
+/* ---------- 中文排版修正 ----------
+   参考项目面向越南语，标题用 clamp(2rem, 5vw, 4.6rem) 配合拉丁字母。
+   汉字是方块字、字宽约为拉丁字母两倍，同样字号下同一行能放的字少一半，
+   所以标题会挤成两三行。这里统一降字号、放宽行高、并给左栏更多宽度。 */
+
+.section-grid {
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.3fr);
+  gap: clamp(2rem, 5vw, 4.5rem);
+}
+
+h2 {
+  font-size: clamp(1.7rem, 3.1vw, 2.7rem);
+  line-height: 1.38;
+  letter-spacing: 0.02em;
+}
+
+.page-title {
+  font-size: clamp(2.2rem, 5.6vw, 3.9rem);
+  line-height: 1.32;
+  max-width: 14ch;
+}
+
+h3 {
+  font-size: clamp(1.15rem, 2.1vw, 1.6rem);
+  line-height: 1.5;
+}
+
+.lead {
+  line-height: 1.9;
+}
+
+/* 正文中文行高比拉丁文更松才好读 */
+.panel p,
+.panel li,
+.gift-list li,
+.vow-list li {
+  line-height: 1.9;
+}
+
+/* 手机上标题不再被 5vw 放大 */
+@media (max-width: 640px) {
+  h2 { font-size: 1.55rem; }
+  .page-title { font-size: 2rem; }
+  .section-grid { grid-template-columns: 1fr; gap: 2rem; }
+}
+
+/* 中文的 ch 单位按数字宽度算，会比实际可用宽度短，导致大标题被强行折行 */
+.page-title {
+  max-width: none;
+  font-size: clamp(2rem, 5vw, 3.4rem);
+}
+
+/* 人像用正脸照（4:5），容器比例与图片一致，不再二次裁切 */
+.portrait {
+  aspect-ratio: 4 / 5;
+  max-width: 17rem;
+}
+.portrait__img {
+  object-fit: cover;
+  object-position: center;
+}
+
+/* ============================================================
+   内容改版新增组件：标签卡 / 分栏 / 图集 / 问答 / 二维码展开
+   ============================================================ */
+
+/* 基本信息卡 */
+.tags-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(215px,1fr)); gap:.85rem; margin-top:2rem; }
+.tag-card {
+  display:flex; align-items:center; gap:.85rem;
+  border:1px solid var(--line); border-radius:14px; padding:.95rem 1.05rem;
+  background:#fff; transition:box-shadow .18s, transform .18s;
+}
+.tag-card:hover { transform:translateY(-2px); box-shadow:0 12px 28px -18px rgba(20,22,26,.35); }
+.tag-card .ic {
+  width:38px; height:38px; flex:none; display:grid; place-items:center;
+  border-radius:11px; background:var(--surface-muted); font-size:17px; line-height:1;
+}
+.tag-card .k { font-size:.68rem; letter-spacing:.16em; text-transform:uppercase; color:var(--muted); }
+.tag-card .v { margin-top:.1rem; font-weight:600; color:var(--ink); font-size:.98rem; }
+
+/* 分栏 */
+.tabs { display:flex; gap:.5rem; flex-wrap:wrap; margin:0 0 1.8rem; }
+.tab {
+  appearance:none; cursor:pointer; font:inherit; font-size:.88rem; letter-spacing:.02em;
+  background:#fff; border:1px solid var(--line); color:var(--muted);
+  border-radius:999px; padding:.5rem 1.15rem; transition:background .16s,color .16s,border-color .16s;
+}
+.tab:hover { color:var(--ink); border-color:#c9ced6; }
+.tab[aria-selected="true"] { background:var(--primary); border-color:var(--primary); color:var(--on-primary); }
+.tabpanel { display:none; }
+.tabpanel.is-active { display:block; }
+.tabpanel .story { display:grid; gap:1.2rem; grid-template-columns:1fr; align-items:start; }
+@media (min-width:760px) { .tabpanel .story { grid-template-columns:minmax(0,1fr) minmax(0,1.05fr); gap:2rem; } }
+.tabpanel .story p { margin:0 0 1rem; }
+.tabpanel .story p:last-child { margin-bottom:0; }
+
+/* 图 */
+.figure {
+  border-radius:14px; overflow:hidden; border:1px solid var(--line);
+  background:var(--surface-muted); margin:0;
+}
+.figure img { display:block; width:100%; height:auto; aspect-ratio:4/3; object-fit:cover; }
+.figure .cap { padding:.6rem .85rem; font-size:.76rem; color:var(--muted); letter-spacing:.02em; }
+.figure.empty {
+  display:grid; place-items:center; aspect-ratio:4/3; text-align:center;
+  border-style:dashed; color:var(--muted); font-size:.82rem; padding:1rem; line-height:1.7;
+}
+
+/* 图集 */
+.gallery { display:grid; grid-template-columns:repeat(2,1fr); gap:.9rem; margin-top:1.6rem; }
+@media (min-width:820px) { .gallery { grid-template-columns:repeat(3,1fr); } }
+
+/* 歌单/书单 */
+.media-list { display:grid; gap:.9rem; grid-template-columns:1fr; margin-top:1.6rem; }
+@media (min-width:760px) { .media-list { grid-template-columns:1fr 1fr; } }
+.media-card {
+  border:1px solid var(--line); border-radius:14px; padding:1.1rem 1.2rem; background:#fff;
+}
+.media-card .k { font-size:.68rem; letter-spacing:.16em; text-transform:uppercase; color:var(--muted); }
+.media-card .t { margin:.35rem 0 .5rem; font-size:1.02rem; font-weight:600; color:var(--ink); }
+.media-card p { margin:0; font-size:.9rem; }
+.media-card a { color:var(--accent); }
+
+/* 问答 */
+.quiz { display:grid; gap:.6rem; margin-top:1.4rem; max-width:36rem; }
+.quiz .q { font-size:1.02rem; color:var(--ink); font-weight:600; margin-bottom:.2rem; }
+.quiz-opt {
+  appearance:none; cursor:pointer; font:inherit; text-align:left;
+  border:1px solid var(--line); background:#fff; color:var(--body);
+  border-radius:12px; padding:.85rem 1.1rem; transition:border-color .16s,background .16s,transform .16s;
+}
+.quiz-opt:hover { border-color:#c2c8d2; transform:translateX(2px); }
+.quiz-opt.picked { border-color:var(--primary); background:#f7f8fa; color:var(--ink); font-weight:600; }
+.quiz-note { margin-top:.6rem; font-size:.82rem; color:var(--muted); }
+
+/* 二维码展开 */
+.reveal-box .qr {
+  width:168px; height:168px; flex:none; background:#fff;
+  border:1px solid var(--line); border-radius:14px; padding:9px;
+}
+.reveal-box .qr img { width:100%; height:100%; display:block; }
+.reveal-box .num { font-size:1.5rem; font-weight:650; letter-spacing:.02em; color:var(--ink); font-variant-numeric:tabular-nums; }
+
+/* 标签卡图标：内联 SVG，不依赖系统 emoji 字体 */
+.tag-card .ic svg {
+  width: 20px; height: 20px;
+  fill: none; stroke: var(--ink); stroke-width: 1.6;
+  stroke-linecap: round; stroke-linejoin: round;
+}
+
+/* 标题与分栏之间留出呼吸 */
+.tabs { margin-top: 1.7rem; }
+.end-card { margin-top: 3rem; }
+
+/* 分节上下留白收一点：参考项目是 8vw，段落多了之后显得空 */
+.page-section { padding-block: clamp(2.5rem, 5.2vw, 4.2rem); }
+
+/* ---------- 一句话介绍（首屏） ---------- */
+.hero-copy .oneline {
+  margin: 1.7rem 0 0;
+  max-width: 30em;
+  font-size: clamp(1.02rem, 1.5vw, 1.28rem);
+  line-height: 1.95;
+  letter-spacing: .01em;
+  color: var(--hero-muted);
+}
+
+/* ---------- 人像 + 标签 并排 ---------- */
+.intro-row {
+  display: grid;
+  gap: 2rem;
+  grid-template-columns: 1fr;
+  align-items: start;
+  margin-top: 1.6rem;
+}
+@media (min-width: 820px) {
+  .intro-row { grid-template-columns: 260px minmax(0, 1fr); gap: 3rem; }
+}
+.intro-row .portrait { width: 100%; max-width: none; margin: 0; }
+.intro-row .tags-grid { margin-top: 0; }
+
+/* ---------- 标签卡整体缩小 ---------- */
+.tags-grid { gap: .6rem; }
+.tag-card { padding: .62rem .8rem; gap: .6rem; border-radius: 11px; }
+.tag-card .ic { width: 30px; height: 30px; border-radius: 8px; }
+.tag-card .ic svg { width: 16px; height: 16px; }
+.tag-card .k { font-size: .6rem; letter-spacing: .14em; }
+.tag-card .v { font-size: .88rem; margin-top: .05rem; }
+
+/* 生活分栏：正文通栏 + 图集 */
+.story-text p { margin: 0 0 1rem; max-width: 62ch; }
+.story-text p:last-child { margin-bottom: 0; }
+
+/* 「没羞没臊」问答体 */
+.gag {
+  margin: 1.4rem 0 0; padding: 1rem 1.2rem;
+  border-left: 2px solid var(--line);
+  color: var(--muted); font-size: .98rem; line-height: 2;
+}
+.gag:first-of-type { margin-top: 1rem; }
+.gag p { margin: 0; }
+.gag .who { color: var(--ink); font-weight: 600; }
+
+/* ============================================================
+   生活中的我 —— Z 字交错
+   ============================================================ */
+.life-lead {
+  margin: 0 0 .2rem;
+  font-size: 1.12rem; font-weight: 600; color: var(--ink);
+}
+
+.zrow {
+  display: grid; grid-template-columns: 1fr; gap: 1.2rem;
+  align-items: center; padding: 2.3rem 0;
+  border-top: 1px solid var(--line);
+}
+.zrow:last-child { border-bottom: 1px solid var(--line); }
+
+@media (min-width: 820px) {
+  .zrow { grid-template-columns: 1.02fr 1fr; gap: 3.4rem; }
+  .zrow--right .z-media { order: 2; }
+  .zrow--plain { grid-template-columns: 1fr; }
+  .zrow--plain .z-text { max-width: 60ch; }
+}
+
+.z-media img {
+  display: block; width: 100%; height: auto;
+  aspect-ratio: 4 / 3; object-fit: cover;
+  border-radius: 14px; border: 1px solid var(--line);
+}
+.z-media.tall img { aspect-ratio: 4 / 5; }
+
+.z-media.pair,
+.z-media.quad { display: grid; gap: .6rem; }
+.z-media.pair { grid-template-columns: 1fr 1fr; }
+.z-media.quad { grid-template-columns: 1fr 1fr; }
+.z-media.pair figure,
+.z-media.quad figure { margin: 0; }
+.z-media.pair img,
+.z-media.quad img { aspect-ratio: 4 / 3; }
+.z-media figcaption {
+  margin-top: .45rem; font-size: .72rem;
+  color: var(--muted); letter-spacing: .04em;
+}
+
+.z-text h3 {
+  margin: 0 0 .7rem; font-size: 1.14rem;
+  font-weight: 620; color: var(--ink); letter-spacing: .01em;
+}
+.z-text p {
+  margin: 0 0 .85rem; font-size: .96rem;
+  line-height: 1.95; color: var(--body); max-width: 46ch;
+}
+.z-text p:last-child { margin-bottom: 0; }
+
+/* 相册内的小标题 */
+.album-sub {
+  margin: 2.6rem 0 0;
+  font-size: .74rem; letter-spacing: .16em;
+  text-transform: uppercase; color: var(--muted);
+}
+.gallery--ai img { filter: saturate(.94); }
+.gallery--ai .cap { opacity: .85; }
+
+/* 相册折叠 */
+details.fold {
+  margin: 2.8rem 0 0; padding-top: 1.5rem;
+  border-top: 1px solid var(--line);
+}
+details.fold > summary {
+  cursor: pointer; list-style: none;
+  display: flex; align-items: center; gap: .55rem;
+  font-size: .76rem; letter-spacing: .14em;
+  text-transform: uppercase; color: var(--muted);
+  transition: color .16s;
+}
+details.fold > summary::-webkit-details-marker { display: none; }
+details.fold > summary:hover { color: var(--ink); }
+details.fold > summary::after {
+  content: "＋"; font-size: .95rem; letter-spacing: 0; margin-left: .1rem;
+}
+details.fold[open] > summary::after { content: "－"; }
+details.fold[open] > summary { margin-bottom: .2rem; }
+details.fold .gallery { margin-top: 1.4rem; }
+
+/* ============================================================
+   属性面板（关于我）
+   ============================================================ */
+.attrs {
+  display: grid; grid-template-columns: 1fr; gap: .7rem;
+}
+@media (min-width: 720px) {
+  .attrs { grid-template-columns: 1fr 1fr; }
+}
+
+.attr {
+  display: flex; flex-direction: column; gap: .35rem;
+  border: 1px solid var(--line); border-radius: 14px;
+  background: #fff; padding: 1.05rem 1.15rem;
+  transition: border-color .18s, transform .18s;
+}
+.attr:hover { border-color: #c9ced6; transform: translateY(-2px); }
+
+.attr .k {
+  font-size: .66rem; letter-spacing: .18em;
+  text-transform: uppercase; color: var(--muted);
+}
+.attr .v {
+  font-size: 1.01rem; font-weight: 600;
+  color: var(--ink); line-height: 1.65;
+}
+
+/* 辩论题的补充说明 */
+.quiz-sub {
+  display: block; margin-top: .7rem;
+  font-size: .92rem; line-height: 1.9; color: var(--muted);
+}
+.quiz-opt { font-size: 1.05rem; font-weight: 600; letter-spacing: .02em; }
+
+/* ============================================================
+   救画 / 救猫 —— 两个选项卡
+   ============================================================ */
+.duel {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 1rem; margin-top: 2rem;
+}
+@media (max-width: 560px) { .duel { grid-template-columns: 1fr; } }
+
+.duel-card {
+  appearance: none; cursor: pointer; font: inherit; text-align: left;
+  display: block; padding: 0; background: #fff;
+  border: 1px solid var(--line); border-radius: 16px; overflow: hidden;
+  transition: transform .18s, border-color .18s, box-shadow .18s;
+}
+.duel-card figure { margin: 0; }
+.duel-card img {
+  display: block; width: 100%; height: auto;
+  aspect-ratio: 4 / 3; object-fit: cover;
+}
+.duel-card .duel-label {
+  display: block; padding: .85rem 1.05rem;
+  font-size: 1.04rem; font-weight: 650;
+  color: var(--ink); letter-spacing: .06em;
+  border-top: 1px solid var(--line);
+}
+.duel-card:hover { transform: translateY(-3px); border-color: #c9ced6; }
+.duel-card.picked {
+  border-color: var(--ink);
+  box-shadow: 0 14px 34px -20px rgba(20, 22, 26, .45);
+}
+.duel .quiz-note { grid-column: 1 / -1; margin-top: .2rem; }
+
+/* ============================================================
+   微信常驻显示 —— 不再依赖点击展开
+   （.reveal-box 原本是 display:none，靠 .is-open 才显示）
+   ============================================================ */
+.reveal-box {
+  display: flex;
+  align-items: center;
+  gap: 1.8rem;
+  flex-wrap: wrap;
+  margin-top: 2.6rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--line);
+}
+@media (max-width: 560px) {
+  .reveal-box { gap: 1.2rem; }
+}

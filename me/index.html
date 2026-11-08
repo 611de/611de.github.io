@@ -1,0 +1,460 @@
+<!doctype html>
+<html lang="zh-CN" data-theme="light">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta name="robots" content="noindex, nofollow" />
+		<title>刘奕羿 | 一封自我介绍</title>
+		<meta name="description" content="刘奕羿的一封自我介绍，写给那个会一起走远的人——像一部短片那样讲。" />
+		<meta name="theme-color" content="#ffffff" />
+
+		<meta property="og:type" content="website" />
+		<meta property="og:title" content="刘奕羿 | 一封自我介绍" />
+		<meta property="og:description" content="写给那个会一起走远的人——像一部短片那样讲。" />
+		<meta property="og:image" content="https://611de.github.io/me/assets/liu-portrait.jpg" />
+		<meta name="twitter:card" content="summary_large_image" />
+
+		<link rel="preload" as="image" href="assets/hero.webp" fetchpriority="high" />
+
+		<script>
+			// 强制白主题；并在 IntersectionObserver 可用时开启滚动渐显。
+			// 带 watchdog：若动画引擎 1.2s 内没接管，直接取消隐藏，保证任何情况下都能读。
+			(() => {
+				try {
+					const root = document.documentElement;
+					root.dataset.theme = 'light';
+					root.style.colorScheme = 'light';
+					if ('IntersectionObserver' in window) {
+						root.classList.add('js-ready');
+						window.setTimeout(() => {
+							if (root.dataset.storyEngine) return;
+							root.dataset.storyWatchdog = 'fired';
+							root.classList.remove('js-ready');
+						}, 1200);
+					}
+				} catch {
+					document.documentElement.dataset.theme = 'light';
+				}
+			})();
+		</script>
+
+		<link rel="stylesheet" href="assets/styles.css" />
+		<link rel="stylesheet" href="assets/story.css" />
+		<link rel="stylesheet" href="assets/story-chrome.css" />
+		<link rel="stylesheet" href="assets/story-film.css" />
+		<link rel="stylesheet" href="assets/me.css" />
+
+		<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+		<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js" defer></script>
+		<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/ScrollTrigger.min.js" defer></script>
+		<script src="https://cdn.jsdelivr.net/npm/lenis@1.3.25/dist/lenis.min.js" defer></script>
+		<script src="assets/story-film.js" defer></script>
+		<script src="assets/story.js" defer></script>
+		<script src="assets/story-chrome.js" defer></script>
+	</head>
+	<body>
+		<div class="nightfall" aria-hidden="true"><span class="nightfall__dust"></span></div>
+		<div class="scroll-progress" aria-hidden="true"><span class="scroll-progress__fill"></span></div>
+
+		<a class="skip-link" href="#content">跳到正文</a>
+
+		<header class="site-header">
+			<div class="site-shell site-header__inner">
+				<a class="brand-mark" href="#home" aria-label="回到开头">
+					<span class="brand-seal">LY</span>
+					<span class="brand-name">刘奕羿</span>
+				</a>
+
+				<div class="header-actions">
+					<nav aria-label="主导航">
+						<a href="#info">关于我</a>
+						<a href="#about">日常</a>
+						<a href="#life">相册</a>
+						<a href="#contact">聊聊</a>
+						<a href="zhengji/">许愿</a>
+					</nav>
+				</div>
+			</div>
+		</header>
+
+		<main id="content">
+
+			<!-- ============ 第一场 · 开场 ============ -->
+			<section class="home-hero film-scene" id="home" data-scene data-scene-pin>
+				<div class="site-shell hero-copy" data-reveal-group>
+					<p class="chapter-tag" data-reveal>第一场 · 开场</p>
+					<h1 data-reveal>刘奕羿</h1>
+					<p class="oneline" data-reveal>欢迎来到我的赛博空间，我是刘奕羿，一个会玩智能手机，会打字，下雨知道往屋跑，会古法编程技能，会写 Python的人。</p>
+					<div class="button-row" data-reveal>
+						<a class="button" href="#info">怎么个事儿，高低瞅瞅</a>
+						<a class="button secondary" href="#contact">可PDD帮砍</a>
+					</div>
+				</div>
+			</section>
+
+			<!-- ============ 第二场 · 关于我 ============ -->
+			<section
+				class="site-shell page-section film-scene"
+				id="info"
+				data-scene
+				data-reveal-group
+			>
+				<p class="chapter-tag" data-reveal>第二场 · 关于我</p>
+
+				<div class="intro-row">
+					<figure class="portrait" data-reveal>
+						<img class="portrait__img" src="assets/liu-portrait.jpg" alt="刘奕羿" width="900" height="1125" loading="lazy" decoding="async">
+					</figure>
+
+					<div class="attrs" data-reveal>
+						<div class="attr">
+							<span class="k">职业</span>
+							<span class="v">软件工程师 / 码农</span>
+						</div>
+						<div class="attr">
+							<span class="k">坐标</span>
+							<span class="v">成都市郫都区</span>
+						</div>
+						<div class="attr">
+							<span class="k">能量来源</span>
+							<span class="v">吃饭睡觉网瘾少年，担惊受怕开摩的</span>
+						</div>
+						<div class="attr">
+							<span class="k">MBTI</span>
+							<span class="v">ISTJ</span>
+						</div>
+					</div>
+				</div>
+
+			</section>
+
+			<!-- ============ 第三场 · 日常 ============ -->
+			<section
+				class="site-shell page-section film-scene"
+				id="about"
+				aria-labelledby="about-title"
+				data-scene
+				data-reveal-group
+			>
+				<p class="chapter-tag" data-reveal>第三场 · 日常</p>
+				<p class="eyebrow" data-reveal>三个</p>
+			<h2 class="page-title" id="about-title" data-reveal>打工、躺着，以后</h2>
+
+				<div class="tabs" role="tablist" aria-label="工作、生活和以后的打算" data-reveal>
+					<button class="tab" role="tab" id="tab-work" aria-controls="panel-work" aria-selected="true">打工</button>
+					<button class="tab" role="tab" id="tab-life" aria-controls="panel-life" aria-selected="false">消磨时光</button>
+					<button class="tab" role="tab" id="tab-future" aria-controls="panel-future" aria-selected="false">许愿</button>
+				</div>
+
+				<div class="tabpanel is-active" id="panel-work" role="tabpanel" aria-labelledby="tab-work">
+					<div class="story">
+						<div>
+							<p>在外资银行打过工，在华为 OD 成都继续打工，打工人，打工魂，打工都是人上人。</p>
+							<p>打工靠 Python，靠 Java，还是 Python 牛啊，一群为爱发电的人，一个非盈利性组织。Python是世界上最好的语言。但我用 JavaScript，AI时代来了。代码都不需要人来看了。细看还是 JavaScript 写的最多，NodeJS也算是JavaScript 吧。虽然都是 Java 的业务代码。但一到要数据分析、加 AI 能力、做自动化报告的时候，就还得是 Python 出场了。但真到了客户端还得是前端来打底。</p>
+							<p>还干过硬件维护，OceanStor，存储服务器，很贵的。企业级存储，自己搞个U盘，搞个移动硬盘，搞个NAS顶天了。真存东西还得企业级服务器。回到代码开发后，只是时代确实变了，现在不太自己写代码了，AI 把代码写作全包了。后端工程师，变成了「全干工程师」。</p>
+						</div>
+						<figure class="figure">
+							<img src="assets/work.jpg" alt="写代码的桌面" width="900" height="675" loading="lazy" decoding="async">
+					<figcaption class="cap">DSH到底行不行 · 你怎么知道我电脑有64G内存</figcaption>
+						</figure>
+					</div>
+				</div>
+
+				<div class="tabpanel" id="panel-life" role="tabpanel" aria-labelledby="tab-life">
+					<p class="life-lead">干啥啥不行</p>
+
+					<div class="zrow">
+						<div class="z-media">
+							<img src="assets/ai-swim.jpg" alt="游泳池" width="900" height="675" loading="lazy" decoding="async">
+						</div>
+						<div class="z-text">
+							<h3>游泳吧</h3>
+							<p>泳帽一戴，像个卤蛋。踢足球踢不了一点，现在只适合游泳和划船，存靠手能行的</p>
+						</div>
+					</div>
+
+					<div class="zrow zrow--plain">
+						<div class="z-text">
+							<p>滑雪</p>
+							<p>俺不会，占个位，等我有钱了</p>
+						</div>
+					</div>
+
+					<div class="zrow zrow--right">
+						<div class="z-media tall">
+							<img src="assets/moto.jpg" alt="踏板摩托" width="900" height="1125" loading="lazy" decoding="async">
+						</div>
+						<div class="z-text">
+							<h3>骑摩托</h3>
+							<p>你怎么知道我的摩托是本田NS150LA，俗称本田大拉，✌大拉大拉，大拉不拉✌。骑一骑，提心吊胆骑踏板。上班骑下班也可以骑，周末也可以骑，川西走走走</p>
+						</div>
+					</div>
+
+					<div class="zrow">
+						<div class="z-media">
+							<img src="assets/game.jpg" alt="游戏工位" width="900" height="675" loading="lazy" decoding="async">
+						</div>
+						<div class="z-text">
+							<h3>网瘾少年</h3>
+							<p>峡谷大乱斗，越玩越涨肉。虽然我玩得久，但是我玩的菜啊。</p>
+							<p>网游好玩儿，黑神话、GTA 也好玩儿。</p>
+						</div>
+					</div>
+
+					<div class="zrow zrow--right">
+						<div class="z-media pair">
+							<figure><img src="assets/bike-black.jpg" alt="黑色自行车" width="900" height="675" loading="lazy"><figcaption>通勤</figcaption></figure>
+							<figure><img src="assets/bike-white.jpg" alt="白色公路车" width="900" height="675" loading="lazy"><figcaption>公路</figcaption></figure>
+						</div>
+						<div class="z-text">
+							<h3>骑车</h3>
+							<p>两辆自行车，一辆是我的，另一辆不是我的</p>
+							<p>骑车还是太累了，有烧油的还要腿蹬的干啥。自行车是上家送的</p>
+						</div>
+					</div>
+
+					<div class="zrow">
+						<div class="z-media">
+							<img src="assets/cat.jpg" alt="奶牛猫" width="900" height="675" loading="lazy" decoding="async">
+						</div>
+						<div class="z-text">
+							<h3>养猫</h3>
+							<p>25年路边捡的小黑，小黑是爵士好猫，咕噜咕噜，好猫好猫。小猫给小日子手榴弹说是板栗使劲敲...</p>
+							<p>键盘f3就是小黑扣的</p>
+						</div>
+					</div>
+
+					<div class="zrow zrow--right">
+						<div class="z-media pair">
+							<figure><img src="assets/pork.jpg" alt="红烧肉" width="900" height="675" loading="lazy"><figcaption>红烧肉</figcaption></figure>
+							<figure><img src="assets/tofu.jpg" alt="麻婆豆腐" width="900" height="675" loading="lazy"><figcaption>麻婆豆腐</figcaption></figure>
+						</div>
+						<div class="z-text">
+							<h3>厨子</h3>
+							<p>厨子还是需要天赋的，我就算咧</p>
+							<p>每次都会吸取失败的教训，然后下一次做出来的，和上次一模一样。就像麻婆豆腐，难吃</p>
+							<p>比如红烧肉——看着像那么回事，苦的，可能是电磁炉的原因吧，炒糖受热不均，有的地方都苦了，有的地方还没好</p>
+						</div>
+					</div>
+
+					<div class="zrow zrow--right">
+						<div class="z-media quad">
+							<figure><img src="assets/noodle2.jpg" alt="凉面" width="900" height="675" loading="lazy"><figcaption>凉面</figcaption></figure>
+							<figure><img src="assets/noodle.jpg" alt="热干面" width="900" height="675" loading="lazy"><figcaption>面</figcaption></figure>
+							<figure><img src="assets/trotter.jpg" alt="炖猪脚" width="900" height="675" loading="lazy"><figcaption>炖猪脚</figcaption></figure>
+							<figure><img src="assets/chicken.jpg" alt="辣子鸡" width="900" height="675" loading="lazy"><figcaption>辣子鸡</figcaption></figure>
+						</div>
+						<div class="z-text">
+							<h3>拿得出手的</h3>
+							<p>热干面、凉面、饺子、炖猪脚。</p>
+							<p>看见好吃的，我就想怎么复刻——这大概就是工程师思维。</p>
+						</div>
+					</div>
+				</div>
+
+				<div class="tabpanel" id="panel-future" role="tabpanel" aria-labelledby="tab-future">
+					<div class="story">
+						<div>
+							<p>天老爷，给个对象。</p>
+							<div class="gag">
+								<p><span class="who">小屋：</span>会有的</p>
+								<p><span class="who">——</span></p>
+								<p><span class="who">——</span>……算了嘛警官。</p>
+							</div>
+							<div class="gag">
+								<p><span class="who">大模型小型化，让我的9800x3d+5070TI16G+64G内存就能跑本地200token/s：</span>有有有，两轮的。</p>
+								<p><span class="who">——</span>什么机动不机动的。</p>
+								<p><span class="who">——</span>。。。</p>
+								<p><span class="who">——</span>算了嘛警官。</p>
+							</div>
+						</div>
+						<figure class="figure">
+							<img src="assets/ai-scooter.jpg" alt="两轮" width="900" height="675" loading="lazy" decoding="async">
+							<figcaption class="cap">两轮 · AI 送的，好像实拍啊</figcaption>
+						</figure>
+					</div>
+				</div>
+			</section>
+
+			<!-- ============ 第四场 · 相册 ============ -->
+			<section
+				class="site-shell page-section film-scene"
+				id="life"
+				aria-labelledby="life-title"
+				data-scene
+				data-reveal-group
+			>
+				<p class="chapter-tag" data-reveal>第四场 · 相册</p>
+				<p class="eyebrow" data-reveal>赛里木湖都去过了，算是不白活了</p>
+				<h2 class="page-title" id="life-title" data-reveal></h2>
+
+				<div class="gallery" data-reveal>
+					<figure class="figure"><img src="assets/album-1.jpg" alt="赛里木湖" width="900" height="675" loading="lazy"><figcaption class="cap">赛里木湖 · 2025</figcaption></figure>
+					<figure class="figure"><img src="assets/album-2.jpg" alt="伊犁的花海" width="900" height="675" loading="lazy"><figcaption class="cap">伊犁 · 2025</figcaption></figure>
+					<figure class="figure"><img src="assets/album-3.jpg" alt="伊犁的森林" width="900" height="675" loading="lazy"><figcaption class="cap">伊犁 · 2025</figcaption></figure>
+					<figure class="figure"><img src="assets/album-4.jpg" alt="草原与雪山" width="900" height="675" loading="lazy"><figcaption class="cap">伊犁 · 2025</figcaption></figure>
+					<figure class="figure"><img src="assets/album-5.jpg" alt="喀什老城" width="900" height="675" loading="lazy"><figcaption class="cap">喀什 · 2025</figcaption></figure>
+					<figure class="figure"><img src="assets/album-6.jpg" alt="海边" width="900" height="675" loading="lazy"><figcaption class="cap">海边 · 2023</figcaption></figure>
+					<figure class="figure"><img src="assets/life-leshan.jpg" alt="乐山" width="900" height="675" loading="lazy"><figcaption class="cap">乐山 · 2025</figcaption></figure>
+					<figure class="figure"><img src="assets/life-boat.jpg" alt="乐山江面" width="900" height="675" loading="lazy"><figcaption class="cap">乐山 · 2025</figcaption></figure>
+					<figure class="figure"><img src="assets/scenery-night.jpg" alt="洪崖洞夜景" width="900" height="675" loading="lazy"><figcaption class="cap">重庆 · 2025</figcaption></figure>
+				</div>
+
+				<details class="fold">
+					<summary> AI 文生图 ，哪些是 AI 哪些是实拍</summary>
+					<div class="gallery gallery--ai">
+					<figure class="figure"><img src="assets/ai-swim.jpg" alt="游泳池" width="900" height="675" loading="lazy"><figcaption class="cap">泳池</figcaption></figure>
+					<figure class="figure"><img src="assets/ai-work.jpg" alt="双屏工位" width="900" height="675" loading="lazy"><figcaption class="cap">工位</figcaption></figure>
+					<figure class="figure"><img src="assets/ai-food.jpg" alt="两菜一汤" width="900" height="675" loading="lazy"><figcaption class="cap">两菜一汤</figcaption></figure>
+					<figure class="figure"><img src="assets/ai-cat.jpg" alt="橘猫" width="900" height="675" loading="lazy"><figcaption class="cap">猫</figcaption></figure>
+					<figure class="figure"><img src="assets/ai-scooter.jpg" alt="白色踏板" width="900" height="675" loading="lazy"><figcaption class="cap">踏板</figcaption></figure>
+					<figure class="figure"><img src="assets/ai-game.jpg" alt="游戏桌面" width="900" height="675" loading="lazy"><figcaption class="cap">峡谷</figcaption></figure>
+					<figure class="figure"><img src="assets/ai-pork.jpg" alt="红烧肉" width="900" height="675" loading="lazy"><figcaption class="cap">红烧肉</figcaption></figure>
+					<figure class="figure"><img src="assets/ai-tofu.jpg" alt="麻婆豆腐" width="900" height="675" loading="lazy"><figcaption class="cap">麻婆豆腐</figcaption></figure>
+					<figure class="figure"><img src="assets/ai-noodle.jpg" alt="热干面" width="900" height="675" loading="lazy"><figcaption class="cap">热干面</figcaption></figure>
+					<figure class="figure"><img src="assets/ai-balcony.jpg" alt="阳台" width="900" height="675" loading="lazy"><figcaption class="cap">以后想要的阳台</figcaption></figure>
+					</div>
+				</details>
+
+				<div class="media-list" data-reveal>
+					<div class="media-card">
+						<div class="k">歌单</div>
+						<div class="t">写代码的时候听</div>
+						<p>以纯音乐和轻电子为主，太吵的会分心。<br><a href="#" aria-disabled="true">网易云歌单 · 填个der，我不听歌，吵</a></p>
+					</div>
+					<div class="media-card">
+						<div class="k">书 / 剧</div>
+						<div class="t">最近在看</div>
+						<p>技术之外读得不多，科幻和推理会看。<br><a href="#" aria-disabled="true">书目清单 · 没有 · 东野圭吾我倒是看了几十本</a></p>
+					</div>
+				</div>
+			</section>
+
+			<!-- ===== 第五场 · 理想的 TA —— 已整段注释，恢复时去掉这对注释 =====
+
+			<section
+				class="site-shell page-section film-scene"
+				id="ideal"
+				aria-labelledby="ideal-title"
+				data-scene
+				data-reveal-group
+			>
+				<p class="chapter-tag" data-reveal>第五场 · 理想的 TA</p>
+				<p class="eyebrow" data-reveal>写给可能会来的你</p>
+				<h2 class="page-title" id="ideal-title" data-reveal>希望你是一个这样的人。</h2>
+
+				<ul class="gift-list">
+					<li data-reveal>热爱生活。有自己的事在做，也愿意一起浪费时间。</li>
+					<li data-reveal>情绪稳定，遇到事情愿意说出来，也愿意听我说。</li>
+					<li data-reveal>对日子还有期待，愿意和我一起把它过得比现在好一点。</li>
+					<li data-reveal>不介意我话不多。我慢热，但热起来是长久的。</li>
+				</ul>
+
+				<p class="lead" data-reveal style="margin-top:2rem">
+					暂住在成都或打算来成都。至于其他的——合不合得来，聊过才知道。
+				</p>
+			</section>
+===== 第五场结束 ===== -->
+
+<!-- ============ 第五场 · 互动 ============ -->
+			<section
+				class="site-shell page-section film-scene"
+				id="contact"
+				aria-labelledby="contact-title"
+				data-scene
+				data-scene-pin
+				data-reveal-group
+			>
+				<p class="chapter-tag" data-reveal>第五章 · 救画救猫</p>
+				<p class="eyebrow" data-reveal></p>
+				<h2 class="page-title" id="contact-title" data-reveal>美术馆着火了，一幅名画和一只猫，你只能救一个。</h2>
+
+				<p class="lead" data-reveal style="margin-top:1.6rem">
+					你救谁？<br>
+					<span class="quiz-sub">《奇葩说》第六季的辩题。黄执中救画——那是几百年的东西；李诞救猫——它会叫，而且只有九条命。</span>
+				</p>
+
+				<div class="duel" data-reveal>
+					<button class="duel-card quiz-opt" type="button" data-pick="救画">
+						<figure><img src="assets/choice-painting.jpg" alt="燃烧的美术馆里，一幅油画被火光包围" width="900" height="675" loading="lazy" decoding="async"></figure>
+						<span class="duel-label">救画</span>
+					</button>
+					<button class="duel-card quiz-opt" type="button" data-pick="救猫">
+						<figure><img src="assets/choice-cat.jpg" alt="火场中站着的一只小猫" width="900" height="675" loading="lazy" decoding="async"></figure>
+						<span class="duel-label">救猫</span>
+					</button>
+					<p class="quiz-note"></p>
+				</div>
+
+				<div class="reveal-box" id="wx-box">
+					<div class="qr"><img src="assets/wx-qr.png" alt="微信二维码" width="300" height="300"></div>
+					<div>
+						<div class="k mono" style="color:var(--muted)">WX</div>
+						<div class="num" id="wx-num">18280334215</div>
+						<div class="button-row" style="margin-top:1rem">
+							<button class="button secondary compact" type="button" id="copy-btn">复制PDD砍你一刀</button>
+						</div>
+					</div>
+				</div>
+			</section>
+
+			<!-- ============ 结束卡 ============ -->
+			<section class="site-shell page-section end-card film-scene" id="end" data-scene data-reveal-group>
+				<span class="brand-seal end-card__seal" aria-hidden="true">LY</span>
+				<p class="end-card__mark" data-reveal="soft">完。</p>
+				<div class="button-row" data-reveal="soft">
+					<a class="button" href="#contact">赞助作者</a>
+				</div>
+			</section>
+		</main>
+
+		<script>
+			(function () {
+				/* 分栏 */
+				var tabs = Array.prototype.slice.call(document.querySelectorAll('.tab'));
+				tabs.forEach(function (tab) {
+					tab.addEventListener('click', function () {
+						tabs.forEach(function (t) {
+							t.setAttribute('aria-selected', 'false');
+							document.getElementById(t.getAttribute('aria-controls')).classList.remove('is-active');
+						});
+						tab.setAttribute('aria-selected', 'true');
+						document.getElementById(tab.getAttribute('aria-controls')).classList.add('is-active');
+					});
+				});
+
+				/* 趣味问答 → 展开微信 */
+				var box = document.getElementById('wx-box');
+				Array.prototype.forEach.call(document.querySelectorAll('.quiz-opt'), function (btn) {
+					btn.addEventListener('click', function () {
+						document.querySelectorAll('.quiz-opt').forEach(function (b) { b.classList.remove('picked'); });
+						btn.classList.add('picked');
+						box.classList.add('is-open');
+						box.scrollIntoView({ behavior: 'smooth', block: 'center' });
+					});
+				});
+
+				/* 复制微信号 */
+				var copyBtn = document.getElementById('copy-btn');
+				var num = document.getElementById('wx-num');
+				if (copyBtn && num) {
+					copyBtn.addEventListener('click', function () {
+						var text = num.textContent.trim();
+						var done = function () {
+							copyBtn.textContent = '已复制';
+							setTimeout(function () { copyBtn.textContent = '复制微信号'; }, 1600);
+						};
+						if (navigator.clipboard && navigator.clipboard.writeText) {
+							navigator.clipboard.writeText(text).then(done, done);
+						} else {
+							var ta = document.createElement('textarea');
+							ta.value = text; document.body.appendChild(ta); ta.select();
+							try { document.execCommand('copy'); } catch (e) {}
+							document.body.removeChild(ta); done();
+						}
+					});
+				}
+			})();
+		</script>
+	</body>
+</html>

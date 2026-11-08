@@ -1,0 +1,1100 @@
+/* Fonts are loaded via <link> tags in each page head so the fetch is not serialized behind this stylesheet. */
+
+/* ---------- Base tokens & elements ---------- */
+
+:root {
+	font-family: 'Be Vietnam Pro', 'Segoe UI', sans-serif;
+	color: var(--ink);
+	background: var(--background);
+	color-scheme: light;
+	/* Light theme — "daylight love-letter": warm ivory paper, blush surfaces,
+	   a terracotta-rose accent. Reads sincere and tender, not corporate. */
+	/* Measured height of the sticky header, consumed by section[id]'s
+	   scroll-margin-top so anchor jumps never land a heading behind the bar.
+	   Overridden per breakpoint where the header changes shape. */
+	--header-h: 5.5rem;
+	--background: #fbf5ee; /* warm ivory */
+	--surface: #fffaf4; /* softest warm white */
+	--surface-muted: #f0dccd; /* blush sand — deepened so panels separate from the ground */
+	--surface-translucent: rgba(255, 250, 244, 0.86);
+	/* Warmer and a touch more opaque than the ground: at rgba(255,250,244,.82) on
+	   an ivory page the panels had almost no surface separation and read as pale
+	   stationery rather than candlelit. Text contrast is unchanged. */
+	--panel-bg: rgba(255, 248, 240, 0.94);
+	--header-bg: rgba(251, 245, 238, 0.84);
+	--ink: #3a2a28; /* warm espresso — 12:1 on ivory */
+	--muted: #7a5a54; /* muted rosewood — ~5.9:1 on panels (AA small text) */
+	--primary: #c14d68; /* terracotta-rose — 4.65:1 with white (buttons, bold) */
+	/* --primary fails AA for small text; --primary-strong is the accessible
+	   variant used everywhere small type takes the accent colour. */
+	--primary-strong: #9e3350; /* deep rose — ~6.3:1 on ivory (AA small text) */
+	--on-primary: #fff8f4;
+	--focus: #b23a5b;
+	--line: rgba(158, 51, 80, 0.2);
+	--glow-primary: rgba(193, 77, 104, 0.16);
+	--shadow: 0 24px 70px rgba(76, 40, 40, 0.14);
+	--motion-fast: 160ms ease;
+	--motion-theme: 260ms ease;
+	/* Hero sits on a dark photo overlay in both themes — warm dusk/candlelight. */
+	--hero-ink: #fff8f4;
+	--hero-muted: rgba(255, 248, 244, 0.86);
+	--hero-accent: #f2c2a8; /* soft rose-gold */
+	--hero-border: rgba(255, 248, 244, 0.72);
+	--hero-overlay-start: rgba(60, 25, 30, 0.86);
+	--hero-overlay-mid: rgba(120, 45, 55, 0.56);
+	--hero-overlay-end: rgba(190, 90, 80, 0.1);
+	/* Legacy aliases still referenced by component rules below. --mist and
+	   --brass were also defined here but had zero usages; removed. */
+	--paper: var(--surface);
+	--sage: var(--primary);
+	--oxblood: var(--primary-strong);
+	--blueprint: var(--muted);
+}
+
+:root[data-theme='dark'] {
+	color-scheme: dark;
+	/* Dark theme — "candlelit dusk": deep plum-wine ground, warm cream ink, a
+	   rose-gold/amber glow. Intimate and soft rather than the old harsh
+	   black + hot-pink. */
+	--background: #17090f; /* deep wine-plum */
+	--surface: #241019; /* wine */
+	--surface-muted: #2e1622; /* lifted plum */
+	--surface-translucent: rgba(36, 16, 25, 0.86);
+	--panel-bg: rgba(40, 18, 28, 0.88);
+	--header-bg: rgba(23, 9, 15, 0.82);
+	--ink: #fbeae0; /* warm candlelit cream */
+	--muted: #d9a9b8; /* soft rose-mauve — ~8.7:1 on panels */
+	--primary: #f2a488; /* candlelit rose-gold — ~9:1 with --on-primary (buttons) */
+	/* In dark mode the accessible small-text variant is LIGHTER than --primary. */
+	--primary-strong: #f7bda6; /* ~11.5:1 on the plum ground (AA small text) */
+	--on-primary: #2a0e14; /* deep wine ink on the warm accent */
+	--focus: #f9c4b0;
+	--line: rgba(242, 164, 136, 0.26);
+	--glow-primary: rgba(242, 164, 136, 0.2);
+	--shadow: 0 24px 70px rgba(0, 0, 0, 0.5);
+	--hero-ink: #fbeae0;
+	--hero-muted: rgba(251, 234, 224, 0.85);
+	--hero-accent: #f7c4a8;
+	--hero-border: rgba(251, 234, 224, 0.72);
+	--hero-overlay-start: rgba(15, 6, 10, 0.92);
+	--hero-overlay-mid: rgba(66, 22, 38, 0.72);
+	--hero-overlay-end: rgba(242, 164, 136, 0.12);
+}
+
+* {
+	box-sizing: border-box;
+}
+
+html {
+	scroll-behavior: smooth;
+}
+
+/* When the film runs, in-page links are routed through Lenis (story-film.js) so
+   they share the film's camera easing. Native smooth scrolling would race that
+   and warp the page in ~24 frames with a different easing signature. */
+html.film-ready {
+	scroll-behavior: auto;
+}
+
+body {
+	margin: 0;
+	min-width: 320px;
+	/* Diagonal ivory→blush wash. The candlelight glows that "stay put" as the story
+	   scrolls live on the fixed, GPU-promoted body::after bloom — NOT here — so this
+	   layer needs no background-attachment: fixed (that forces a full-viewport
+	   repaint every scroll frame and is the main cause of scroll jank). */
+	background:
+		linear-gradient(150deg, var(--background) 0%, var(--surface) 52%, var(--surface-muted) 100%);
+	color: var(--ink);
+	transition:
+		background-color var(--motion-theme),
+		color var(--motion-theme);
+}
+
+/* Paper grain + gentle vignette. A fixed, non-interactive overlay that sits just
+   above content for a filmic, hand-made warmth. Deliberately NO blend mode: a
+   mix-blend-mode on a fixed, full-viewport layer forces the browser to re-blend
+   against the scrolling content every frame (scroll jank). Instead we keep it a
+   plain, cheaply-composited layer at low opacity so it reads as faint film grain
+   without touching body-text contrast. The SVG noise is inline — no network fetch. */
+body::before {
+	content: '';
+	position: fixed;
+	inset: 0;
+	z-index: 2;
+	pointer-events: none;
+	opacity: 0.1;
+	background-image:
+		radial-gradient(circle at 50% 45%, transparent 58%, rgba(40, 20, 20, 0.14) 100%),
+		url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.45'/%3E%3C/svg%3E");
+	background-size:
+		100% 100%,
+		140px 140px;
+}
+
+/* Slow-drifting candlelight bloom, painted BEHIND content (negative z-index sits
+   above the body wash but below <main>), so translucent panels glow warmly from
+   within. Compositor-only transform drift; disabled under reduced motion. */
+body::after {
+	content: '';
+	position: fixed;
+	inset: -20% -10%;
+	z-index: -1;
+	pointer-events: none;
+	/* Radial glows are already soft to transparent, so no blur filter is needed —
+	   dropping it removes an expensive full-layer rasterization on every animation
+	   frame while looking identical. Only transform (drift) is animated, so the
+	   layer stays composited and cheap. */
+	background:
+		radial-gradient(circle at 30% 30%, var(--glow-primary), transparent 45%),
+		radial-gradient(circle at 72% 68%, var(--glow-primary), transparent 48%);
+	will-change: transform;
+	animation: candlelight-drift 26s ease-in-out infinite alternate;
+}
+
+@keyframes candlelight-drift {
+	from {
+		transform: translate3d(-2%, -1.5%, 0) scale(1.02);
+	}
+	to {
+		transform: translate3d(2.5%, 2%, 0) scale(1.08);
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	body::after {
+		animation: none;
+	}
+}
+
+/* ---------- Đêm dần xuống · the night falls ----------
+   One fixed layer that makes the room get later as she scrolls. `--night` runs
+   0 (early evening) → 1 (past midnight) and is written by story-film.js onto
+   this element only — deliberately NOT onto :root, so a per-frame scrub
+   invalidates one subtree instead of every element on the page.
+
+   It is atmosphere, not theming. The palette tokens are never interpolated: the
+   visitor's explicit light/dark choice always wins, and both themes simply
+   travel — light from dusk toward evening, dark from evening toward midnight.
+
+   The 0.35 default is the whole point of the fallback story: with no JS, or
+   under reduced motion, the room is simply already lit at a plausible hour
+   rather than sitting at "unlit". */
+.nightfall {
+	--night: 0.35;
+	position: fixed;
+	inset: 0;
+	/* Above the page wash and the candle bloom (-1), below the grain (2) and all
+	   chrome. Transparent through the middle, so body text is never dimmed. */
+	z-index: 1;
+	pointer-events: none;
+	background:
+		radial-gradient(
+			125% 105% at 50% 42%,
+			transparent 46%,
+			rgba(18, 7, 12, calc(0.5 * var(--night))) 100%
+		),
+		radial-gradient(
+			70% 55% at 22% 88%,
+			rgba(255, 190, 140, calc(0.1 * var(--night))),
+			transparent 62%
+		);
+}
+
+/* Dust turning over in the lamp beam — the cheapest possible way to have many
+   small things moving at once. A tiled dot pattern rather than N elements: one
+   composited layer, one transform, no per-particle cost. Masked to the beam so
+   it reads as lit air instead of as noise over the page. */
+.nightfall__dust {
+	position: absolute;
+	inset: -25%;
+	display: block;
+	opacity: calc(0.55 * var(--night));
+	background-image:
+		radial-gradient(circle at 20% 30%, rgba(255, 226, 200, 0.9) 0 1px, transparent 1.6px),
+		radial-gradient(circle at 68% 12%, rgba(255, 226, 200, 0.7) 0 1.2px, transparent 1.8px),
+		radial-gradient(circle at 42% 76%, rgba(255, 226, 200, 0.8) 0 1px, transparent 1.5px);
+	background-size:
+		180px 180px,
+		260px 260px,
+		220px 220px;
+	/* Confine the motes to the lamp's throw. */
+	mask-image: radial-gradient(58% 48% at 24% 84%, #000 12%, transparent 72%);
+	-webkit-mask-image: radial-gradient(58% 48% at 24% 84%, #000 12%, transparent 72%);
+	animation: dust-drift 42s linear infinite alternate;
+	will-change: transform;
+}
+
+@keyframes dust-drift {
+	from {
+		transform: translate3d(-2.5%, 1.5%, 0);
+	}
+	to {
+		transform: translate3d(2.5%, -2%, 0);
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	/* Freeze the evening at roughly 22:00 and still the air. A lit room, no
+	   travel — nothing readable is lost. */
+	.nightfall {
+		--night: 0.45;
+	}
+
+	.nightfall__dust {
+		animation: none;
+	}
+}
+
+a {
+	color: inherit;
+	text-decoration-thickness: 0.08em;
+	text-underline-offset: 0.24em;
+	transition:
+		background-color var(--motion-fast),
+		border-color var(--motion-fast),
+		color var(--motion-fast);
+}
+
+button {
+	transition:
+		background-color var(--motion-fast),
+		border-color var(--motion-fast),
+		box-shadow var(--motion-fast),
+		color var(--motion-fast),
+		opacity var(--motion-fast),
+		transform var(--motion-fast);
+}
+
+a:focus-visible,
+button:focus-visible {
+	outline: 3px solid var(--focus);
+	outline-offset: 4px;
+}
+
+h1,
+h2,
+h3 {
+	font-family: 'Fraunces', Georgia, serif;
+	/* Fraunces is a variable optical-size serif; let it thicken slightly as it
+	   grows so display headings feel warm and considered, not thin. */
+	font-optical-sizing: auto;
+	/* Tender editorial tightening. Kept >= 1.12 (not sub-1): stacked Vietnamese
+	   diacritics on wrapped headings — e.g. "Nghiêm túc" — clip below ~1.1. */
+	line-height: 1.14;
+	letter-spacing: -0.01em;
+	text-wrap: balance;
+}
+
+h1 {
+	max-width: 12ch;
+	margin: 0;
+	font-size: clamp(3.4rem, 11vw, 8.6rem);
+	font-weight: 650;
+	letter-spacing: -0.02em;
+}
+
+h2 {
+	margin: 0 0 1rem;
+	font-size: clamp(2rem, 5vw, 4.6rem);
+	font-weight: 550;
+}
+
+h3 {
+	margin: 0 0 0.6rem;
+	font-size: clamp(1.35rem, 3vw, 2.1rem);
+	font-weight: 600;
+}
+
+p {
+	line-height: 1.72;
+	text-wrap: pretty;
+}
+
+ul {
+	margin: 0;
+	padding-left: 1.25rem;
+}
+
+li + li {
+	margin-top: 0.65rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	*,
+	*::before,
+	*::after {
+		animation-duration: 1ms !important;
+		scroll-behavior: auto !important;
+		transition-duration: 1ms !important;
+	}
+}
+
+@media (max-width: 720px) {
+	h1 {
+		font-size: clamp(3rem, 18vw, 5rem);
+	}
+}
+
+/* ---------- Layout: header, nav, theme switch ---------- */
+
+.skip-link {
+	position: fixed;
+	left: 1rem;
+	top: 1rem;
+	z-index: 20;
+	transform: translateY(-140%);
+	background: var(--primary);
+	color: var(--on-primary);
+	padding: 0.75rem 1rem;
+	border-radius: 8px;
+}
+
+.skip-link:focus {
+	transform: translateY(0);
+}
+
+.site-shell {
+	width: min(1120px, calc(100% - 32px));
+	margin-inline: auto;
+}
+
+/* Full-bleed bar. The background, border and blur belong to the header itself;
+   the 1120px measure is applied to the inner wrapper only, so the bar spans the
+   viewport like the progress rail above it. */
+.site-header {
+	position: sticky;
+	top: 0;
+	z-index: 10;
+	padding-block: 1rem;
+	border-bottom: 1px solid var(--line);
+	background: var(--header-bg);
+	backdrop-filter: blur(18px);
+	transition:
+		background-color var(--motion-theme),
+		border-color var(--motion-theme),
+		box-shadow var(--motion-theme);
+}
+
+.site-header__inner {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 1rem;
+}
+
+.brand-mark,
+nav {
+	display: flex;
+	align-items: center;
+	gap: 0.8rem;
+}
+
+.brand-mark {
+	font-weight: 700;
+	line-height: 1.1;
+	text-decoration: none;
+}
+
+.brand-seal {
+	display: grid;
+	width: 2.25rem;
+	height: 2.25rem;
+	place-items: center;
+	border: 1px solid var(--line);
+	border-radius: 50%;
+	background: var(--paper);
+	color: var(--primary);
+	font-family: 'Fraunces', Georgia, serif;
+	transition:
+		background-color var(--motion-theme),
+		border-color var(--motion-theme),
+		color var(--motion-theme);
+}
+
+.header-actions {
+	display: flex;
+	align-items: center;
+	justify-content: flex-end;
+	gap: 1rem;
+	flex-wrap: wrap;
+}
+
+nav a {
+	min-height: 44px;
+	display: inline-flex;
+	align-items: center;
+	padding: 0.55rem 0.72rem;
+	border: 1px solid transparent;
+	border-radius: 8px;
+	font-size: 0.95rem;
+	font-weight: 600;
+	text-decoration: none;
+}
+
+nav a:hover {
+	background: var(--surface-muted);
+	border-color: var(--line);
+}
+
+nav a.active {
+	background: var(--primary);
+	color: var(--on-primary);
+}
+
+.preference-controls {
+	display: flex;
+	align-items: center;
+	justify-content: flex-end;
+	gap: 0.5rem;
+	flex-wrap: wrap;
+}
+
+.segmented-control {
+	display: flex;
+	gap: 0.2rem;
+	padding: 0.2rem;
+	border: 1px solid var(--line);
+	border-radius: 999px;
+	background: var(--surface-translucent);
+	box-shadow: 0 1px 0 var(--line);
+	transition:
+		background-color var(--motion-theme),
+		border-color var(--motion-theme),
+		box-shadow var(--motion-theme);
+}
+
+.segmented-control button {
+	width: 44px;
+	height: 44px;
+	border: 0;
+	border-radius: 999px;
+	background: transparent;
+	color: var(--ink);
+	cursor: pointer;
+	font: inherit;
+	font-size: 1.08rem;
+	font-weight: 700;
+	line-height: 1;
+	touch-action: manipulation;
+}
+
+.segmented-control button:hover {
+	background: var(--surface-muted);
+}
+
+.segmented-control button:active {
+	transform: scale(0.96);
+}
+
+.segmented-control button.active {
+	background: var(--primary);
+	color: var(--on-primary);
+	box-shadow: 0 10px 24px var(--glow-primary);
+}
+
+.emoji-icon {
+	font-family:
+		'Apple Color Emoji', 'Segoe UI Emoji', 'Noto Color Emoji', 'Twemoji Mozilla', sans-serif;
+}
+
+@media (max-width: 720px) {
+	/* The header used to stack into three rows (brand / wrapped nav / theme) and
+	   measured 254px — 40% of a 640px viewport, permanently sticky, on the tier
+	   where reading *is* the product. It now stays a single row: the brand
+	   collapses to its seal and the nav scrolls horizontally instead of wrapping. */
+	.site-header {
+		padding-block: 0.6rem;
+	}
+
+	/* backdrop-filter on a full-width sticky element is the most expensive paint
+	   on the page, and mobile is the tier that can least afford it. The header
+	   background is already near-opaque, so dropping the blur is barely visible. */
+	@supports (backdrop-filter: blur(1px)) {
+		.site-header {
+			backdrop-filter: none;
+		}
+	}
+
+	.site-header__inner {
+		gap: 0.6rem;
+	}
+
+	/* Keep the seal (it is the brand) and drop the long wordmark that forced the
+	   wrap. The link keeps its aria-label, so its accessible name is unchanged. */
+	.brand-name {
+		display: none;
+	}
+
+	.header-actions {
+		min-width: 0;
+		flex: 1;
+		flex-wrap: nowrap;
+		gap: 0.5rem;
+	}
+
+	nav {
+		min-width: 0;
+		overflow-x: auto;
+		flex-wrap: nowrap;
+		gap: 0.25rem;
+		/* Momentum scrolling without a visible scrollbar eating vertical space. */
+		scrollbar-width: none;
+		-webkit-overflow-scrolling: touch;
+	}
+
+	nav::-webkit-scrollbar {
+		display: none;
+	}
+
+	nav a {
+		padding: 0.5rem 0.6rem;
+		font-size: 0.88rem;
+		white-space: nowrap;
+	}
+
+	.preference-controls {
+		flex: none;
+	}
+
+	/* One row of chrome, so anchor targets clear a much smaller bar. */
+	:root {
+		--header-h: 4rem;
+	}
+}
+
+/* ---------- Shared content blocks ---------- */
+
+/* Big section titles for the JD and CV blocks on the single-page layout:
+   smaller than the home h1 but clearly above regular h2 headings. */
+.page-title {
+	max-width: 12ch;
+	margin: 0;
+	font-size: clamp(2.8rem, 8vw, 6.4rem);
+}
+
+/* Keep anchor targets clear of the sticky header when navigating with #hash links.
+   Driven by --header-h so the mobile breakpoint cannot drift out of sync with the
+   real bar height (it previously reserved 88px against a 254px header, so every
+   mobile anchor jump landed the heading behind the chrome). */
+section[id] {
+	scroll-margin-top: calc(var(--header-h) + 0.5rem);
+}
+
+/* Demoted to a quiet sub-label. Every scene stacks .chapter-tag + .eyebrow above
+   its heading, and when both were uppercase, letterspaced and --primary-strong
+   the eyebrow — being longer — outweighed the chapter tag above it and inverted
+   the hierarchy. Sentence case, muted, no tracking: the slate leads, the eyebrow
+   supports, the heading lands. No copy changed. */
+.eyebrow {
+	margin: 0 0 1rem;
+	color: var(--muted);
+	font-size: 0.85rem;
+	font-weight: 600;
+	letter-spacing: 0;
+	text-transform: none;
+}
+
+.lead {
+	max-width: 40rem;
+	font-size: clamp(1.1rem, 2vw, 1.32rem);
+	line-height: 1.75;
+	color: var(--muted);
+}
+
+.button-row {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.8rem;
+	margin-top: 2rem;
+}
+
+.button {
+	min-height: 48px;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	padding: 0.85rem 1.35rem;
+	border: 1px solid var(--primary);
+	border-radius: 999px; /* soft pill — warmer, more intimate than a hard rect */
+	background: var(--primary);
+	color: var(--on-primary);
+	font-weight: 700;
+	letter-spacing: 0.01em;
+	text-decoration: none;
+	box-shadow: 0 10px 26px var(--glow-primary);
+	transition:
+		transform 220ms cubic-bezier(0.22, 1, 0.36, 1),
+		box-shadow 220ms ease,
+		background 180ms ease;
+}
+
+.button:hover {
+	transform: translateY(-2px);
+	border-color: var(--primary-strong);
+	background: var(--primary-strong);
+	color: var(--on-primary);
+	box-shadow: 0 16px 34px var(--glow-primary);
+}
+
+.button.secondary {
+	background: transparent;
+	color: var(--primary-strong);
+	box-shadow: none;
+}
+
+.button.secondary:hover {
+	background: var(--glow-primary);
+	color: var(--primary-strong);
+}
+
+.page-section {
+	padding-block: clamp(3rem, 8vw, 6.5rem);
+}
+
+.section-grid {
+	display: grid;
+	grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.4fr);
+	gap: clamp(2rem, 7vw, 6rem);
+	align-items: start;
+}
+
+.panel-list {
+	display: grid;
+	gap: 1rem;
+}
+
+.panel {
+	position: relative;
+	border-left: 3px solid var(--sage);
+	border-radius: 14px;
+	background:
+		linear-gradient(155deg, var(--surface-translucent), var(--panel-bg));
+	padding: clamp(1.2rem, 3vw, 1.7rem);
+	box-shadow:
+		0 1px 0 var(--line),
+		0 18px 40px -28px var(--glow-primary);
+	transition:
+		transform var(--motion-fast),
+		background-color var(--motion-theme),
+		border-color var(--motion-theme),
+		box-shadow var(--motion-theme),
+		color var(--motion-theme);
+}
+
+/* Panels never reset paragraph margins, so a one-line panel carried a full
+   default <p> margin top and bottom and measured ~104px tall. */
+.panel > p:first-child {
+	margin-top: 0;
+}
+
+.panel > p:last-child {
+	margin-bottom: 0;
+}
+
+.panel:hover {
+	transform: translateY(-3px);
+	box-shadow:
+		0 1px 0 var(--line),
+		0 26px 52px -26px var(--glow-primary);
+}
+
+.panel.strong {
+	border-left-width: 4px;
+	border-color: var(--oxblood);
+	/* Warm halo marks the emotional / high-signal panels (closing beat, the
+	   "things we both protect" pledge). */
+	box-shadow:
+		var(--shadow),
+		0 0 60px -18px var(--glow-primary);
+}
+
+/* The opposite of .strong. Used once, on "Ghi chú tuyển chọn" — the written
+   climax. Everything that competes for attention is removed so the most
+   important block on the page is also the quietest thing on screen. */
+.panel.quiet {
+	border-left: 0;
+	border-radius: 18px;
+	background: none;
+	padding-block: clamp(1.8rem, 5vw, 3rem);
+	box-shadow: none;
+	text-align: center;
+}
+
+.panel.quiet:hover {
+	transform: none;
+	box-shadow: none;
+}
+
+.panel.quiet h3 {
+	color: var(--primary-strong);
+	font-size: 0.78rem;
+	font-weight: 700;
+	letter-spacing: 0.14em;
+	line-height: 1.35;
+	text-transform: uppercase;
+	font-family: 'Be Vietnam Pro', 'Segoe UI', sans-serif;
+	margin-bottom: 1.1rem;
+}
+
+.panel.quiet p {
+	max-width: 46ch;
+	margin-inline: auto;
+	font-family: 'Fraunces', Georgia, serif;
+	font-size: clamp(1.15rem, 2.2vw, 1.5rem);
+	font-optical-sizing: auto;
+	font-weight: 400;
+	line-height: 1.6;
+}
+
+/* ---------- Cảnh 4 · What he can offer ----------
+   Four unhurried lines. This was a numbered, hairline-ruled table, which read as
+   a compensation schedule; scene 4 still needs a shape distinct from the vow
+   (scene 5) and the quiet climax (scene 6), so it keeps body-size type and a
+   small rose mark instead of borrowing either of theirs. */
+.gift-list {
+	display: grid;
+	margin: 2.25rem 0 0;
+	padding: 0;
+	gap: 1.35rem;
+	list-style: none;
+	max-width: 44rem;
+}
+
+.gift-list li {
+	position: relative;
+	margin: 0;
+	padding-left: 1.75rem;
+	line-height: 1.72;
+}
+
+/* A small open circle rather than a bullet or a numeral: present enough to mark
+   the line, quiet enough not to tally it. */
+.gift-list li::before {
+	content: '';
+	position: absolute;
+	left: 0;
+	top: 0.62em;
+	width: 0.5rem;
+	height: 0.5rem;
+	border: 1.5px solid var(--primary);
+	border-radius: 50%;
+	transition: border-color var(--motion-theme);
+}
+
+/* ---------- Cảnh 5 · The vow ----------
+   Unboxed large serif lines. Inside the standard panel these four pledges read
+   as an HR policy; set as display type with room around them they read as a vow. */
+.vow-list {
+	display: grid;
+	margin: 0;
+	padding: 0;
+	gap: clamp(1.5rem, 3.5vw, 2.4rem);
+	list-style: none;
+}
+
+.vow-list li {
+	margin: 0;
+	max-width: 30ch;
+	border-left: 2px solid var(--line);
+	padding-left: clamp(1rem, 2.5vw, 1.6rem);
+	color: var(--ink);
+	font-family: 'Fraunces', Georgia, serif;
+	font-optical-sizing: auto;
+	font-size: clamp(1.25rem, 2.4vw, 1.75rem);
+	font-weight: 400;
+	/* >= 1.3 keeps stacked Vietnamese diacritics clear of the line above. */
+	line-height: 1.45;
+	letter-spacing: -0.005em;
+	text-wrap: pretty;
+	transition: border-color var(--motion-theme);
+}
+
+/* .meta-grid removed with the job-spec table it styled (Loại hình / Địa điểm /
+   Ngày bắt đầu) — that block only made sense while the page was a job posting. */
+
+@media (max-width: 720px) {
+	.section-grid {
+		grid-template-columns: 1fr;
+	}
+}
+
+/* ---------- Home page ---------- */
+
+.home-hero {
+	position: relative;
+	min-height: min(760px, 82dvh);
+	display: flex;
+	align-items: center;
+	margin-top: -5rem;
+	padding-top: 6rem;
+	/* Contains the scaled ::before frame during the film's push-in. */
+	overflow: hidden;
+	color: var(--hero-ink);
+}
+
+/* The opening frame lives on its own layer so the film can scale it.
+   --hero-scale defaults to 1 and is animated to ~1.07 by story-film.js across
+   the #home pin, turning what used to be 540px of frozen scroll into a slow
+   camera push-in. Only `transform` animates, so this stays on the compositor —
+   animating background-size instead would repaint a full-viewport layer every
+   frame. Mobile, reduced-motion and no-JS never set the variable and simply get
+   the still frame. */
+.home-hero::before {
+	content: '';
+	position: absolute;
+	inset: 0;
+	z-index: 0;
+	pointer-events: none;
+	background-position: center;
+	background-size: cover;
+	/* The image URL resolves relative to this stylesheet inside assets/. */
+	background-image:
+		linear-gradient(
+			90deg,
+			var(--hero-overlay-start),
+			var(--hero-overlay-mid),
+			var(--hero-overlay-end)
+		),
+		url('dating-application-hero-background.webp');
+	transform: scale(var(--hero-scale, 1));
+	transform-origin: 50% 55%;
+}
+
+/* Cinematic hold on the opening frame: a soft edge vignette plus a warm candle
+   bloom rising from the lower-left, so the cold open reads as dusk light rather
+   than a flat photo. Decorative + non-interactive; text sits above via z-index. */
+.home-hero::after {
+	content: '';
+	position: absolute;
+	inset: 0;
+	z-index: 0;
+	pointer-events: none;
+	background:
+		/* Dusk carry-over (first layer = painted on top). Scene 1 is a dark
+		   cinematic frame and scene 2 is bright ivory, so the film used to cut hard
+		   at the boundary — most jarring in the light theme. Dissolving the bottom
+		   of the hero into the page colour resolves it. Done here rather than on
+		   #applicant because that section is width-constrained by .site-shell, so an
+		   overlay there shows vertical seams at the 1120px edges. */
+		linear-gradient(to bottom, transparent 68%, var(--background) 100%),
+		radial-gradient(120% 90% at 20% 100%, var(--hero-overlay-end), transparent 60%),
+		radial-gradient(130% 120% at 50% 40%, transparent 52%, rgba(20, 8, 10, 0.55) 100%);
+}
+
+.hero-copy {
+	position: relative;
+	z-index: 1;
+	padding-block: clamp(5rem, 12vw, 8rem);
+}
+
+.hero-copy .lead {
+	margin-top: 1.5rem;
+	color: var(--hero-muted);
+}
+
+.hero-copy .eyebrow {
+	color: var(--hero-accent);
+}
+
+.hero-copy .button.secondary {
+	border-color: var(--hero-border);
+	color: var(--hero-ink);
+}
+
+/* ---------- Cảnh 7 · The hold ----------
+   During the closing pin the film scrubs --closing-settle 0 → 1, deepening a warm
+   vignette so the camera reads as settling on the last spoken beat. Purely
+   decorative: it never touches content opacity, so nothing here can become
+   invisible while still focusable. Absolutely positioned so it does not become a
+   grid item on this .section-grid section; defaults to 0 in the other tiers. */
+#closing {
+	position: relative;
+	isolation: isolate;
+}
+
+#closing::after {
+	content: '';
+	position: absolute;
+	z-index: -1;
+	/* Bleeds vertically only. A horizontal bleed widens the scrollable area — and
+	   because it is a pseudo-element it does so invisibly to any DOM inspection,
+	   which cost 42px of horizontal overflow at 320px. */
+	inset: -10% 0;
+	pointer-events: none;
+	opacity: var(--closing-settle, 0);
+	background: radial-gradient(70% 50% at 50% 50%, var(--glow-primary), transparent 72%);
+}
+
+/* ---------- Khung cuối · End card ----------
+   The last frame. Short, centred and quiet: it turns the dossier above it into a
+   credits roll and puts the apply door where the reader actually stops. */
+/* Centres correctly whether this is a grid (static/reduced-motion tiers) or a
+   flex column — in film mode the .film-scene centring rule outranks `display`
+   here, so `align-items` is set for the flex case and `justify-items` for grid. */
+.end-card {
+	display: grid;
+	justify-items: center;
+	align-items: center;
+	gap: 1.1rem;
+	padding-block: clamp(4rem, 12vw, 8rem);
+	text-align: center;
+}
+
+.end-card__seal {
+	width: 3rem;
+	height: 3rem;
+	font-size: 1.05rem;
+	font-weight: 700;
+	opacity: 0.9;
+}
+
+.end-card__mark {
+	margin: 0;
+	color: var(--muted);
+	font-family: 'Fraunces', Georgia, serif;
+	font-optical-sizing: auto;
+	font-size: clamp(1.3rem, 3vw, 1.9rem);
+	font-weight: 400;
+	letter-spacing: 0.02em;
+}
+
+.end-card .button-row {
+	margin-top: 0.5rem;
+	justify-content: center;
+}
+
+.facts-list {
+	display: grid;
+	gap: 1px;
+	overflow: hidden;
+	border-radius: 14px;
+	background: var(--line);
+	box-shadow: 0 18px 40px -30px var(--glow-primary);
+	transition: background-color var(--motion-theme);
+}
+
+.facts-list div {
+	display: grid;
+	grid-template-columns: minmax(9rem, 0.7fr) 1fr;
+	gap: 1rem;
+	background: var(--panel-bg);
+	padding: 1rem;
+	transition: background-color var(--motion-theme);
+}
+
+.facts-list dt {
+	color: var(--blueprint);
+	font-size: 0.8rem;
+	font-weight: 700;
+	text-transform: uppercase;
+}
+
+.facts-list dd {
+	margin: 0;
+	font-weight: 700;
+}
+
+@media (max-width: 620px) {
+	.facts-list div {
+		grid-template-columns: 1fr;
+	}
+}
+
+/* ---------- Portrait slot (Cảnh 2) ----------
+   Ships with a themed placeholder; the owner swaps in a real <img class="portrait__img">
+   (commented in index.html). Fixed aspect-ratio reserves space so adding the photo
+   later causes no layout shift (CLS). */
+.portrait {
+	margin: 1.75rem 0 0;
+	max-width: 16rem;
+	aspect-ratio: 4 / 5;
+	overflow: hidden;
+	border: 1px solid var(--line);
+	border-radius: 16px;
+	background: var(--surface-muted);
+	box-shadow: var(--shadow);
+	transition:
+		background-color var(--motion-theme),
+		border-color var(--motion-theme),
+		box-shadow var(--motion-theme);
+}
+
+.portrait__img {
+	display: block;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	border-radius: inherit;
+}
+
+/* Warm, quiet placeholder: a soft-glow ground + a muted silhouette + caption. */
+.portrait__placeholder {
+	display: flex;
+	width: 100%;
+	height: 100%;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	gap: 0.9rem;
+	padding: 1rem;
+	color: var(--muted);
+	text-align: center;
+	background:
+		radial-gradient(circle at 50% 38%, var(--glow-primary), transparent 70%),
+		linear-gradient(160deg, var(--surface) 0%, var(--surface-muted) 100%);
+}
+
+.portrait__placeholder svg {
+	width: 44%;
+	max-width: 5.5rem;
+	fill: none;
+	stroke: currentColor;
+	stroke-width: 3.5;
+	stroke-linecap: round;
+	opacity: 0.55;
+}
+
+.portrait__placeholder span {
+	font-size: 0.82rem;
+	font-weight: 600;
+	letter-spacing: 0.02em;
+}
+
+/* ---------- Inline "verify the claim" link (e.g. real playlist) ---------- */
+.panel-link {
+	margin: 0.85rem 0 0;
+	font-weight: 700;
+}
+
+.panel-link a {
+	color: var(--primary-strong); /* AA-safe small-text accent in both themes */
+	text-decoration-thickness: 0.08em;
+	text-underline-offset: 0.22em;
+}
+
+.panel-link a:hover {
+	color: var(--primary);
+}
+
+/* ---------- Freshness stamp (end card) ----------
+   Filled + un-hidden by assets/freshness-stamp.js only on success, so a failed
+   fetch shows nothing at all — that silence is the honesty guarantee and is worth
+   keeping. It does mean the element is display:none until the fetch resolves, so
+   revealing it still costs one line of shift; two things keep that harmless:
+   it now lives in the end card instead of inside the pinned #closing, and
+   freshness-stamp.js calls ScrollTrigger.refresh() afterwards so no trigger below
+   it is left mis-measured. */
+.freshness-stamp {
+	margin: 1.25rem 0 0;
+	color: var(--muted);
+	font-size: 0.8rem;
+	font-weight: 600;
+	letter-spacing: 0.04em;
+	transition: color var(--motion-theme);
+}
+
+/* [hidden] must still win over the grid display .end-card gives its children. */
+.freshness-stamp[hidden] {
+	display: none;
+}
