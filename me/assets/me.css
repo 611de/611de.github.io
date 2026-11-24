@@ -37,9 +37,10 @@
   --hero-muted: rgba(255, 255, 255, 0.88);
   --hero-accent: #dbe4f3;
   --hero-border: rgba(255, 255, 255, 0.7);
-  --hero-overlay-start: rgba(10, 12, 16, 0.88);
-  --hero-overlay-mid: rgba(18, 22, 30, 0.58);
-  --hero-overlay-end: rgba(18, 22, 30, 0.12);
+  /* 插画比照片亮，遮罩调淡：左边仍压得住白字，右边基本保持原色 */
+  --hero-overlay-start: rgba(12, 14, 18, 0.82);
+  --hero-overlay-mid: rgba(16, 20, 26, 0.42);
+  --hero-overlay-end: rgba(16, 20, 26, 0.04);
 }
 
 body {
@@ -56,12 +57,19 @@ h1, h2, h3, .page-title, .brand-name, .end-card__mark {
 /* 中文标题不需要 Fraunces 的收紧字距，稍微放开更透气 */
 h1, h2, h3 { letter-spacing: 0.01em; }
 
-/* 首屏背景换成本人照片（原项目是一张 webp 铺垫） */
+/* 首屏背景：Qwen 生成的扁平插画。插画偏亮，遮罩的过渡点往后挪，
+   保证正文那一段（约到画面 60%）仍是深底白字 */
 .home-hero::before {
   background-image:
-    linear-gradient(90deg, var(--hero-overlay-start), var(--hero-overlay-mid), var(--hero-overlay-end)),
+    linear-gradient(
+      90deg,
+      var(--hero-overlay-start) 0%,
+      rgba(16, 20, 26, 0.55) 60%,
+      rgba(16, 20, 26, 0.28) 80%,
+      var(--hero-overlay-end) 100%
+    ),
     url("hero.webp");
-  background-position: 68% center;
+  background-position: 72% center;
 }
 
 /* 白主题下不要整页「入夜」变暗 */
@@ -240,7 +248,7 @@ h3 {
 /* ---------- 一句话介绍（首屏） ---------- */
 .hero-copy .oneline {
   margin: 1.7rem 0 0;
-  max-width: 30em;
+  max-width: 26em;
   font-size: clamp(1.02rem, 1.5vw, 1.28rem);
   line-height: 1.95;
   letter-spacing: .01em;
